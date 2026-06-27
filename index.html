@@ -5,116 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agus Hidayatulloh | Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
         }
-        .hero-gradient {
-            background: linear-gradient(135deg, #ff7a18 0%, #af002d 50%, #0f0c29 100%);
+        .text-giant {
+            font-size: clamp(4rem, 12vw, 10rem);
+            line-height: 0.9;
         }
-        .text-gradient {
-            background: linear-gradient(135deg, #ff7a18, #ffb86b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .text-big {
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 1.1;
         }
-        .btn-gradient {
-            background: linear-gradient(135deg, #ff7a18, #ff5e00);
-        }
-        .btn-gradient:hover {
-            background: linear-gradient(135deg, #ff5e00, #ff7a18);
-        }
-        .card-hover {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        .project-card:hover img {
+            transform: scale(1.05);
         }
     </style>
 </head>
-<body class="bg-[#0f0c29] text-white">
+<body class="bg-white text-gray-900">
     
     <!-- Navbar -->
-    <nav class="fixed w-full z-50 py-4 px-4 md:py-6 md:px-8">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
-                    <i class="ph-bold ph-code text-xl md:text-2xl"></i>
-                </div>
-                <span class="text-xl md:text-2xl font-bold">Agus<span class="text-orange-500">.</span></span>
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div class="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
+            <a href="#home" class="text-2xl font-black tracking-tight">Agus<span class="text-orange-500">.</span></a>
+            <div class="hidden md:flex items-center gap-12">
+                <a href="#work" class="text-lg font-medium hover:text-orange-500 transition-colors">Work</a>
+                <a href="#about" class="text-lg font-medium hover:text-orange-500 transition-colors">About</a>
+                <a href="#connect" class="bg-black text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-500 transition-colors">Let's connect</a>
             </div>
-            
-            <div class="hidden md:flex items-center gap-8">
-                <a href="#home" class="hover:text-orange-400 transition-colors">Home</a>
-                <a href="#about" class="hover:text-orange-400 transition-colors">About</a>
-                <a href="#skills" class="hover:text-orange-400 transition-colors">Skills</a>
-                <a href="#portfolio" class="hover:text-orange-400 transition-colors">Portfolio</a>
-                <a href="#contact" class="btn-gradient px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all">Contact</a>
-            </div>
-            
-            <button id="mobile-menu-btn" class="md:hidden text-2xl">
+            <button id="mobile-menu-btn" class="md:hidden text-3xl">
                 <i class="ph ph-list"></i>
             </button>
         </div>
         
         <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden mt-4 bg-[#1a1735] rounded-2xl p-6 mx-4">
-            <div class="flex flex-col gap-4">
-                <a href="#home" class="hover:text-orange-400 transition-colors">Home</a>
-                <a href="#about" class="hover:text-orange-400 transition-colors">About</a>
-                <a href="#skills" class="hover:text-orange-400 transition-colors">Skills</a>
-                <a href="#portfolio" class="hover:text-orange-400 transition-colors">Portfolio</a>
-                <a href="#contact" class="btn-gradient px-6 py-2 rounded-full font-semibold text-center">Contact</a>
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-6 py-8">
+            <div class="flex flex-col gap-6">
+                <a href="#work" class="text-2xl font-medium hover:text-orange-500 transition-colors">Work</a>
+                <a href="#about" class="text-2xl font-medium hover:text-orange-500 transition-colors">About</a>
+                <a href="#connect" class="bg-black text-white px-8 py-4 rounded-full font-semibold text-center hover:bg-orange-500 transition-colors">Let's connect</a>
             </div>
         </div>
     </nav>
     
     <!-- Hero Section -->
-    <section id="home" class="hero-gradient min-h-screen flex items-center pt-20">
-        <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-20 w-full">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
-                <div class="z-10 text-center lg:text-left">
-                    <p class="text-orange-300 font-medium mb-3 md:mb-4 text-base md:text-lg">Hey, I'm</p>
-                    <h1 class="text-4xl md:text-6xl lg:text-8xl font-black mb-4 md:mb-6 leading-tight">
-                        Agus <span class="text-gradient">Hidayatulloh</span>
-                    </h1>
-                    <h2 class="text-xl md:text-2xl lg:text-3xl text-gray-300 mb-6 md:mb-8 font-light">
-                        IT Support & Application Administrator
-                    </h2>
-                    <p class="text-base md:text-lg text-gray-300 mb-8 md:mb-10 max-w-lg mx-auto lg:mx-0">
-                        Committed to providing the best technical solutions with clear and responsive communication.
+    <section id="home" class="min-h-screen flex items-center pt-32 pb-20">
+        <div class="max-w-6xl mx-auto px-6 w-full">
+            <div class="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+                <div class="flex-1 text-center lg:text-left">
+                    <p class="text-orange-500 font-semibold text-lg md:text-xl mb-6 tracking-wide">Howdy! 👋</p>
+                    <p class="text-gray-600 text-xl md:text-2xl mb-4">Meet your trusted</p>
+                    <h1 class="text-giant font-black mb-6">Agus</h1>
+                    <h1 class="text-giant font-black text-orange-500 mb-12">Hidayatulloh</h1>
+                    <p class="text-gray-600 text-xl md:text-2xl max-w-2xl mb-12 leading-relaxed">
+                        IT Support & Application Administrator<br>
+                        Committed to providing the best technical solutions
                     </p>
-                    
-                    <div class="flex flex-wrap gap-4 md:gap-6 mb-8 md:mb-12 justify-center lg:justify-start">
-                        <div class="flex items-center gap-2">
-                            <i class="ph ph-map-pin text-orange-400 text-lg md:text-xl"></i>
-                            <span>Tangerang Selatan</span>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <i class="ph ph-phone text-orange-400 text-lg md:text-xl"></i>
-                            <span>0857-7515-7395</span>
-                        </div>
-                    </div>
-                    
-                    <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start">
-                        <a href="#portfolio" class="btn-gradient px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold text-base md:text-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
-                            <i class="ph ph-folder-open"></i>
-                            View Portfolio
+                    <div class="flex flex-wrap gap-4 justify-center lg:justify-start">
+                        <a href="#work" class="bg-black text-white px-10 py-5 rounded-full font-semibold text-lg hover:bg-orange-500 transition-all flex items-center gap-3">
+                            View work <i class="ph ph-arrow-right"></i>
                         </a>
-                        <a href="#contact" class="border-2 border-white/30 px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold text-base md:text-lg hover:border-orange-400 hover:text-orange-400 transition-all flex items-center justify-center gap-2">
-                            <i class="ph ph-envelope-simple"></i>
-                            Contact Me
+                        <a href="#connect" class="border-2 border-gray-900 px-10 py-5 rounded-full font-semibold text-lg hover:border-orange-500 hover:text-orange-500 transition-all">
+                            Contact
                         </a>
                     </div>
                 </div>
-                
-                <div class="relative flex justify-center order-first lg:order-last">
+                <div class="flex-1 flex justify-center lg:justify-end">
                     <div class="relative">
-                        <div class="absolute inset-0 bg-gradient-to-br from-orange-500/30 to-red-600/30 rounded-full blur-3xl"></div>
-                        <div class="relative w-52 h-52 md:w-80 lg:w-96 md:h-80 lg:h-96 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl">
+                        <div class="absolute -inset-8 bg-gradient-to-br from-orange-400/20 to-orange-600/10 rounded-full blur-3xl"></div>
+                        <div class="relative w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-8 border-white shadow-2xl">
                             <img src="profile.jpg" alt="Agus Hidayatulloh" class="w-full h-full object-cover">
                         </div>
                     </div>
@@ -123,325 +84,199 @@
         </div>
     </section>
     
-    <!-- Stats Section -->
-    <section class="bg-[#1a1735] py-8 md:py-12 border-y border-white/10">
-        <div class="max-w-7xl mx-auto px-4 md:px-8">
-            <div class="grid grid-cols-3 md:grid-cols-5 gap-4 md:gap-8">
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-orange-400">3+</div>
-                    <div class="text-gray-400 text-sm">Years Experience</div>
+    <!-- Work Section -->
+    <section id="work" class="py-32 border-t border-gray-100">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="mb-20">
+                <p class="text-orange-500 font-semibold text-lg mb-4">My work</p>
+                <h2 class="text-big font-black">Latest projects</h2>
+                <p class="text-gray-500 text-xl mt-4">From 2023 'til today</p>
+            </div>
+            
+            <div class="grid gap-12">
+                <!-- Project 1 -->
+                <a href="https://www.brainboxlearning.id/" target="_blank" class="project-card group block bg-gray-50 rounded-3xl overflow-hidden hover:bg-gray-100 transition-all">
+                    <div class="grid lg:grid-cols-2 gap-0">
+                        <div class="aspect-[4/3] overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Academic System" class="w-full h-full object-cover transition-transform duration-500">
+                        </div>
+                        <div class="p-10 lg:p-16 flex flex-col justify-center">
+                            <div class="flex gap-3 mb-6">
+                                <span class="text-sm font-semibold bg-orange-100 text-orange-600 px-4 py-2 rounded-full">PHP</span>
+                                <span class="text-sm font-semibold bg-orange-100 text-orange-600 px-4 py-2 rounded-full">MySQL</span>
+                            </div>
+                            <h3 class="text-4xl md:text-5xl font-black mb-4 group-hover:text-orange-500 transition-colors">Academic System</h3>
+                            <p class="text-gray-600 text-xl leading-relaxed">
+                                Advanced PHP-based web application using Raw Query MySQL for managing academic data, class operations, and centralized learning progress reports.
+                            </p>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Project 2 -->
+                <div class="project-card group block bg-gray-50 rounded-3xl overflow-hidden hover:bg-gray-100 transition-all">
+                    <div class="grid lg:grid-cols-2 gap-0">
+                        <div class="lg:order-2 aspect-[4/3] overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Helpdesk System" class="w-full h-full object-cover transition-transform duration-500">
+                        </div>
+                        <div class="lg:order-1 p-10 lg:p-16 flex flex-col justify-center">
+                            <div class="flex gap-3 mb-6">
+                                <span class="text-sm font-semibold bg-orange-100 text-orange-600 px-4 py-2 rounded-full">Laravel</span>
+                                <span class="text-sm font-semibold bg-orange-100 text-orange-600 px-4 py-2 rounded-full">JavaScript</span>
+                            </div>
+                            <h3 class="text-4xl md:text-5xl font-black mb-4 group-hover:text-orange-500 transition-colors">Helpdesk System</h3>
+                            <p class="text-gray-600 text-xl leading-relaxed">
+                                Internal technical support platform for employees to report IT issues. Features ticket tracking, notifications, and performance analytics.
+                            </p>
+                        </div>
+                    </div>
                 </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-orange-400">20+</div>
-                    <div class="text-gray-400 text-sm">Projects Done</div>
+                
+                <!-- Project 3 -->
+                <div class="project-card group block bg-gray-50 rounded-3xl overflow-hidden hover:bg-gray-100 transition-all">
+                    <div class="grid lg:grid-cols-2 gap-0">
+                        <div class="aspect-[4/3] overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Server Monitoring" class="w-full h-full object-cover transition-transform duration-500">
+                        </div>
+                        <div class="p-10 lg:p-16 flex flex-col justify-center">
+                            <div class="flex gap-3 mb-6">
+                                <span class="text-sm font-semibold bg-orange-100 text-orange-600 px-4 py-2 rounded-full">REST API</span>
+                                <span class="text-sm font-semibold bg-orange-100 text-orange-600 px-4 py-2 rounded-full">Linux</span>
+                            </div>
+                            <h3 class="text-4xl md:text-5xl font-black mb-4 group-hover:text-orange-500 transition-colors">Server Monitoring</h3>
+                            <p class="text-gray-600 text-xl leading-relaxed">
+                                Web dashboard for monitoring Linux Debian and Apache servers. Consumes REST API data to display uptime, memory usage, and error logs in real-time.
+                            </p>
+                        </div>
+                    </div>
                 </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-orange-400">50+</div>
-                    <div class="text-gray-400 text-sm">Happy Clients</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-orange-400">10+</div>
-                    <div class="text-gray-400 text-sm">Technologies</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl font-bold text-orange-400">100%</div>
-                    <div class="text-gray-400 text-sm">Satisfaction</div>
-                </div>
+            </div>
+            
+            <div class="mt-20 text-center">
+                <p class="text-gray-500 text-xl">New projects are on the way, slowly but surely 😅</p>
             </div>
         </div>
     </section>
     
     <!-- About Section -->
-    <section id="about" class="py-16 md:py-24 bg-[#0f0c29]">
-        <div class="max-w-7xl mx-auto px-4 md:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
-                <div class="text-center lg:text-left">
-                    <p class="text-orange-400 font-medium mb-3 md:mb-4 uppercase tracking-wider text-sm md:text-base">Behind the Designs</p>
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 md:mb-8">
-                        Shaping <span class="text-gradient">Experiences</span> That Make Life Simpler
-                    </h2>
-                </div>
-                
-                <div class="text-gray-300 text-base md:text-lg leading-relaxed space-y-4 md:space-y-6">
-                    <p>
-                        I'm a final-year Informatics student with practical experience in providing technical support (IT Support) and managing internal system operations.
-                    </p>
-                    <p>
-                        With a strong background in troubleshooting application issues, database management using MySQL Raw Query, and understanding web development with PHP and JavaScript.
-                    </p>
-                    <p>
-                        I'm accustomed to coordinating with users and internal teams to ensure business application performance runs smoothly. A detail-oriented person with proven problem-solving skills, ready to adapt to changing system needs.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Skills Section -->
-    <section id="skills" class="py-16 md:py-24 bg-gradient-to-b from-[#1a1735] to-[#0f0c29]">
-        <div class="max-w-7xl mx-auto px-4 md:px-8">
-            <div class="text-center mb-12 md:mb-16">
-                <p class="text-orange-400 font-medium mb-3 md:mb-4 uppercase tracking-wider text-sm md:text-base">My Expertise</p>
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6">
-                    Skills & <span class="text-gradient">Technologies</span>
-                </h2>
+    <section id="about" class="py-32 border-t border-gray-100 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="mb-16">
+                <p class="text-orange-500 font-semibold text-lg mb-4">About me</p>
+                <h2 class="text-big font-black">Every experience in my life is important and has taught me a lot</h2>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16">
-                <div class="card-hover bg-[#1a1735] p-6 md:p-8 rounded-2xl border border-white/10">
-                    <div class="text-orange-400 text-4xl md:text-5xl mb-4 md:mb-6">
-                        <i class="ph ph-desktop-tower"></i>
-                    </div>
-                    <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">System & Application</h3>
-                    <ul class="space-y-2 md:space-y-3 text-gray-300 text-sm md:text-base">
-                        <li class="flex items-start gap-2 md:gap-3">
-                            <i class="ph ph-check-circle text-orange-400 mt-1"></i>
-                            App Support & Troubleshooting
-                        </li>
-                        <li class="flex items-start gap-2 md:gap-3">
-                            <i class="ph ph-check-circle text-orange-400 mt-1"></i>
-                            ERP System Understanding
-                        </li>
-                        <li class="flex items-start gap-2 md:gap-3">
-                            <i class="ph ph-check-circle text-orange-400 mt-1"></i>
-                            Business Process Flow
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="card-hover bg-[#1a1735] p-6 md:p-8 rounded-2xl border border-white/10">
-                    <div class="text-orange-400 text-4xl md:text-5xl mb-4 md:mb-6">
-                        <i class="ph ph-code"></i>
-                    </div>
-                    <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Programming & Web</h3>
-                    <ul class="space-y-2 md:space-y-3 text-gray-300 text-sm md:text-base">
-                        <li class="flex items-start gap-2 md:gap-3">
-                            <i class="ph ph-check-circle text-orange-400 mt-1"></i>
-                            PHP & Laravel
-                        </li>
-                        <li class="flex items-start gap-2 md:gap-3">
-                            <i class="ph ph-check-circle text-orange-400 mt-1"></i>
-                            JavaScript
-                        </li>
-                        <li class="flex items-start gap-2 md:gap-3">
-                            <i class="ph ph-check-circle text-orange-400 mt-1"></i>
-                            REST API & HTML/CSS
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="card-hover bg-[#1a1735] p-6 md:p-8 rounded-2xl border border-white/10">
-                    <div class="text-orange-400 text-4xl md:text-5xl mb-4 md:mb-6">
-                        <i class="ph ph-database"></i>
-                    </div>
-                    <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Database & Infra</h3>
-                    <ul class="space-y-2 md:space-y-3 text-gray-300 text-sm md:text-base">
-                        <li class="flex items-start gap-2 md:gap-3">
-                            <i class="ph ph-check-circle text-orange-400 mt-1"></i>
-                            MySQL (Expert)
-                        </li>
-                        <li class="flex items-start gap-2 md:gap-3">
-                            <i class="ph ph-check-circle text-orange-400 mt-1"></i>
-                            Linux Debian
-                        </li>
-                        <li class="flex items-start gap-2 md:gap-3">
-                            <i class="ph ph-check-circle text-orange-400 mt-1"></i>
-                            Apache Server
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="flex flex-wrap justify-center gap-3 md:gap-4">
-                <span class="bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" class="w-6 h-6 md:w-8 md:h-8" alt="PHP">
-                    PHP
-                </span>
-                <span class="bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-plain.svg" class="w-6 h-6 md:w-8 md:h-8" alt="Laravel">
-                    Laravel
-                </span>
-                <span class="bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" class="w-6 h-6 md:w-8 md:h-8" alt="JavaScript">
-                    JavaScript
-                </span>
-                <span class="bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" class="w-6 h-6 md:w-8 md:h-8" alt="MySQL">
-                    MySQL
-                </span>
-                <span class="bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/debian/debian-plain.svg" class="w-6 h-6 md:w-8 md:h-8" alt="Debian">
-                    Debian
-                </span>
-                <span class="bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" class="w-6 h-6 md:w-8 md:h-8" alt="HTML5">
-                    HTML5
-                </span>
-                <span class="bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" class="w-6 h-6 md:w-8 md:h-8" alt="CSS3">
-                    CSS3
-                </span>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Portfolio Section -->
-    <section id="portfolio" class="py-16 md:py-24 bg-[#0f0c29]">
-        <div class="max-w-7xl mx-auto px-4 md:px-8">
-            <div class="text-center mb-12 md:mb-16">
-                <p class="text-orange-400 font-medium mb-3 md:mb-4 uppercase tracking-wider text-sm md:text-base">My Work</p>
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6">
-                    Featured <span class="text-gradient">Projects</span>
-                </h2>
-                <p class="text-gray-400 max-w-2xl mx-auto text-base md:text-lg">
-                    A showcase of my recent work in web development and system administration.
+            <div class="space-y-8 text-gray-700 text-xl leading-relaxed">
+                <p>
+                    I'm a final-year Informatics student with practical experience in providing technical support (IT Support) and managing internal system operations.
+                </p>
+                <p>
+                    With a strong background in troubleshooting application issues, database management using MySQL Raw Query, and understanding web development with PHP and JavaScript.
+                </p>
+                <p>
+                    I'm accustomed to coordinating with users and internal teams to ensure business application performance runs smoothly. A detail-oriented person with proven problem-solving skills, ready to adapt to changing system needs.
                 </p>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                <div class="card-hover group bg-[#1a1735] rounded-2xl overflow-hidden border border-white/10">
-                    <div class="h-48 md:h-56 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Project 1" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#1a1735] to-transparent"></div>
-                    </div>
-                    <div class="p-6 md:p-8">
-                        <div class="flex gap-2 mb-3 md:mb-4">
-                            <span class="text-xs uppercase tracking-wider bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full border border-orange-500/30">PHP</span>
-                            <span class="text-xs uppercase tracking-wider bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full border border-orange-500/30">MySQL</span>
-                        </div>
-                        <h3 class="text-xl md:text-2xl font-bold mb-2 md:mb-3 group-hover:text-orange-400 transition-colors">Academic System</h3>
-                        <p class="text-gray-400 mb-4 md:mb-6 text-sm md:text-base">
-                            Advanced PHP-based web application using Raw Query MySQL for managing academic data, class operations, and centralized learning progress reports.
-                        </p>
-                        <a href="https://www.brainboxlearning.id/" target="_blank" class="flex items-center gap-2 text-orange-400 font-semibold hover:gap-4 transition-all text-sm md:text-base">
-                            View Project <i class="ph ph-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="card-hover group bg-[#1a1735] rounded-2xl overflow-hidden border border-white/10">
-                    <div class="h-48 md:h-56 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Project 2" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#1a1735] to-transparent"></div>
-                    </div>
-                    <div class="p-6 md:p-8">
-                        <div class="flex gap-2 mb-3 md:mb-4">
-                            <span class="text-xs uppercase tracking-wider bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full border border-orange-500/30">Laravel</span>
-                            <span class="text-xs uppercase tracking-wider bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full border border-orange-500/30">JS</span>
-                        </div>
-                        <h3 class="text-xl md:text-2xl font-bold mb-2 md:mb-3 group-hover:text-orange-400 transition-colors">Helpdesk System</h3>
-                        <p class="text-gray-400 mb-4 md:mb-6 text-sm md:text-base">
-                            Internal technical support platform for employees to report IT issues. Features ticket tracking, notifications, and performance analytics.
-                        </p>
-                        <a href="#" class="flex items-center gap-2 text-orange-400 font-semibold hover:gap-4 transition-all text-sm md:text-base">
-                            View Project <i class="ph ph-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="card-hover group bg-[#1a1735] rounded-2xl overflow-hidden border border-white/10">
-                    <div class="h-48 md:h-56 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Project 3" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#1a1735] to-transparent"></div>
-                    </div>
-                    <div class="p-6 md:p-8">
-                        <div class="flex gap-2 mb-3 md:mb-4">
-                            <span class="text-xs uppercase tracking-wider bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full border border-orange-500/30">REST API</span>
-                            <span class="text-xs uppercase tracking-wider bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full border border-orange-500/30">Linux</span>
-                        </div>
-                        <h3 class="text-xl md:text-2xl font-bold mb-2 md:mb-3 group-hover:text-orange-400 transition-colors">Server Monitoring</h3>
-                        <p class="text-gray-400 mb-4 md:mb-6 text-sm md:text-base">
-                            Web dashboard for monitoring Linux Debian and Apache servers. Consumes REST API data to display uptime, memory usage, and error logs in real-time.
-                        </p>
-                        <a href="#" class="flex items-center gap-2 text-orange-400 font-semibold hover:gap-4 transition-all text-sm md:text-base">
-                            View Project <i class="ph ph-arrow-right"></i>
-                        </a>
-                    </div>
+            <!-- Skills -->
+            <div class="mt-20">
+                <h3 class="text-3xl font-black mb-10">What I work with</h3>
+                <div class="flex flex-wrap gap-4">
+                    <span class="bg-white border border-gray-200 px-6 py-3 rounded-xl text-lg font-semibold flex items-center gap-3 hover:border-orange-500 transition-colors">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" class="w-8 h-8" alt="PHP">
+                        PHP
+                    </span>
+                    <span class="bg-white border border-gray-200 px-6 py-3 rounded-xl text-lg font-semibold flex items-center gap-3 hover:border-orange-500 transition-colors">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-plain.svg" class="w-8 h-8" alt="Laravel">
+                        Laravel
+                    </span>
+                    <span class="bg-white border border-gray-200 px-6 py-3 rounded-xl text-lg font-semibold flex items-center gap-3 hover:border-orange-500 transition-colors">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" class="w-8 h-8" alt="JavaScript">
+                        JavaScript
+                    </span>
+                    <span class="bg-white border border-gray-200 px-6 py-3 rounded-xl text-lg font-semibold flex items-center gap-3 hover:border-orange-500 transition-colors">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" class="w-8 h-8" alt="MySQL">
+                        MySQL
+                    </span>
+                    <span class="bg-white border border-gray-200 px-6 py-3 rounded-xl text-lg font-semibold flex items-center gap-3 hover:border-orange-500 transition-colors">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/debian/debian-plain.svg" class="w-8 h-8" alt="Debian">
+                        Debian
+                    </span>
+                    <span class="bg-white border border-gray-200 px-6 py-3 rounded-xl text-lg font-semibold flex items-center gap-3 hover:border-orange-500 transition-colors">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" class="w-8 h-8" alt="HTML5">
+                        HTML5
+                    </span>
+                    <span class="bg-white border border-gray-200 px-6 py-3 rounded-xl text-lg font-semibold flex items-center gap-3 hover:border-orange-500 transition-colors">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" class="w-8 h-8" alt="CSS3">
+                        CSS3
+                    </span>
                 </div>
             </div>
         </div>
     </section>
     
-    <!-- Contact Section -->
-    <section id="contact" class="py-16 md:py-24 bg-gradient-to-b from-[#1a1735] to-[#0f0c29]">
-        <div class="max-w-7xl mx-auto px-4 md:px-8">
-            <div class="text-center mb-12 md:mb-16">
-                <p class="text-orange-400 font-medium mb-3 md:mb-4 uppercase tracking-wider text-sm md:text-base">Get in Touch</p>
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6">
-                    Let's Work <span class="text-gradient">Together</span>
-                </h2>
-                <p class="text-gray-400 max-w-2xl mx-auto text-base md:text-lg">
-                    Ready to collaborate and solve your company's technical problems.
-                </p>
-            </div>
+    <!-- Connect Section -->
+    <section id="connect" class="py-32 border-t border-gray-100">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-big font-black mb-8">Tap this 'tiny' button to highlight your product =)</h2>
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                <a href="mailto:agushidayahtulloh3@gmail.com" class="card-hover bg-[#1a1735] border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col items-center gap-3 md:gap-4 hover:border-orange-400">
-                    <div class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 text-2xl md:text-3xl">
-                        <i class="ph ph-envelope-simple"></i>
-                    </div>
-                    <h3 class="text-lg md:text-xl font-bold">Email</h3>
-                    <p class="text-gray-400 text-sm md:text-base text-center break-all">agushidayahtulloh3@gmail.com</p>
+            <a href="mailto:agushidayahtulloh3@gmail.com" class="inline-block bg-black text-white px-16 py-8 rounded-full font-black text-2xl hover:bg-orange-500 transition-all mb-20">
+                Let's connect
+            </a>
+            
+            <div class="flex flex-col items-center gap-8 mb-20">
+                <a href="mailto:agushidayahtulloh3@gmail.com" class="text-3xl font-semibold hover:text-orange-500 transition-colors">
+                    agushidayahtulloh3@gmail.com
                 </a>
-                
-                <a href="https://wa.me/6285775157395" target="_blank" class="card-hover bg-[#1a1735] border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col items-center gap-3 md:gap-4 hover:border-orange-400">
-                    <div class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 text-2xl md:text-3xl">
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto">
+                <a href="https://wa.me/6285775157395" target="_blank" class="flex flex-col items-center gap-4 p-8 rounded-3xl bg-gray-50 hover:bg-orange-50 transition-all group">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-green-600 text-3xl group-hover:bg-green-600 group-hover:text-white transition-all">
                         <i class="ph ph-whatsapp-logo"></i>
                     </div>
-                    <h3 class="text-lg md:text-xl font-bold">WhatsApp</h3>
-                    <p class="text-gray-400 text-sm md:text-base">0857-7515-7395</p>
+                    <span class="font-semibold text-lg">WhatsApp</span>
                 </a>
                 
-                <a href="https://www.linkedin.com/in/agus-hidayahtulloh-0448b72b9" target="_blank" class="card-hover bg-[#1a1735] border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col items-center gap-3 md:gap-4 hover:border-orange-400">
-                    <div class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 text-2xl md:text-3xl">
+                <a href="https://www.linkedin.com/in/agus-hidayahtulloh-0448b72b9" target="_blank" class="flex flex-col items-center gap-4 p-8 rounded-3xl bg-gray-50 hover:bg-orange-50 transition-all group">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-3xl group-hover:bg-blue-600 group-hover:text-white transition-all">
                         <i class="ph ph-linkedin-logo"></i>
                     </div>
-                    <h3 class="text-lg md:text-xl font-bold">LinkedIn</h3>
-                    <p class="text-gray-400 text-sm md:text-base text-center">Agus Hidayatulloh</p>
+                    <span class="font-semibold text-lg">LinkedIn</span>
                 </a>
                 
-                <a href="https://github.com/AgusHidayahtulloh333" target="_blank" class="card-hover bg-[#1a1735] border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col items-center gap-3 md:gap-4 hover:border-orange-400">
-                    <div class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 text-2xl md:text-3xl">
+                <a href="https://github.com/AgusHidayahtulloh333" target="_blank" class="flex flex-col items-center gap-4 p-8 rounded-3xl bg-gray-50 hover:bg-orange-50 transition-all group">
+                    <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center text-gray-900 text-3xl group-hover:bg-gray-900 group-hover:text-white transition-all">
                         <i class="ph ph-github-logo"></i>
                     </div>
-                    <h3 class="text-lg md:text-xl font-bold">GitHub</h3>
-                    <p class="text-gray-400 text-sm md:text-base text-center">AgusHidayahtulloh333</p>
+                    <span class="font-semibold text-lg">GitHub</span>
+                </a>
+                
+                <a href="https://www.instagram.com" target="_blank" class="flex flex-col items-center gap-4 p-8 rounded-3xl bg-gray-50 hover:bg-orange-50 transition-all group">
+                    <div class="w-16 h-16 bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-full flex items-center justify-center text-white text-3xl group-hover:scale-110 transition-all">
+                        <i class="ph ph-instagram-logo"></i>
+                    </div>
+                    <span class="font-semibold text-lg">Instagram</span>
                 </a>
             </div>
         </div>
     </section>
     
     <!-- Footer -->
-    <footer class="bg-[#0a081a] py-8 md:py-12 border-t border-white/10">
-        <div class="max-w-7xl mx-auto px-4 md:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
+    <footer class="py-12 border-t border-gray-100">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                 <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
-                        <i class="ph-bold ph-code text-lg md:text-2xl"></i>
-                    </div>
-                    <span class="text-xl md:text-2xl font-bold">Agus<span class="text-orange-500">.</span></span>
+                    <span class="text-2xl font-black tracking-tight">Agus<span class="text-orange-500">.</span></span>
                 </div>
-                
-                <p class="text-gray-500 text-sm md:text-base">© 2026 Agus Hidayatulloh. All rights reserved.</p>
-                
-                <div class="flex gap-3 md:gap-4">
-                    <a href="mailto:agushidayahtulloh3@gmail.com" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#1a1735] flex items-center justify-center text-gray-400 hover:text-orange-400 hover:bg-orange-500/10 transition-all">
-                        <i class="ph ph-envelope-simple text-lg md:text-xl"></i>
-                    </a>
-                    <a href="https://www.linkedin.com/in/agus-hidayahtulloh-0448b72b9" target="_blank" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#1a1735] flex items-center justify-center text-gray-400 hover:text-orange-400 hover:bg-orange-500/10 transition-all">
-                        <i class="ph ph-linkedin-logo text-lg md:text-xl"></i>
-                    </a>
-                    <a href="https://github.com/AgusHidayahtulloh333" target="_blank" class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#1a1735] flex items-center justify-center text-gray-400 hover:text-orange-400 hover:bg-orange-500/10 transition-all">
-                        <i class="ph ph-github-logo text-lg md:text-xl"></i>
-                    </a>
-                </div>
+                <p class="text-gray-400">© 2026 Agus Hidayatulloh. All rights reserved.</p>
             </div>
         </div>
     </footer>
     
     <!-- Back to Top -->
-    <a href="#home" id="back-to-top" class="fixed bottom-4 right-4 md:bottom-8 md:right-8 w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-orange-500 to-red-600 rounded-full flex items-center justify-center shadow-xl hover:shadow-2xl transition-all opacity-0 invisible">
-        <i class="ph-bold ph-arrow-up text-xl md:text-2xl"></i>
+    <a href="#home" id="back-to-top" class="fixed bottom-8 right-8 w-16 h-16 bg-black text-white rounded-full flex items-center justify-center shadow-2xl hover:bg-orange-500 transition-all opacity-0 invisible">
+        <i class="ph-bold ph-arrow-up text-2xl"></i>
     </a>
     
     <script>
