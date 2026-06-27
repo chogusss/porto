@@ -4,38 +4,191 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agus Hidayatulloh | Portfolio</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.2/dist/gsap.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
         body {
             font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
         }
-        .text-giant {
-            font-size: clamp(4rem, 12vw, 10rem);
-            line-height: 0.9;
+        
+        /* Sunburst Background */
+        .sunburst-bg {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 25%, #fcd34d 50%, #fbbf24 75%, #f59e0b 100%);
+            position: relative;
+            overflow: hidden;
         }
-        .text-big {
-            font-size: clamp(2rem, 5vw, 4rem);
-            line-height: 1.1;
+        
+        .sunburst-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%),
+                linear-gradient(-45deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%);
+            background-size: 100px 100px;
+            pointer-events: none;
         }
-        .project-card:hover img {
+        
+        .sunburst-glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, transparent 70%);
+            top: -200px;
+            right: -100px;
+            filter: blur(40px);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+        
+        /* 3D Button */
+        .btn-3d {
+            background: linear-gradient(180deg, #374151 0%, #1f2937 50%, #111827 100%);
+            box-shadow: 
+                0 10px 0 #0f172a,
+                0 20px 30px rgba(0,0,0,0.3),
+                inset 0 2px 0 rgba(255,255,255,0.2);
+            transition: all 0.1s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .btn-3d:hover {
+            transform: translateY(2px);
+            box-shadow: 
+                0 8px 0 #0f172a,
+                0 15px 20px rgba(0,0,0,0.3),
+                inset 0 2px 0 rgba(255,255,255,0.2);
+        }
+        
+        .btn-3d:active {
+            transform: translateY(8px);
+            box-shadow: 
+                0 2px 0 #0f172a,
+                0 5px 10px rgba(0,0,0,0.3),
+                inset 0 2px 0 rgba(255,255,255,0.2);
+        }
+        
+        /* Project Cards 3D */
+        .project-card-3d {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        
+        .project-card-3d:hover {
+            transform: translateY(-10px) rotateX(5deg);
+        }
+        
+        .project-card-3d:hover .project-image {
             transform: scale(1.05);
+        }
+        
+        .project-image {
+            transition: transform 0.5s ease;
+        }
+        
+        /* Fade In Animation */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Text Reveal */
+        .text-reveal {
+            clip-path: inset(0 100% 0 0);
+            transition: clip-path 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        
+        .text-reveal.visible {
+            clip-path: inset(0 0 0 0);
+        }
+        
+        /* Marquee */
+        .marquee {
+            display: flex;
+            overflow: hidden;
+        }
+        
+        .marquee-content {
+            display: flex;
+            animation: marquee 20s linear infinite;
+        }
+        
+        @keyframes marquee {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+        
+        /* Navbar */
+        .nav-glass {
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Profile Image Glow */
+        .profile-glow {
+            position: relative;
+        }
+        
+        .profile-glow::before {
+            content: '';
+            position: absolute;
+            inset: -10px;
+            background: linear-gradient(45deg, #fbbf24, #f59e0b, #fbbf24);
+            border-radius: 50%;
+            z-index: -1;
+            animation: rotate 4s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
-<body class="bg-white text-gray-900">
+<body class="bg-gray-50 text-gray-900">
     
     <!-- Navbar -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
-        <div class="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
-            <a href="#home" class="text-2xl font-black tracking-tight">Agus<span class="text-orange-500">.</span></a>
-            <div class="hidden md:flex items-center gap-12">
-                <a href="#work" class="text-lg font-medium hover:text-orange-500 transition-colors">Work</a>
-                <a href="#about" class="text-lg font-medium hover:text-orange-500 transition-colors">About</a>
-                <a href="#connect" class="bg-black text-white px-8 py-3 rounded-full font-semibold hover:bg-orange-500 transition-colors">Let's connect</a>
+    <nav class="fixed top-0 left-0 right-0 z-50 nav-glass border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="#home" class="text-2xl font-black tracking-tight">
+                <span class="text-gray-900">Agus</span><span class="text-yellow-500">.</span>
+            </a>
+            <div class="hidden md:flex items-center gap-6 bg-gray-900/90 backdrop-blur px-6 py-2 rounded-full">
+                <a href="#work" class="text-gray-300 hover:text-yellow-400 font-medium transition-colors">Work</a>
+                <a href="#about" class="text-gray-300 hover:text-yellow-400 font-medium transition-colors">Story</a>
+                <a href="#connect" class="text-yellow-400 font-medium transition-colors">Connect</a>
+                <a href="#connect" class="bg-yellow-500 text-gray-900 px-5 py-2 rounded-full font-bold hover:bg-yellow-400 transition-all">Start project</a>
             </div>
-            <button id="mobile-menu-btn" class="md:hidden text-3xl">
+            <button id="mobile-menu-btn" class="md:hidden text-3xl text-gray-900">
                 <i class="ph ph-list"></i>
             </button>
         </div>
@@ -43,39 +196,41 @@
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-6 py-8">
             <div class="flex flex-col gap-6">
-                <a href="#work" class="text-2xl font-medium hover:text-orange-500 transition-colors">Work</a>
-                <a href="#about" class="text-2xl font-medium hover:text-orange-500 transition-colors">About</a>
-                <a href="#connect" class="bg-black text-white px-8 py-4 rounded-full font-semibold text-center hover:bg-orange-500 transition-colors">Let's connect</a>
+                <a href="#work" class="text-2xl font-medium hover:text-yellow-500 transition-colors">Work</a>
+                <a href="#about" class="text-2xl font-medium hover:text-yellow-500 transition-colors">Story</a>
+                <a href="#connect" class="text-2xl font-medium hover:text-yellow-500 transition-colors">Connect</a>
             </div>
         </div>
     </nav>
     
     <!-- Hero Section -->
-    <section id="home" class="min-h-screen flex items-center pt-32 pb-20">
-        <div class="max-w-6xl mx-auto px-6 w-full">
-            <div class="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
-                <div class="flex-1 text-center lg:text-left">
-                    <p class="text-orange-500 font-semibold text-lg md:text-xl mb-6 tracking-wide">Howdy! 👋</p>
-                    <p class="text-gray-600 text-xl md:text-2xl mb-4">Meet your trusted</p>
-                    <h1 class="text-giant font-black mb-6">Agus</h1>
-                    <h1 class="text-giant font-black text-orange-500 mb-12">Hidayatulloh</h1>
-                    <p class="text-gray-600 text-xl md:text-2xl max-w-2xl mb-12 leading-relaxed">
-                        IT Support & Application Administrator<br>
-                        Committed to providing the best technical solutions
+    <section id="home" class="sunburst-bg min-h-screen flex items-center pt-24 pb-16">
+        <div class="sunburst-glow"></div>
+        <div class="max-w-7xl mx-auto px-6 w-full relative z-10">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <div class="flex-1">
+                    <p class="text-gray-600 text-xl md:text-2xl mb-4 text-reveal">
+                        Howdy! Meet your trusted partner,
                     </p>
-                    <div class="flex flex-wrap gap-4 justify-center lg:justify-start">
-                        <a href="#work" class="bg-black text-white px-10 py-5 rounded-full font-semibold text-lg hover:bg-orange-500 transition-all flex items-center gap-3">
-                            View work <i class="ph ph-arrow-right"></i>
-                        </a>
-                        <a href="#connect" class="border-2 border-gray-900 px-10 py-5 rounded-full font-semibold text-lg hover:border-orange-500 hover:text-orange-500 transition-all">
-                            Contact
+                    <p class="text-gray-600 text-xl md:text-2xl mb-8 text-reveal">
+                        crafting strong solutions for your business.
+                    </p>
+                    
+                    <h1 class="text-reveal text-7xl md:text-9xl lg:text-[12rem] font-black leading-none tracking-tighter mb-8">
+                        <span class="block">AGUS</span>
+                        <span class="block text-yellow-600">HIDAYAT</span>
+                    </h1>
+                    
+                    <div class="flex flex-wrap gap-6 mt-12">
+                        <a href="#work" class="bg-gray-900 text-white px-10 py-5 rounded-full font-bold text-xl hover:bg-gray-800 transition-all flex items-center gap-3">
+                            View Work <i class="ph ph-arrow-right"></i>
                         </a>
                     </div>
                 </div>
+                
                 <div class="flex-1 flex justify-center lg:justify-end">
-                    <div class="relative">
-                        <div class="absolute -inset-8 bg-gradient-to-br from-orange-400/20 to-orange-600/10 rounded-full blur-3xl"></div>
-                        <div class="relative w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-8 border-white shadow-2xl">
+                    <div class="profile-glow">
+                        <div class="w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-8 border-white shadow-2xl floating">
                             <img src="profile.jpg" alt="Agus Hidayatulloh" class="w-full h-full object-cover">
                         </div>
                     </div>
@@ -84,89 +239,97 @@
         </div>
     </section>
     
+    <!-- Marquee Section -->
+    <section class="py-6 bg-gray-900 overflow-hidden">
+        <div class="marquee">
+            <div class="marquee-content">
+                <span class="text-4xl font-black text-white/20 mx-8">PHP •</span>
+                <span class="text-4xl font-black text-white/20 mx-8">LARAVEL •</span>
+                <span class="text-4xl font-black text-white/20 mx-8">MYSQL •</span>
+                <span class="text-4xl font-black text-white/20 mx-8">JAVASCRIPT •</span>
+                <span class="text-4xl font-black text-white/20 mx-8">LINUX •</span>
+                <span class="text-4xl font-black text-white/20 mx-8">IT SUPPORT •</span>
+                <span class="text-4xl font-black text-white/20 mx-8">PHP •</span>
+                <span class="text-4xl font-black text-white/20 mx-8">LARAVEL •</span>
+                <span class="text-4xl font-black text-white/20 mx-8">MYSQL •</span>
+                <span class="text-4xl font-black text-white/20 mx-8">JAVASCRIPT •</span>
+                <span class="text-4xl font-black text-white/20 mx-8">LINUX •</span>
+                <span class="text-4xl font-black text-white/20 mx-8">IT SUPPORT •</span>
+            </div>
+        </div>
+    </section>
+    
     <!-- Work Section -->
-    <section id="work" class="py-32 border-t border-gray-100">
-        <div class="max-w-6xl mx-auto px-6">
+    <section id="work" class="py-32">
+        <div class="max-w-7xl mx-auto px-6">
             <div class="mb-20">
-                <p class="text-orange-500 font-semibold text-lg mb-4">My work</p>
-                <h2 class="text-big font-black">Latest projects</h2>
-                <p class="text-gray-500 text-xl mt-4">From 2023 'til today</p>
+                <p class="text-yellow-600 font-bold text-xl mb-4 fade-in-up">Selected Works</p>
+                <h2 class="text-6xl md:text-8xl font-black fade-in-up">Projects</h2>
             </div>
             
-            <div class="grid gap-12">
+            <div class="grid gap-16">
                 <!-- Project 1 -->
-                <a href="https://www.brainboxlearning.id/" target="_blank" class="project-card group block bg-gray-50 rounded-3xl overflow-hidden hover:bg-gray-100 transition-all">
-                    <div class="grid lg:grid-cols-2 gap-0">
-                        <div class="aspect-[4/3] overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Academic System" class="w-full h-full object-cover transition-transform duration-500">
+                <a href="https://www.brainboxlearning.id/" target="_blank" class="project-card-3d fade-in-up group block">
+                    <div class="grid lg:grid-cols-2 gap-8 items-center">
+                        <div class="relative overflow-hidden rounded-3xl bg-gray-100 p-8">
+                            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Academic System" class="project-image w-full rounded-2xl shadow-xl">
                         </div>
-                        <div class="p-10 lg:p-16 flex flex-col justify-center">
-                            <div class="flex gap-3 mb-6">
-                                <span class="text-sm font-semibold bg-orange-100 text-orange-600 px-4 py-2 rounded-full">PHP</span>
-                                <span class="text-sm font-semibold bg-orange-100 text-orange-600 px-4 py-2 rounded-full">MySQL</span>
+                        <div>
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="text-2xl font-bold">Ruby</span>
+                                <i class="ph ph-arrow-right text-2xl group-hover:translate-x-2 transition-transform"></i>
                             </div>
-                            <h3 class="text-4xl md:text-5xl font-black mb-4 group-hover:text-orange-500 transition-colors">Academic System</h3>
-                            <p class="text-gray-600 text-xl leading-relaxed">
-                                Advanced PHP-based web application using Raw Query MySQL for managing academic data, class operations, and centralized learning progress reports.
-                            </p>
+                            <p class="text-gray-500 text-xl">Branding, Web design, Development</p>
                         </div>
                     </div>
                 </a>
                 
                 <!-- Project 2 -->
-                <div class="project-card group block bg-gray-50 rounded-3xl overflow-hidden hover:bg-gray-100 transition-all">
-                    <div class="grid lg:grid-cols-2 gap-0">
-                        <div class="lg:order-2 aspect-[4/3] overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Helpdesk System" class="w-full h-full object-cover transition-transform duration-500">
+                <div class="project-card-3d fade-in-up group">
+                    <div class="grid lg:grid-cols-2 gap-8 items-center">
+                        <div class="lg:order-2 relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-100 to-yellow-100 p-8">
+                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Helpdesk System" class="project-image w-full rounded-2xl shadow-xl">
                         </div>
-                        <div class="lg:order-1 p-10 lg:p-16 flex flex-col justify-center">
-                            <div class="flex gap-3 mb-6">
-                                <span class="text-sm font-semibold bg-orange-100 text-orange-600 px-4 py-2 rounded-full">Laravel</span>
-                                <span class="text-sm font-semibold bg-orange-100 text-orange-600 px-4 py-2 rounded-full">JavaScript</span>
+                        <div class="lg:order-1">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="text-2xl font-bold">Stimulate</span>
+                                <i class="ph ph-arrow-right text-2xl group-hover:translate-x-2 transition-transform"></i>
                             </div>
-                            <h3 class="text-4xl md:text-5xl font-black mb-4 group-hover:text-orange-500 transition-colors">Helpdesk System</h3>
-                            <p class="text-gray-600 text-xl leading-relaxed">
-                                Internal technical support platform for employees to report IT issues. Features ticket tracking, notifications, and performance analytics.
-                            </p>
+                            <p class="text-gray-500 text-xl">Branding, Web design, Illustrations, Development</p>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Project 3 -->
-                <div class="project-card group block bg-gray-50 rounded-3xl overflow-hidden hover:bg-gray-100 transition-all">
-                    <div class="grid lg:grid-cols-2 gap-0">
-                        <div class="aspect-[4/3] overflow-hidden">
-                            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Server Monitoring" class="w-full h-full object-cover transition-transform duration-500">
+                <div class="project-card-3d fade-in-up group">
+                    <div class="grid lg:grid-cols-2 gap-8 items-center">
+                        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-100 to-indigo-100 p-8">
+                            <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Server Monitoring" class="project-image w-full rounded-2xl shadow-xl">
                         </div>
-                        <div class="p-10 lg:p-16 flex flex-col justify-center">
-                            <div class="flex gap-3 mb-6">
-                                <span class="text-sm font-semibold bg-orange-100 text-orange-600 px-4 py-2 rounded-full">REST API</span>
-                                <span class="text-sm font-semibold bg-orange-100 text-orange-600 px-4 py-2 rounded-full">Linux</span>
+                        <div>
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="text-2xl font-bold">Caldera</span>
+                                <i class="ph ph-arrow-right text-2xl group-hover:translate-x-2 transition-transform"></i>
                             </div>
-                            <h3 class="text-4xl md:text-5xl font-black mb-4 group-hover:text-orange-500 transition-colors">Server Monitoring</h3>
-                            <p class="text-gray-600 text-xl leading-relaxed">
-                                Web dashboard for monitoring Linux Debian and Apache servers. Consumes REST API data to display uptime, memory usage, and error logs in real-time.
-                            </p>
+                            <p class="text-gray-500 text-xl">Web design, Development</p>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <div class="mt-20 text-center">
-                <p class="text-gray-500 text-xl">New projects are on the way, slowly but surely 😅</p>
             </div>
         </div>
     </section>
     
     <!-- About Section -->
-    <section id="about" class="py-32 border-t border-gray-100 bg-gray-50">
-        <div class="max-w-4xl mx-auto px-6">
+    <section id="about" class="py-32 bg-gray-100">
+        <div class="max-w-5xl mx-auto px-6">
             <div class="mb-16">
-                <p class="text-orange-500 font-semibold text-lg mb-4">About me</p>
-                <h2 class="text-big font-black">Every experience in my life is important and has taught me a lot</h2>
+                <p class="text-yellow-600 font-bold text-xl mb-4 fade-in-up">My Story</p>
+                <h2 class="text-5xl md:text-7xl font-black mb-8 fade-in-up">
+                    Every experience in my life is important and has taught me a lot
+                </h2>
             </div>
             
-            <div class="space-y-8 text-gray-700 text-xl leading-relaxed">
+            <div class="space-y-8 text-gray-700 text-xl leading-relaxed fade-in-up">
                 <p>
                     I'm a final-year Informatics student with practical experience in providing technical support (IT Support) and managing internal system operations.
                 </p>
@@ -177,107 +340,60 @@
                     I'm accustomed to coordinating with users and internal teams to ensure business application performance runs smoothly. A detail-oriented person with proven problem-solving skills, ready to adapt to changing system needs.
                 </p>
             </div>
-            
-            <!-- Skills -->
-            <div class="mt-20">
-                <h3 class="text-3xl font-black mb-10">What I work with</h3>
-                <div class="flex flex-wrap gap-4">
-                    <span class="bg-white border border-gray-200 px-6 py-3 rounded-xl text-lg font-semibold flex items-center gap-3 hover:border-orange-500 transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" class="w-8 h-8" alt="PHP">
-                        PHP
-                    </span>
-                    <span class="bg-white border border-gray-200 px-6 py-3 rounded-xl text-lg font-semibold flex items-center gap-3 hover:border-orange-500 transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-plain.svg" class="w-8 h-8" alt="Laravel">
-                        Laravel
-                    </span>
-                    <span class="bg-white border border-gray-200 px-6 py-3 rounded-xl text-lg font-semibold flex items-center gap-3 hover:border-orange-500 transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" class="w-8 h-8" alt="JavaScript">
-                        JavaScript
-                    </span>
-                    <span class="bg-white border border-gray-200 px-6 py-3 rounded-xl text-lg font-semibold flex items-center gap-3 hover:border-orange-500 transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" class="w-8 h-8" alt="MySQL">
-                        MySQL
-                    </span>
-                    <span class="bg-white border border-gray-200 px-6 py-3 rounded-xl text-lg font-semibold flex items-center gap-3 hover:border-orange-500 transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/debian/debian-plain.svg" class="w-8 h-8" alt="Debian">
-                        Debian
-                    </span>
-                    <span class="bg-white border border-gray-200 px-6 py-3 rounded-xl text-lg font-semibold flex items-center gap-3 hover:border-orange-500 transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" class="w-8 h-8" alt="HTML5">
-                        HTML5
-                    </span>
-                    <span class="bg-white border border-gray-200 px-6 py-3 rounded-xl text-lg font-semibold flex items-center gap-3 hover:border-orange-500 transition-colors">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" class="w-8 h-8" alt="CSS3">
-                        CSS3
-                    </span>
-                </div>
-            </div>
         </div>
     </section>
     
     <!-- Connect Section -->
-    <section id="connect" class="py-32 border-t border-gray-100">
+    <section id="connect" class="py-32">
         <div class="max-w-4xl mx-auto px-6 text-center">
-            <h2 class="text-big font-black mb-8">Tap this 'tiny' button to highlight your product =)</h2>
+            <h2 class="text-3xl md:text-5xl font-bold text-gray-600 mb-4 fade-in-up italic">
+                Tap this 'tiny' button to highlight your product =)
+            </h2>
             
-            <a href="mailto:agushidayahtulloh3@gmail.com" class="inline-block bg-black text-white px-16 py-8 rounded-full font-black text-2xl hover:bg-orange-500 transition-all mb-20">
-                Let's connect
+            <a href="mailto:agushidayahtulloh3@gmail.com" class="btn-3d inline-block px-24 py-8 md:px-32 md:py-12 rounded-full text-white text-4xl md:text-6xl font-black mb-20 fade-in-up">
+                Connect
             </a>
             
-            <div class="flex flex-col items-center gap-8 mb-20">
-                <a href="mailto:agushidayahtulloh3@gmail.com" class="text-3xl font-semibold hover:text-orange-500 transition-colors">
-                    agushidayahtulloh3@gmail.com
-                </a>
-            </div>
-            
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-2xl mx-auto">
-                <a href="https://wa.me/6285775157395" target="_blank" class="flex flex-col items-center gap-4 p-8 rounded-3xl bg-gray-50 hover:bg-orange-50 transition-all group">
-                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center text-green-600 text-3xl group-hover:bg-green-600 group-hover:text-white transition-all">
-                        <i class="ph ph-whatsapp-logo"></i>
-                    </div>
-                    <span class="font-semibold text-lg">WhatsApp</span>
-                </a>
+            <div class="flex flex-col md:flex-row items-center justify-between gap-12 bg-gray-100 rounded-3xl p-8 fade-in-up">
+                <div class="flex items-center gap-4">
+                    <i class="ph ph-paper-plane-right text-4xl"></i>
+                    <a href="mailto:agushidayahtulloh3@gmail.com" class="text-2xl font-semibold hover:text-yellow-600 transition-colors">
+                        agushidayahtulloh3@gmail.com
+                    </a>
+                </div>
                 
-                <a href="https://www.linkedin.com/in/agus-hidayahtulloh-0448b72b9" target="_blank" class="flex flex-col items-center gap-4 p-8 rounded-3xl bg-gray-50 hover:bg-orange-50 transition-all group">
-                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-3xl group-hover:bg-blue-600 group-hover:text-white transition-all">
-                        <i class="ph ph-linkedin-logo"></i>
-                    </div>
-                    <span class="font-semibold text-lg">LinkedIn</span>
-                </a>
-                
-                <a href="https://github.com/AgusHidayahtulloh333" target="_blank" class="flex flex-col items-center gap-4 p-8 rounded-3xl bg-gray-50 hover:bg-orange-50 transition-all group">
-                    <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center text-gray-900 text-3xl group-hover:bg-gray-900 group-hover:text-white transition-all">
-                        <i class="ph ph-github-logo"></i>
-                    </div>
-                    <span class="font-semibold text-lg">GitHub</span>
-                </a>
-                
-                <a href="https://www.instagram.com" target="_blank" class="flex flex-col items-center gap-4 p-8 rounded-3xl bg-gray-50 hover:bg-orange-50 transition-all group">
-                    <div class="w-16 h-16 bg-gradient-to-br from-purple-500 via-pink-500 to-orange-500 rounded-full flex items-center justify-center text-white text-3xl group-hover:scale-110 transition-all">
+                <div class="flex items-center gap-4">
+                    <a href="https://github.com/AgusHidayahtulloh333" target="_blank" class="w-14 h-14 bg-gradient-to-br from-gray-700 to-gray-900 rounded-2xl flex items-center justify-center text-white text-3xl hover:scale-110 transition-transform">
+                        <i class="ph ph-x-logo"></i>
+                    </a>
+                    <a href="https://www.instagram.com" target="_blank" class="w-14 h-14 bg-gradient-to-br from-purple-500 via-pink-500 to-yellow-500 rounded-2xl flex items-center justify-center text-white text-3xl hover:scale-110 transition-transform">
                         <i class="ph ph-instagram-logo"></i>
-                    </div>
-                    <span class="font-semibold text-lg">Instagram</span>
-                </a>
+                    </a>
+                    <a href="https://www.linkedin.com/in/agus-hidayahtulloh-0448b72b9" target="_blank" class="w-14 h-14 bg-gradient-to-br from-pink-400 to-pink-600 rounded-2xl flex items-center justify-center text-white text-3xl hover:scale-110 transition-transform">
+                        <i class="ph ph-dribbble-logo"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/agus-hidayahtulloh-0448b72b9" target="_blank" class="w-14 h-14 bg-gradient-to-br from-gray-800 to-black rounded-2xl flex items-center justify-center text-white text-3xl hover:scale-110 transition-transform">
+                        <i class="ph ph-threads-logo"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/agus-hidayahtulloh-0448b72b9" target="_blank" class="w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl flex items-center justify-center text-white text-3xl hover:scale-110 transition-transform">
+                        <i class="ph ph-linkedin-logo"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
     
     <!-- Footer -->
-    <footer class="py-12 border-t border-gray-100">
-        <div class="max-w-6xl mx-auto px-6">
+    <footer class="py-12 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center gap-6">
                 <div class="flex items-center gap-2">
-                    <span class="text-2xl font-black tracking-tight">Agus<span class="text-orange-500">.</span></span>
+                    <span class="text-2xl font-black tracking-tight">Agus<span class="text-yellow-500">.</span></span>
                 </div>
                 <p class="text-gray-400">© 2026 Agus Hidayatulloh. All rights reserved.</p>
             </div>
         </div>
     </footer>
-    
-    <!-- Back to Top -->
-    <a href="#home" id="back-to-top" class="fixed bottom-8 right-8 w-16 h-16 bg-black text-white rounded-full flex items-center justify-center shadow-2xl hover:bg-orange-500 transition-all opacity-0 invisible">
-        <i class="ph-bold ph-arrow-up text-2xl"></i>
-    </a>
     
     <script>
         // Mobile Menu Toggle
@@ -288,24 +404,30 @@
             mobileMenu.classList.toggle('hidden');
         });
         
-        // Close mobile menu on link click
         document.querySelectorAll('#mobile-menu a').forEach(link => {
             link.addEventListener('click', () => {
                 mobileMenu.classList.add('hidden');
             });
         });
         
-        // Back to top button
-        const backToTop = document.getElementById('back-to-top');
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
         
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 500) {
-                backToTop.classList.remove('opacity-0', 'invisible');
-                backToTop.classList.add('opacity-100', 'visible');
-            } else {
-                backToTop.classList.add('opacity-0', 'invisible');
-                backToTop.classList.remove('opacity-100', 'visible');
-            }
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.fade-in-up, .text-reveal').forEach(el => {
+            observer.observe(el);
         });
         
         // Smooth scroll
@@ -319,6 +441,15 @@
                         block: 'start'
                     });
                 }
+            });
+        });
+        
+        // GSAP Animations on load
+        window.addEventListener('load', () => {
+            gsap.from('.sunburst-glow', {
+                scale: 0,
+                duration: 1.5,
+                ease: 'elastic.out(1, 0.5)'
             });
         });
     </script>
