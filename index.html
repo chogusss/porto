@@ -8,6 +8,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
@@ -129,6 +132,44 @@
             transform: translateY(-8px);
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
         }
+        /* Scroll Animations */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(50px) rotateX(-10deg);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0) rotateX(0);
+        }
+        .fade-in-left {
+            opacity: 0;
+            transform: translateX(-50px) rotateY(-10deg);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .fade-in-left.visible {
+            opacity: 1;
+            transform: translateX(0) rotateY(0);
+        }
+        .fade-in-right {
+            opacity: 0;
+            transform: translateX(50px) rotateY(10deg);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .fade-in-right.visible {
+            opacity: 1;
+            transform: translateX(0) rotateY(0);
+        }
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+        .stagger-5 { transition-delay: 0.5s; }
+        /* All elements transform-style */
+        section {
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease;
+        }
     </style>
 </head>
 <body class="bg-[#0f0c29] text-white">
@@ -226,23 +267,23 @@
     <section class="bg-[#1a1735] py-8 md:py-12 border-y border-white/10">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div class="grid grid-cols-3 md:grid-cols-5 gap-4 md:gap-8">
-                <div class="text-center">
+                <div class="text-center card-3d bg-[#0f0c29] rounded-xl p-4 border border-white/10 fade-in-up stagger-1">
                     <div class="text-3xl font-bold text-orange-400">3+</div>
                     <div class="text-gray-400 text-sm">Years Experience</div>
                 </div>
-                <div class="text-center">
+                <div class="text-center card-3d bg-[#0f0c29] rounded-xl p-4 border border-white/10 fade-in-up stagger-2">
                     <div class="text-3xl font-bold text-orange-400">20+</div>
                     <div class="text-gray-400 text-sm">Projects Done</div>
                 </div>
-                <div class="text-center">
+                <div class="text-center card-3d bg-[#0f0c29] rounded-xl p-4 border border-white/10 fade-in-up stagger-3">
                     <div class="text-3xl font-bold text-orange-400">50+</div>
                     <div class="text-gray-400 text-sm">Happy Clients</div>
                 </div>
-                <div class="text-center">
+                <div class="text-center card-3d bg-[#0f0c29] rounded-xl p-4 border border-white/10 fade-in-up stagger-4">
                     <div class="text-3xl font-bold text-orange-400">10+</div>
                     <div class="text-gray-400 text-sm">Technologies</div>
                 </div>
-                <div class="text-center">
+                <div class="text-center card-3d bg-[#0f0c29] rounded-xl p-4 border border-white/10 fade-in-up stagger-5">
                     <div class="text-3xl font-bold text-orange-400">100%</div>
                     <div class="text-gray-400 text-sm">Satisfaction</div>
                 </div>
@@ -254,22 +295,22 @@
     <section id="about" class="py-16 md:py-24 bg-[#0f0c29]">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
-                <div class="text-center lg:text-left">
+                <div class="text-center lg:text-left fade-in-left">
                     <p class="text-orange-400 font-medium mb-3 md:mb-4 uppercase tracking-wider text-sm md:text-base">Behind the Designs</p>
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 md:mb-8">
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 md:mb-8 text-3d">
                         Shaping <span class="text-gradient">Experiences</span> That Make Life Simpler
                     </h2>
                 </div>
                 
-                <div class="text-gray-300 text-base md:text-lg leading-relaxed space-y-4 md:space-y-6">
+                <div class="text-gray-300 text-base md:text-lg leading-relaxed space-y-4 md:space-y-6 card-3d fade-in-right">
                     <p>
-                        I'm a final-year Informatics student with practical experience in providing technical support (IT Support) and managing internal system operations.
+                        I'm a final-year Informatics student with a passion for web development and a strong focus on creating modern, responsive, and user-friendly websites.
                     </p>
                     <p>
-                        With a strong background in troubleshooting application issues, database management using MySQL Raw Query, and understanding web development with PHP and JavaScript.
+                        With hands-on experience in PHP, Laravel, JavaScript, and MySQL. I love turning ideas into interactive and functional web applications.
                     </p>
                     <p>
-                        I'm accustomed to coordinating with users and internal teams to ensure business application performance runs smoothly. A detail-oriented person with proven problem-solving skills, ready to adapt to changing system needs.
+                        I'm committed to writing clean, efficient code and continuously learning new technologies to improve my skills. Ready to contribute to exciting projects!
                     </p>
                 </div>
             </div>
@@ -279,15 +320,15 @@
     <!-- Skills Section -->
     <section id="skills" class="py-16 md:py-24 bg-gradient-to-b from-[#1a1735] to-[#0f0c29]">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
-            <div class="text-center mb-12 md:mb-16">
+            <div class="text-center mb-12 md:mb-16 fade-in-up">
                 <p class="text-orange-400 font-medium mb-3 md:mb-4 uppercase tracking-wider text-sm md:text-base">My Expertise</p>
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 text-3d">
                     Skills & <span class="text-gradient">Technologies</span>
                 </h2>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16">
-                <div class="card-hover bg-[#1a1735] p-6 md:p-8 rounded-2xl border border-white/10">
+                <div class="card-3d bg-[#1a1735] p-6 md:p-8 rounded-2xl border border-white/10 fade-in-up stagger-1">
                     <div class="text-orange-400 text-4xl md:text-5xl mb-4 md:mb-6">
                         <i class="ph ph-desktop-tower"></i>
                     </div>
@@ -308,7 +349,7 @@
                     </ul>
                 </div>
                 
-                <div class="card-hover bg-[#1a1735] p-6 md:p-8 rounded-2xl border border-white/10">
+                <div class="card-3d bg-[#1a1735] p-6 md:p-8 rounded-2xl border border-white/10 fade-in-up stagger-2">
                     <div class="text-orange-400 text-4xl md:text-5xl mb-4 md:mb-6">
                         <i class="ph ph-code"></i>
                     </div>
@@ -329,7 +370,7 @@
                     </ul>
                 </div>
                 
-                <div class="card-hover bg-[#1a1735] p-6 md:p-8 rounded-2xl border border-white/10">
+                <div class="card-3d bg-[#1a1735] p-6 md:p-8 rounded-2xl border border-white/10 fade-in-up stagger-3">
                     <div class="text-orange-400 text-4xl md:text-5xl mb-4 md:mb-6">
                         <i class="ph ph-database"></i>
                     </div>
@@ -660,8 +701,27 @@
             });
             
             card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+                card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) translateY(0)`;
             });
+        });
+
+        // Scroll Animation Observer - Fade In Elements
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in-up, .fade-in-left, .fade-in-right').forEach(el => {
+            observer.observe(el);
         });
     </script>
 </body>
