@@ -8,11 +8,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
+        * {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
         }
         .hero-gradient {
             background: linear-gradient(135deg, #ff7a18 0%, #af002d 50%, #0f0c29 100%);
+            position: relative;
+            overflow: hidden;
         }
         .text-gradient {
             background: linear-gradient(135deg, #ff7a18, #ffb86b);
@@ -22,25 +28,154 @@
         }
         .btn-gradient {
             background: linear-gradient(135deg, #ff7a18, #ff5e00);
+            transform-style: preserve-3d;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .btn-gradient:hover {
             background: linear-gradient(135deg, #ff5e00, #ff7a18);
+            transform: translateY(-5px) rotateX(5deg) scale(1.05);
+            box-shadow: 0 20px 40px rgba(255, 126, 24, 0.4);
         }
-        .card-hover {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .btn-gradient:active {
+            transform: translateY(0) scale(0.98);
         }
-        .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        /* 3D Card Effect */
+        .card-3d {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .card-3d:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 30px 60px rgba(255, 126, 24, 0.3);
+        }
+        /* 3D Profile Photo */
+        .profile-3d {
+            transform-style: preserve-3d;
+            transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .profile-3d:hover {
+            transform: rotateY(10deg) rotateX(5deg) scale(1.05);
+        }
+        .profile-3d .glow {
+            transition: all 0.6s ease;
+        }
+        .profile-3d:hover .glow {
+            transform: translateZ(20px) scale(1.1);
+        }
+        /* Floating Animation */
+        .float-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        .float-element:nth-child(2) {
+            animation-delay: -2s;
+        }
+        .float-element:nth-child(3) {
+            animation-delay: -4s;
+        }
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+        }
+        /* 3D Text Effect */
+        .text-3d {
+            text-shadow:
+                0 1px 0 #ccc,
+                0 2px 0 #c9c9c9,
+                0 3px 0 #bbb,
+                0 4px 0 #b9b9b9,
+                0 5px 0 #aaa,
+                0 6px 1px rgba(0,0,0,.1),
+                0 0 5px rgba(0,0,0,.1),
+                0 1px 3px rgba(0,0,0,.3),
+                0 3px 5px rgba(0,0,0,.2),
+                0 5px 10px rgba(0,0,0,.25),
+                0 10px 10px rgba(0,0,0,.2),
+                0 20px 20px rgba(0,0,0,.15);
+        }
+        /* Floating Particles */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 126, 24, 0.3);
+            border-radius: 50%;
+            animation: particleFloat 20s linear infinite;
+        }
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        /* Navbar Glass Effect */
+        .navbar-glass {
+            backdrop-filter: blur(10px);
+            background: rgba(10, 8, 26, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        /* Smooth fade in animation */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Hover underline effect */
+        .hover-underline {
+            position: relative;
+        }
+        .hover-underline::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background: linear-gradient(135deg, #ff7a18, #ffb86b);
+            transition: width 0.3s ease;
+        }
+        .hover-underline:hover::after {
+            width: 100%;
         }
     </style>
 </head>
 <body class="bg-[#0f0c29] text-white">
     
     <!-- Navbar -->
-    <nav class="fixed w-full z-50 py-4 px-4 md:py-6 md:px-8">
+    <nav class="fixed w-full z-50 py-4 px-4 md:py-6 md:px-8 navbar-glass">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 float-element">
                 <div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
                     <i class="ph-bold ph-code text-xl md:text-2xl"></i>
                 </div>
@@ -48,10 +183,10 @@
             </div>
             
             <div class="hidden md:flex items-center gap-8">
-                <a href="#home" class="hover:text-orange-400 transition-colors">Home</a>
-                <a href="#about" class="hover:text-orange-400 transition-colors">About</a>
-                <a href="#skills" class="hover:text-orange-400 transition-colors">Skills</a>
-                <a href="#portfolio" class="hover:text-orange-400 transition-colors">Portfolio</a>
+                <a href="#home" class="hover-underline hover:text-orange-400 transition-colors">Home</a>
+                <a href="#about" class="hover-underline hover:text-orange-400 transition-colors">About</a>
+                <a href="#skills" class="hover-underline hover:text-orange-400 transition-colors">Skills</a>
+                <a href="#portfolio" class="hover-underline hover:text-orange-400 transition-colors">Portfolio</a>
                 <a href="#contact" class="btn-gradient px-6 py-2 rounded-full font-semibold hover:shadow-lg transition-all">Contact</a>
             </div>
             
@@ -74,26 +209,29 @@
     
     <!-- Hero Section -->
     <section id="home" class="hero-gradient min-h-screen flex items-center pt-20">
-        <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-20 w-full">
+        <!-- Floating Particles -->
+        <div class="particles" id="particles"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 md:px-8 py-12 md:py-20 w-full relative z-10">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
-                <div class="z-10 text-center lg:text-left">
+                <div class="z-10 text-center lg:text-left fade-in">
                     <p class="text-orange-300 font-medium mb-3 md:mb-4 text-base md:text-lg">Hey, I'm</p>
-                    <h1 class="text-4xl md:text-6xl lg:text-8xl font-black mb-4 md:mb-6 leading-tight">
+                    <h1 class="text-4xl md:text-6xl lg:text-8xl font-black mb-4 md:mb-6 leading-tight text-3d">
                         Agus <span class="text-gradient">Hidayatulloh</span>
                     </h1>
                     <h2 class="text-xl md:text-2xl lg:text-3xl text-gray-300 mb-6 md:mb-8 font-light">
-                        IT Support & Application Administrator
+                        Web Developer
                     </h2>
                     <p class="text-base md:text-lg text-gray-300 mb-8 md:mb-10 max-w-lg mx-auto lg:mx-0">
-                        Committed to providing the best technical solutions with clear and responsive communication.
+                        Passionate about creating beautiful, functional, and responsive websites and web applications.
                     </p>
                     
                     <div class="flex flex-wrap gap-4 md:gap-6 mb-8 md:mb-12 justify-center lg:justify-start">
-                        <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-2 float-element">
                             <i class="ph ph-map-pin text-orange-400 text-lg md:text-xl"></i>
                             <span>Tangerang Selatan</span>
                         </div>
-                        <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-2 float-element">
                             <i class="ph ph-phone text-orange-400 text-lg md:text-xl"></i>
                             <span>0857-7515-7395</span>
                         </div>
@@ -104,16 +242,16 @@
                             <i class="ph ph-folder-open"></i>
                             View Portfolio
                         </a>
-                        <a href="#contact" class="border-2 border-white/30 px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold text-base md:text-lg hover:border-orange-400 hover:text-orange-400 transition-all flex items-center justify-center gap-2">
+                        <a href="#contact" class="border-2 border-white/30 px-6 md:px-8 py-3 md:py-4 rounded-full font-semibold text-base md:text-lg hover:border-orange-400 hover:text-orange-400 transition-all flex items-center justify-center gap-2 card-3d">
                             <i class="ph ph-envelope-simple"></i>
                             Contact Me
                         </a>
                     </div>
                 </div>
                 
-                <div class="relative flex justify-center order-first lg:order-last">
-                    <div class="relative">
-                        <div class="absolute inset-0 bg-gradient-to-br from-orange-500/30 to-red-600/30 rounded-full blur-3xl"></div>
+                <div class="relative flex justify-center order-first lg:order-last fade-in">
+                    <div class="relative profile-3d">
+                        <div class="absolute inset-0 bg-gradient-to-br from-orange-500/30 to-red-600/30 rounded-full blur-3xl glow"></div>
                         <div class="relative w-52 h-52 md:w-80 lg:w-96 md:h-80 lg:h-96 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl">
                             <img src="profile.jpg" alt="Agus Hidayatulloh" class="w-full h-full object-cover">
                         </div>
@@ -127,23 +265,23 @@
     <section class="bg-[#1a1735] py-8 md:py-12 border-y border-white/10">
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div class="grid grid-cols-3 md:grid-cols-5 gap-4 md:gap-8">
-                <div class="text-center">
+                <div class="text-center card-3d p-4 rounded-xl bg-[#0f0c29] border border-white/10">
                     <div class="text-3xl font-bold text-orange-400">3+</div>
                     <div class="text-gray-400 text-sm">Years Experience</div>
                 </div>
-                <div class="text-center">
+                <div class="text-center card-3d p-4 rounded-xl bg-[#0f0c29] border border-white/10">
                     <div class="text-3xl font-bold text-orange-400">20+</div>
                     <div class="text-gray-400 text-sm">Projects Done</div>
                 </div>
-                <div class="text-center">
+                <div class="text-center card-3d p-4 rounded-xl bg-[#0f0c29] border border-white/10">
                     <div class="text-3xl font-bold text-orange-400">50+</div>
                     <div class="text-gray-400 text-sm">Happy Clients</div>
                 </div>
-                <div class="text-center">
+                <div class="text-center card-3d p-4 rounded-xl bg-[#0f0c29] border border-white/10">
                     <div class="text-3xl font-bold text-orange-400">10+</div>
                     <div class="text-gray-400 text-sm">Technologies</div>
                 </div>
-                <div class="text-center">
+                <div class="text-center card-3d p-4 rounded-xl bg-[#0f0c29] border border-white/10">
                     <div class="text-3xl font-bold text-orange-400">100%</div>
                     <div class="text-gray-400 text-sm">Satisfaction</div>
                 </div>
@@ -157,20 +295,20 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
                 <div class="text-center lg:text-left">
                     <p class="text-orange-400 font-medium mb-3 md:mb-4 uppercase tracking-wider text-sm md:text-base">Behind the Designs</p>
-                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 md:mb-8">
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 md:mb-8 text-3d">
                         Shaping <span class="text-gradient">Experiences</span> That Make Life Simpler
                     </h2>
                 </div>
                 
-                <div class="text-gray-300 text-base md:text-lg leading-relaxed space-y-4 md:space-y-6">
+                <div class="text-gray-300 text-base md:text-lg leading-relaxed space-y-4 md:space-y-6 card-3d p-6 md:p-8 rounded-2xl bg-[#1a1735] border border-white/10">
                     <p>
-                        I'm a final-year Informatics student with practical experience in providing technical support (IT Support) and managing internal system operations.
+                        I'm a final-year Informatics student with a passion for web development and a strong focus on creating modern, responsive, and user-friendly websites.
                     </p>
                     <p>
-                        With a strong background in troubleshooting application issues, database management using MySQL Raw Query, and understanding web development with PHP and JavaScript.
+                        With hands-on experience in PHP, Laravel, JavaScript, and MySQL. I love turning ideas into interactive and functional web applications.
                     </p>
                     <p>
-                        I'm accustomed to coordinating with users and internal teams to ensure business application performance runs smoothly. A detail-oriented person with proven problem-solving skills, ready to adapt to changing system needs.
+                        I'm committed to writing clean, efficient code and continuously learning new technologies to improve my skills. Ready to contribute to exciting projects!
                     </p>
                 </div>
             </div>
@@ -182,38 +320,17 @@
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div class="text-center mb-12 md:mb-16">
                 <p class="text-orange-400 font-medium mb-3 md:mb-4 uppercase tracking-wider text-sm md:text-base">My Expertise</p>
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 text-3d">
                     Skills & <span class="text-gradient">Technologies</span>
                 </h2>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16">
-                <div class="card-hover bg-[#1a1735] p-6 md:p-8 rounded-2xl border border-white/10">
-                    <div class="text-orange-400 text-4xl md:text-5xl mb-4 md:mb-6">
-                        <i class="ph ph-desktop-tower"></i>
-                    </div>
-                    <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">System & Application</h3>
-                    <ul class="space-y-2 md:space-y-3 text-gray-300 text-sm md:text-base">
-                        <li class="flex items-start gap-2 md:gap-3">
-                            <i class="ph ph-check-circle text-orange-400 mt-1"></i>
-                            App Support & Troubleshooting
-                        </li>
-                        <li class="flex items-start gap-2 md:gap-3">
-                            <i class="ph ph-check-circle text-orange-400 mt-1"></i>
-                            ERP System Understanding
-                        </li>
-                        <li class="flex items-start gap-2 md:gap-3">
-                            <i class="ph ph-check-circle text-orange-400 mt-1"></i>
-                            Business Process Flow
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="card-hover bg-[#1a1735] p-6 md:p-8 rounded-2xl border border-white/10">
+                <div class="card-3d bg-[#1a1735] p-6 md:p-8 rounded-2xl border border-white/10">
                     <div class="text-orange-400 text-4xl md:text-5xl mb-4 md:mb-6">
                         <i class="ph ph-code"></i>
                     </div>
-                    <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Programming & Web</h3>
+                    <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">Web Development</h3>
                     <ul class="space-y-2 md:space-y-3 text-gray-300 text-sm md:text-base">
                         <li class="flex items-start gap-2 md:gap-3">
                             <i class="ph ph-check-circle text-orange-400 mt-1"></i>
@@ -230,7 +347,28 @@
                     </ul>
                 </div>
                 
-                <div class="card-hover bg-[#1a1735] p-6 md:p-8 rounded-2xl border border-white/10">
+                <div class="card-3d bg-[#1a1735] p-6 md:p-8 rounded-2xl border border-white/10">
+                    <div class="text-orange-400 text-4xl md:text-5xl mb-4 md:mb-6">
+                        <i class="ph ph-palette"></i>
+                    </div>
+                    <h3 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">UI/UX Design</h3>
+                    <ul class="space-y-2 md:space-y-3 text-gray-300 text-sm md:text-base">
+                        <li class="flex items-start gap-2 md:gap-3">
+                            <i class="ph ph-check-circle text-orange-400 mt-1"></i>
+                            Responsive Design
+                        </li>
+                        <li class="flex items-start gap-2 md:gap-3">
+                            <i class="ph ph-check-circle text-orange-400 mt-1"></i>
+                            Modern UI
+                        </li>
+                        <li class="flex items-start gap-2 md:gap-3">
+                            <i class="ph ph-check-circle text-orange-400 mt-1"></i>
+                            Tailwind CSS
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="card-3d bg-[#1a1735] p-6 md:p-8 rounded-2xl border border-white/10">
                     <div class="text-orange-400 text-4xl md:text-5xl mb-4 md:mb-6">
                         <i class="ph ph-database"></i>
                     </div>
@@ -253,33 +391,33 @@
             </div>
             
             <div class="flex flex-wrap justify-center gap-3 md:gap-4">
-                <span class="bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
+                <span class="card-3d bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" class="w-6 h-6 md:w-8 md:h-8" alt="PHP">
                     PHP
                 </span>
-                <span class="bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
+                <span class="card-3d bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-plain.svg" class="w-6 h-6 md:w-8 md:h-8" alt="Laravel">
                     Laravel
                 </span>
-                <span class="bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
+                <span class="card-3d bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" class="w-6 h-6 md:w-8 md:h-8" alt="JavaScript">
                     JavaScript
                 </span>
-                <span class="bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
+                <span class="card-3d bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" class="w-6 h-6 md:w-8 md:h-8" alt="MySQL">
                     MySQL
                 </span>
-                <span class="bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
-                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/debian/debian-plain.svg" class="w-6 h-6 md:w-8 md:h-8" alt="Debian">
-                    Debian
-                </span>
-                <span class="bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
+                <span class="card-3d bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" class="w-6 h-6 md:w-8 md:h-8" alt="HTML5">
                     HTML5
                 </span>
-                <span class="bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
+                <span class="card-3d bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" class="w-6 h-6 md:w-8 md:h-8" alt="CSS3">
                     CSS3
+                </span>
+                <span class="card-3d bg-[#1a1735] border border-white/10 px-4 md:px-6 py-2 md:py-3 rounded-xl flex items-center gap-2 md:gap-3 hover:border-orange-400 transition-all">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" class="w-6 h-6 md:w-8 md:h-8" alt="Tailwind">
+                    Tailwind
                 </span>
             </div>
         </div>
@@ -290,16 +428,16 @@
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div class="text-center mb-12 md:mb-16">
                 <p class="text-orange-400 font-medium mb-3 md:mb-4 uppercase tracking-wider text-sm md:text-base">My Work</p>
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 text-3d">
                     Featured <span class="text-gradient">Projects</span>
                 </h2>
                 <p class="text-gray-400 max-w-2xl mx-auto text-base md:text-lg">
-                    A showcase of my recent work in web development and system administration.
+                    A showcase of my recent work in web development and design.
                 </p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                <div class="card-hover group bg-[#1a1735] rounded-2xl overflow-hidden border border-white/10">
+                <div class="card-3d group bg-[#1a1735] rounded-2xl overflow-hidden border border-white/10">
                     <div class="h-48 md:h-56 overflow-hidden relative">
                         <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Project 1" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#1a1735] to-transparent"></div>
@@ -319,19 +457,20 @@
                     </div>
                 </div>
                 
-                <div class="card-hover group bg-[#1a1735] rounded-2xl overflow-hidden border border-white/10">
+                <div class="card-3d group bg-[#1a1735] rounded-2xl overflow-hidden border border-white/10">
                     <div class="h-48 md:h-56 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Project 2" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Laravel Project" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#1a1735] to-transparent"></div>
                     </div>
                     <div class="p-6 md:p-8">
                         <div class="flex gap-2 mb-3 md:mb-4">
                             <span class="text-xs uppercase tracking-wider bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full border border-orange-500/30">Laravel</span>
-                            <span class="text-xs uppercase tracking-wider bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full border border-orange-500/30">JS</span>
+                            <span class="text-xs uppercase tracking-wider bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full border border-orange-500/30">MySQL</span>
+                            <span class="text-xs uppercase tracking-wider bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full border border-orange-500/30">Blade</span>
                         </div>
-                        <h3 class="text-xl md:text-2xl font-bold mb-2 md:mb-3 group-hover:text-orange-400 transition-colors">Helpdesk System</h3>
+                        <h3 class="text-xl md:text-2xl font-bold mb-2 md:mb-3 group-hover:text-orange-400 transition-colors">Laravel Helpdesk System</h3>
                         <p class="text-gray-400 mb-4 md:mb-6 text-sm md:text-base">
-                            Internal technical support platform for employees to report IT issues. Features ticket tracking, notifications, and performance analytics.
+                            Full-featured helpdesk system built with Laravel. Features ticket management, user authentication, real-time notifications, and admin dashboard.
                         </p>
                         <a href="#" class="flex items-center gap-2 text-orange-400 font-semibold hover:gap-4 transition-all text-sm md:text-base">
                             View Project <i class="ph ph-arrow-right"></i>
@@ -339,21 +478,22 @@
                     </div>
                 </div>
                 
-                <div class="card-hover group bg-[#1a1735] rounded-2xl overflow-hidden border border-white/10">
+                <div class="card-3d group bg-[#1a1735] rounded-2xl overflow-hidden border border-white/10">
                     <div class="h-48 md:h-56 overflow-hidden relative">
-                        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Project 3" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Digital Agency" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-[#1a1735] to-transparent"></div>
                     </div>
                     <div class="p-6 md:p-8">
                         <div class="flex gap-2 mb-3 md:mb-4">
-                            <span class="text-xs uppercase tracking-wider bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full border border-orange-500/30">REST API</span>
-                            <span class="text-xs uppercase tracking-wider bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full border border-orange-500/30">Linux</span>
+                            <span class="text-xs uppercase tracking-wider bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full border border-orange-500/30">Web Design</span>
+                            <span class="text-xs uppercase tracking-wider bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full border border-orange-500/30">UI/UX</span>
+                            <span class="text-xs uppercase tracking-wider bg-orange-500/20 text-orange-400 px-3 py-1 rounded-full border border-orange-500/30">HTML/CSS</span>
                         </div>
-                        <h3 class="text-xl md:text-2xl font-bold mb-2 md:mb-3 group-hover:text-orange-400 transition-colors">Server Monitoring</h3>
+                        <h3 class="text-xl md:text-2xl font-bold mb-2 md:mb-3 group-hover:text-orange-400 transition-colors">Digital Agency & Web Design</h3>
                         <p class="text-gray-400 mb-4 md:mb-6 text-sm md:text-base">
-                            Web dashboard for monitoring Linux Debian and Apache servers. Consumes REST API data to display uptime, memory usage, and error logs in real-time.
+                            Modern digital agency website with stunning UI/UX design, responsive layout, and smooth animations. Perfect for creative businesses and web design portfolios.
                         </p>
-                        <a href="#" class="flex items-center gap-2 text-orange-400 font-semibold hover:gap-4 transition-all text-sm md:text-base">
+                        <a href="https://netcrft.freedev.app/?i=1" target="_blank" class="flex items-center gap-2 text-orange-400 font-semibold hover:gap-4 transition-all text-sm md:text-base">
                             View Project <i class="ph ph-arrow-right"></i>
                         </a>
                     </div>
@@ -367,16 +507,16 @@
         <div class="max-w-7xl mx-auto px-4 md:px-8">
             <div class="text-center mb-12 md:mb-16">
                 <p class="text-orange-400 font-medium mb-3 md:mb-4 uppercase tracking-wider text-sm md:text-base">Get in Touch</p>
-                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6">
+                <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 text-3d">
                     Let's Work <span class="text-gradient">Together</span>
                 </h2>
                 <p class="text-gray-400 max-w-2xl mx-auto text-base md:text-lg">
-                    Ready to collaborate and solve your company's technical problems.
+                    Ready to collaborate and build amazing web projects together!
                 </p>
             </div>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                <a href="mailto:agushidayahtulloh3@gmail.com" class="card-hover bg-[#1a1735] border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col items-center gap-3 md:gap-4 hover:border-orange-400">
+                <a href="mailto:agushidayahtulloh3@gmail.com" class="card-3d bg-[#1a1735] border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col items-center gap-3 md:gap-4 hover:border-orange-400">
                     <div class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 text-2xl md:text-3xl">
                         <i class="ph ph-envelope-simple"></i>
                     </div>
@@ -384,7 +524,7 @@
                     <p class="text-gray-400 text-sm md:text-base text-center break-all">agushidayahtulloh3@gmail.com</p>
                 </a>
                 
-                <a href="https://wa.me/6285775157395" target="_blank" class="card-hover bg-[#1a1735] border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col items-center gap-3 md:gap-4 hover:border-orange-400">
+                <a href="https://wa.me/6285775157395" target="_blank" class="card-3d bg-[#1a1735] border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col items-center gap-3 md:gap-4 hover:border-orange-400">
                     <div class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 text-2xl md:text-3xl">
                         <i class="ph ph-whatsapp-logo"></i>
                     </div>
@@ -392,7 +532,7 @@
                     <p class="text-gray-400 text-sm md:text-base">0857-7515-7395</p>
                 </a>
                 
-                <a href="https://www.linkedin.com/in/agus-hidayahtulloh-0448b72b9" target="_blank" class="card-hover bg-[#1a1735] border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col items-center gap-3 md:gap-4 hover:border-orange-400">
+                <a href="https://www.linkedin.com/in/agus-hidayahtulloh-0448b72b9" target="_blank" class="card-3d bg-[#1a1735] border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col items-center gap-3 md:gap-4 hover:border-orange-400">
                     <div class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 text-2xl md:text-3xl">
                         <i class="ph ph-linkedin-logo"></i>
                     </div>
@@ -400,7 +540,7 @@
                     <p class="text-gray-400 text-sm md:text-base text-center">Agus Hidayatulloh</p>
                 </a>
                 
-                <a href="https://github.com/AgusHidayahtulloh333" target="_blank" class="card-hover bg-[#1a1735] border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col items-center gap-3 md:gap-4 hover:border-orange-400">
+                <a href="https://github.com/AgusHidayahtulloh333" target="_blank" class="card-3d bg-[#1a1735] border border-white/10 rounded-2xl p-6 md:p-8 flex flex-col items-center gap-3 md:gap-4 hover:border-orange-400">
                     <div class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400 text-2xl md:text-3xl">
                         <i class="ph ph-github-logo"></i>
                     </div>
@@ -484,6 +624,48 @@
                         block: 'start'
                     });
                 }
+            });
+        });
+
+        // Create floating particles
+        const particlesContainer = document.getElementById('particles');
+        if (particlesContainer) {
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random size
+                const size = Math.random() * 8 + 4;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 20}s`;
+                particle.style.animationDuration = `${Math.random() * 10 + 15}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Tilt effect for cards
+        document.querySelectorAll('.card-3d').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
             });
         });
     </script>
