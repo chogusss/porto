@@ -485,7 +485,7 @@
                         PING ME!
                     </div>
                     
-                    <form id="contactForm" class="space-y-6">
+                    <form id="contactForm" action="https://formspree.io/f/your_form_id" method="POST" class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="flex flex-col gap-2">
                                 <label class="font-bold text-lg">NAMA KAMU</label>
@@ -512,9 +512,14 @@
                             <textarea name="message" rows="4" placeholder="Hai Agus, saya ingin membuat website..." required class="p-4 bg-[#fdf4e3] neo-border outline-none focus:bg-[#ff5722] transition-colors font-bold text-lg resize-none"></textarea>
                         </div>
                         
-                        <button type="submit" class="w-full neo-btn font-display text-3xl py-6 mt-4">
-                            [ KIRIM PESAN ]
-                        </button>
+                        <div class="flex flex-col md:flex-row gap-4">
+                            <button type="submit" name="sendEmail" class="flex-1 neo-btn font-display text-2xl py-4">
+                                [ KIRIM EMAIL ]
+                            </button>
+                            <button type="button" id="sendWhatsApp" class="flex-1 neo-border bg-[#25D366] text-white px-8 py-4 font-bold text-2xl hover:bg-[#128C7E] transition-colors shadow-[6px_6px_0_0_#000]">
+                                [ KIRIM WA ]
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -629,13 +634,19 @@
 
         // Handle contact form to WhatsApp
         const contactForm = document.getElementById('contactForm');
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+        const sendWhatsAppBtn = document.getElementById('sendWhatsApp');
+        
+        sendWhatsAppBtn.addEventListener('click', function() {
+            const name = contactForm.elements.name.value;
+            const email = contactForm.elements.email.value;
+            const subject = contactForm.elements.subject.value;
+            const message = contactForm.elements.message.value;
             
-            const name = this.elements.name.value;
-            const email = this.elements.email.value;
-            const subject = this.elements.subject.value;
-            const message = this.elements.message.value;
+            // Check if required fields are filled
+            if (!name || !email || !message) {
+                alert('Silakan isi semua kolom yang diperlukan!');
+                return;
+            }
             
             const whatsappMessage = `Halo Agus! Saya ${name} (${email})\n\nSubjek: ${subject}\n\nPesan: ${message}`;
             const whatsappUrl = `https://wa.me/6285775157395?text=${encodeURIComponent(whatsappMessage)}`;
