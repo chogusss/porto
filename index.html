@@ -485,7 +485,7 @@
                         PING ME!
                     </div>
                     
-                    <form action="https://formspree.io/f/your_form_id" method="POST" class="space-y-6">
+                    <form id="contactForm" class="space-y-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="flex flex-col gap-2">
                                 <label class="font-bold text-lg">NAMA KAMU</label>
@@ -626,6 +626,22 @@
         }, { threshold: 0.5 });
 
         observer.observe(statsSection);
+
+        // Handle contact form to WhatsApp
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = this.elements.name.value;
+            const email = this.elements.email.value;
+            const subject = this.elements.subject.value;
+            const message = this.elements.message.value;
+            
+            const whatsappMessage = `Halo Agus! Saya ${name} (${email})\n\nSubjek: ${subject}\n\nPesan: ${message}`;
+            const whatsappUrl = `https://wa.me/6285775157395?text=${encodeURIComponent(whatsappMessage)}`;
+            
+            window.open(whatsappUrl, '_blank');
+        });
     </script>
 </body>
 </html>
