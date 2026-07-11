@@ -14,6 +14,9 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Space Grotesk', sans-serif;
             background-color: #fdf4e3;
@@ -79,8 +82,8 @@
         }
         .marquee-item {
             font-family: 'Archivo Black', sans-serif;
-            font-size: 3rem;
-            margin: 0 2rem;
+            font-size: 1.5rem;
+            margin: 0 1rem;
             -webkit-text-stroke: 1px #fff;
             color: transparent;
             transition: color 0.3s;
@@ -124,12 +127,22 @@
         }
 
         .counter-value {
-            font-size: 4rem;
+            font-size: 2.5rem;
             line-height: 1;
         }
 
         .testimonial-card {
             background: white;
+        }
+
+        @media (min-width: 768px) {
+            .marquee-item {
+                font-size: 3rem;
+                margin: 0 2rem;
+            }
+            .counter-value {
+                font-size: 4rem;
+            }
         }
     </style>
 </head>
@@ -194,11 +207,11 @@
                     TERSEDIA
                 </span>
             </div>
-            <h1 class="text-6xl md:text-8xl leading-[0.9] tracking-tighter">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-8xl leading-[0.9] tracking-tighter break-words">
                 AGUS <br>
                 <span class="text-[#ff5722] underline decoration-8 underline-offset-8">HIDAYATULLOH.</span>
             </h1>
-            <p class="font-display text-2xl md:text-3xl bg-black text-white px-4 py-2 mt-2">
+            <p class="font-display text-xl sm:text-2xl md:text-3xl bg-black text-white px-4 py-2 mt-2">
                 WEB DEVELOPER.
             </p>
             <p class="text-lg font-semibold max-w-md mt-4 border-l-4 border-black pl-4">
@@ -276,7 +289,7 @@
     <!-- Services Section -->
     <section id="layanan" class="container mx-auto px-6 py-24">
         <div class="flex justify-between items-end mb-12 border-b-8 border-black pb-4" data-aos="fade-down">
-            <h2 class="text-5xl md:text-7xl">LAYANAN SAYA</h2>
+            <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl">LAYANAN SAYA</h2>
             <span class="hidden md:block text-3xl font-bold">↓↓↓</span>
         </div>
         
@@ -315,7 +328,7 @@
     <section id="proyek" class="bg-[#ccff00] border-y-8 border-black py-24">
         <div class="container mx-auto px-6">
             <div class="flex justify-between items-end mb-12 border-b-8 border-black pb-4" data-aos="fade-down">
-                <h2 class="text-5xl md:text-7xl">PROYEK PILIHAN</h2>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl">PROYEK PILIHAN</h2>
                 <span class="hidden md:block text-3xl font-bold">↓↓↓</span>
             </div>
             
@@ -374,8 +387,8 @@
         
         <div class="container mx-auto px-6 relative z-10 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div data-aos="fade-right">
-                <h2 class="text-6xl md:text-8xl text-white font-display mb-4" style="-webkit-text-stroke: 3px black;">SIAPA SAYA?</h2>
-                <p class="text-2xl font-bold bg-black text-white inline-block px-4 py-2">CODING IS MY PASSION.</p>
+                <h2 class="text-4xl sm:text-5xl md:text-6xl lg:text-8xl text-white font-display mb-4" style="-webkit-text-stroke: 3px black;">SIAPA SAYA?</h2>
+                <p class="text-xl sm:text-2xl font-bold bg-black text-white inline-block px-4 py-2">CODING IS MY PASSION.</p>
             </div>
             
             <div class="flex justify-center" data-aos="fade-left">
@@ -400,7 +413,7 @@
     <!-- Testimonials Section -->
     <section id="testimoni" class="container mx-auto px-6 py-24">
         <div class="flex justify-between items-end mb-12 border-b-8 border-black pb-4" data-aos="fade-down">
-            <h2 class="text-5xl md:text-7xl">TESTIMONI</h2>
+            <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl">TESTIMONI</h2>
             <span class="hidden md:block text-3xl font-bold">💬💬💬</span>
         </div>
         
@@ -454,7 +467,7 @@
         <div class="container mx-auto px-6">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
                 <div data-aos="fade-right">
-                    <h2 class="text-5xl md:text-7xl mb-8">MARI NGOBROL.</h2>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl mb-8">MARI NGOBROL.</h2>
                     <div class="space-y-6">
                         <a href="mailto:agushidayahtulloh3@gmail.com" class="block bg-white p-6 neo-border neo-shadow flex items-center gap-4 hover:bg-[#ccff00] transition-colors">
                             <div class="text-4xl">📧</div>
