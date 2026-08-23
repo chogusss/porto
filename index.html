@@ -208,6 +208,278 @@
                 font-size: 4rem;
             }
         }
+
+        /* ── IMAGE STREAM CORRIDOR ──────────────────────────── */
+        .corridor-wrap {
+            position: relative;
+            width: 100%;
+            height: 340px;
+            overflow: hidden;
+            container-type: inline-size;
+            perspective: 30cqw;
+            perspective-origin: 50% 55%;
+            border: 4px solid #000;
+            border-left: none;
+            border-right: none;
+            background: #000;
+        }
+
+        .corridor-stage {
+            position: absolute;
+            inset: 0;
+            transform-style: preserve-3d;
+        }
+
+        .corridor-card {
+            position: absolute;
+            overflow: hidden;
+            backface-visibility: hidden;
+            will-change: transform;
+            border-radius: 0.3cqw;
+            width: 18cqw;
+            height: 25cqw;
+            margin-left: -9cqw;
+            margin-top: -12.5cqw;
+            left: 50%;
+            top: 55%;
+            cursor: pointer;
+        }
+
+        .corridor-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .corridor-card .card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: flex-end;
+            padding: 8px;
+        }
+
+        .corridor-card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        .corridor-card .card-overlay span {
+            color: #ccff00;
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        @keyframes corridor-right {
+            0%   { transform: translate3d(-11cqw, 0, -25.4cqw) rotateY(-6deg); }
+            25%  { transform: translate3d(8cqw,  0, -16cqw)  rotateY(-12deg); }
+            50%  { transform: translate3d(26cqw, 0, -4cqw)   rotateY(-20deg); }
+            75%  { transform: translate3d(38cqw, 0, 8cqw)    rotateY(-25deg); }
+            100% { transform: translate3d(50cqw, 0, 26cqw)   rotateY(-28deg); }
+        }
+
+        @keyframes corridor-left {
+            0%   { transform: translate3d(11cqw,  0, -25.4cqw) rotateY(6deg); }
+            25%  { transform: translate3d(-8cqw,  0, -16cqw)  rotateY(12deg); }
+            50%  { transform: translate3d(-26cqw, 0, -4cqw)   rotateY(20deg); }
+            75%  { transform: translate3d(-38cqw, 0, 8cqw)    rotateY(25deg); }
+            100% { transform: translate3d(-50cqw, 0, 26cqw)   rotateY(28deg); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .corridor-card { animation-play-state: paused !important; }
+        }
+
+        /* ── BENTO GALLERY ──────────────────────────────────── */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-auto-rows: 80px;
+            gap: 12px;
+        }
+
+        @media (max-width: 767px) {
+            .bento-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-auto-rows: 70px;
+            }
+            .b-span-2 { grid-column: span 2; }
+            .b-span-1 { grid-column: span 1; }
+            .b-row-3  { grid-row: span 3; }
+            .b-row-2  { grid-row: span 2; }
+            .b-row-4  { grid-row: span 4; }
+        }
+
+        .b-span-2 { grid-column: span 2; }
+        .b-span-1 { grid-column: span 1; }
+        .b-row-3  { grid-row: span 3; }
+        .b-row-2  { grid-row: span 2; }
+        .b-row-4  { grid-row: span 4; }
+
+        .bento-item {
+            position: relative;
+            overflow: hidden;
+            border: 4px solid #000;
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            box-shadow: 6px 6px 0 0 #000;
+        }
+
+        .bento-item:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 9px 9px 0 0 #000;
+        }
+
+        .bento-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .bento-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .bento-item .bento-caption {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: #000;
+            color: #ccff00;
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 11px;
+            text-transform: uppercase;
+            padding: 6px 10px;
+            transform: translateY(100%);
+            transition: transform 0.2s ease;
+        }
+
+        .bento-item:hover .bento-caption {
+            transform: translateY(0);
+        }
+
+        .bento-item .bento-tag {
+            position: absolute;
+            top: 8px; left: 8px;
+            background: #ff5722;
+            color: #fff;
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 9px;
+            text-transform: uppercase;
+            padding: 3px 7px;
+            border: 2px solid #000;
+            letter-spacing: 0.08em;
+        }
+
+        /* ── LIGHTBOX MODAL ─────────────────────────────────── */
+        #gallery-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0,0,0,0.92);
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 16px;
+            padding: 24px;
+        }
+
+        #gallery-modal.open {
+            display: flex;
+            animation: modal-in 0.2s ease;
+        }
+
+        @keyframes modal-in {
+            from { opacity: 0; transform: scale(0.97); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+
+        #gallery-modal .modal-img-wrap {
+            position: relative;
+            max-width: 900px;
+            width: 100%;
+            border: 4px solid #ccff00;
+            box-shadow: 12px 12px 0 0 #ccff00;
+        }
+
+        #gallery-modal img {
+            width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            display: block;
+            background: #111;
+        }
+
+        #gallery-modal .modal-info {
+            max-width: 900px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #gallery-modal .modal-title {
+            font-family: 'Archivo Black', sans-serif;
+            color: #ccff00;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+        }
+
+        #gallery-modal .modal-desc {
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
+
+        #gallery-modal .modal-close {
+            background: #ff5722;
+            color: #000;
+            border: 3px solid #ccff00;
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 1rem;
+            padding: 8px 16px;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 4px 4px 0 0 #ccff00;
+            transition: all 0.1s;
+        }
+
+        #gallery-modal .modal-close:hover {
+            background: #ccff00;
+            box-shadow: 6px 6px 0 0 #fff;
+        }
+
+        /* Thumbnail dock in modal */
+        #gallery-modal .modal-dock {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 900px;
+        }
+
+        #gallery-modal .dock-thumb {
+            width: 56px;
+            height: 40px;
+            border: 3px solid #444;
+            cursor: pointer;
+            object-fit: cover;
+            transition: border-color 0.15s, transform 0.15s;
+        }
+
+        #gallery-modal .dock-thumb:hover,
+        #gallery-modal .dock-thumb.active {
+            border-color: #ccff00;
+            transform: translateY(-4px);
+        }
     </style>
 </head>
 
@@ -496,6 +768,90 @@
         </div>
     </section>
 
+    <!-- Image Stream Corridor (Visual Work Gallery) -->
+    <section class="border-b-8 border-black" data-aos="fade-up">
+        <!-- Corridor hero -->
+        <div class="corridor-wrap" id="corridorWrap" aria-label="Project image stream">
+            <div class="corridor-stage" id="corridorStage"></div>
+            <!-- Overlay label -->
+            <div class="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none select-none">
+                <p class="font-display text-white text-xl md:text-3xl" style="-webkit-text-stroke: 1px #ccff00; text-stroke: 1px #ccff00; letter-spacing: 0.05em;">HASIL KARYA</p>
+                <p class="text-[#ccff00] font-bold text-sm md:text-base tracking-widest mt-1">↙ KLIK GAMBAR UNTUK DETAIL ↘</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bento Gallery: Semua Hasil Proyek -->
+    <section class="bg-black border-b-8 border-[#ccff00] py-16" data-aos="fade-up">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-end mb-10 border-b-4 border-[#ccff00] pb-4">
+                <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white"
+                    style="-webkit-text-stroke: 2px #ccff00;">GALERI PROYEK</h2>
+                <span class="hidden md:block text-3xl font-bold text-[#ccff00]">⬛⬛⬛</span>
+            </div>
+
+            <!-- Bento Grid -->
+            <div class="bento-grid">
+                <!-- 1: PPT Academic - tall left -->
+                <div class="bento-item b-span-1 b-row-4" style="background:#ffe600;"
+                    data-gallery-img="ppt_academic.jpg"
+                    data-gallery-title="PPT Academic System"
+                    data-gallery-desc="Presentasi neobrutalis untuk sistem akademik dengan data visualisasi bold.">
+                    <img src="ppt_academic.jpg" alt="PPT Academic System" loading="lazy">
+                    <span class="bento-tag">PPT</span>
+                    <div class="bento-caption">PPT Academic System</div>
+                </div>
+
+                <!-- 2: Helpdesk Web - wide top -->
+                <div class="bento-item b-span-2 b-row-2" style="background:#00e5ff;"
+                    data-gallery-img="helpdesk_preview.jpg"
+                    data-gallery-title="Laravel Helpdesk System"
+                    data-gallery-desc="Dashboard helpdesk full-featured dengan manajemen tiket real-time.">
+                    <img src="helpdesk_preview.jpg" alt="Laravel Helpdesk" loading="lazy">
+                    <span class="bento-tag">LARAVEL</span>
+                    <div class="bento-caption">Laravel Helpdesk</div>
+                </div>
+
+                <!-- 3: PPT Skripsi - tall right -->
+                <div class="bento-item b-span-1 b-row-4" style="background:#ff5722;"
+                    data-gallery-img="ppt_skripsi.jpg"
+                    data-gallery-title="PPT Metodologi Penelitian"
+                    data-gallery-desc="Slide presentasi sidang skripsi dengan flowchart penelitian yang jelas.">
+                    <img src="ppt_skripsi.jpg" alt="PPT Skripsi" loading="lazy">
+                    <span class="bento-tag" style="background:#ffe600; color:#000;">PPT</span>
+                    <div class="bento-caption">PPT Skripsi Sidang</div>
+                </div>
+
+                <!-- 4: Digital Agency - wide bottom -->
+                <div class="bento-item b-span-2 b-row-2" style="background:#ccff00;"
+                    data-gallery-img="agency_preview.jpg"
+                    data-gallery-title="Digital Agency & Web Design"
+                    data-gallery-desc="Website agency modern dengan hero section full-screen dan CTA bold.">
+                    <img src="agency_preview.jpg" alt="Digital Agency" loading="lazy">
+                    <span class="bento-tag" style="background:#000;">WEB</span>
+                    <div class="bento-caption">Digital Agency Website</div>
+                </div>
+            </div>
+
+            <p class="text-center text-[#444] font-bold mt-8 text-sm tracking-widest">— DRAG & KLIK UNTUK PREVIEW PENUH —</p>
+        </div>
+    </section>
+
+    <!-- Gallery Lightbox Modal -->
+    <div id="gallery-modal" role="dialog" aria-modal="true" aria-label="Image preview">
+        <div class="modal-img-wrap">
+            <img id="modal-main-img" src="" alt="">
+        </div>
+        <div class="modal-info">
+            <div>
+                <div class="modal-title" id="modal-title"></div>
+                <div class="modal-desc" id="modal-desc"></div>
+            </div>
+            <button class="modal-close" id="modal-close-btn" aria-label="Tutup">✕ TUTUP</button>
+        </div>
+        <div class="modal-dock" id="modal-dock"></div>
+    </div>
+
     <!-- About Section -->
     <section id="tentang" class="bg-[#00e5ff] border-t-4 border-b-4 border-black py-20 relative overflow-hidden">
         <div class="absolute inset-0 opacity-20"
@@ -728,6 +1084,122 @@
 
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+    // ── IMAGE STREAM CORRIDOR ──────────────────────────────────────
+    (function() {
+        const IMAGES = [
+            { src: 'ppt_academic.jpg',    title: 'PPT Academic System' },
+            { src: 'helpdesk_preview.jpg',title: 'Laravel Helpdesk' },
+            { src: 'agency_preview.jpg',  title: 'Digital Agency' },
+            { src: 'ppt_skripsi.jpg',     title: 'PPT Skripsi Sidang' },
+        ];
+
+        const CARDS = 9;
+        const SPEED = 18; // seconds per loop
+        const stage = document.getElementById('corridorStage');
+        if (!stage) return;
+
+        const sides = ['corridor-right', 'corridor-left'];
+        sides.forEach(function(animName) {
+            for (let i = 0; i < CARDS; i++) {
+                const img = IMAGES[i % IMAGES.length];
+                const card = document.createElement('div');
+                card.className = 'corridor-card';
+                card.style.animation = animName + ' ' + SPEED + 's linear infinite';
+                card.style.animationDelay = '-' + (i * SPEED / CARDS).toFixed(2) + 's';
+
+                const imgEl = document.createElement('img');
+                imgEl.src = img.src;
+                imgEl.alt = img.title;
+                imgEl.loading = 'lazy';
+
+                const overlay = document.createElement('div');
+                overlay.className = 'card-overlay';
+                overlay.innerHTML = '<span>' + img.title + '</span>';
+
+                card.appendChild(imgEl);
+                card.appendChild(overlay);
+
+                // Click opens lightbox
+                card.addEventListener('click', function() {
+                    openModal(img.src, img.title, '');
+                });
+
+                stage.appendChild(card);
+            }
+        });
+    })();
+
+    // ── GALLERY LIGHTBOX ───────────────────────────────────────────
+    const GALLERY_ITEMS = [
+        { src: 'ppt_academic.jpg',     title: 'PPT Academic System',          desc: 'Presentasi neobrutalis untuk sistem akademik dengan data visualisasi bold.' },
+        { src: 'helpdesk_preview.jpg', title: 'Laravel Helpdesk System',       desc: 'Dashboard helpdesk full-featured dengan manajemen tiket real-time.' },
+        { src: 'ppt_skripsi.jpg',      title: 'PPT Metodologi Penelitian',     desc: 'Slide presentasi sidang skripsi dengan flowchart penelitian yang jelas.' },
+        { src: 'agency_preview.jpg',   title: 'Digital Agency & Web Design',   desc: 'Website agency modern dengan hero section full-screen dan CTA bold.' },
+    ];
+
+    const modal = document.getElementById('gallery-modal');
+    const modalImg = document.getElementById('modal-main-img');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDesc = document.getElementById('modal-desc');
+    const modalDock = document.getElementById('modal-dock');
+    const modalClose = document.getElementById('modal-close-btn');
+    let currentIdx = 0;
+
+    function buildDock() {
+        modalDock.innerHTML = '';
+        GALLERY_ITEMS.forEach(function(item, idx) {
+            const thumb = document.createElement('img');
+            thumb.src = item.src;
+            thumb.alt = item.title;
+            thumb.className = 'dock-thumb' + (idx === currentIdx ? ' active' : '');
+            thumb.addEventListener('click', function() { openModal(item.src, item.title, item.desc, idx); });
+            modalDock.appendChild(thumb);
+        });
+    }
+
+    function openModal(src, title, desc, idx) {
+        currentIdx = (idx !== undefined) ? idx : GALLERY_ITEMS.findIndex(function(i){ return i.src === src; });
+        if (currentIdx < 0) currentIdx = 0;
+        modalImg.src = GALLERY_ITEMS[currentIdx].src;
+        modalImg.alt = GALLERY_ITEMS[currentIdx].title;
+        modalTitle.textContent = GALLERY_ITEMS[currentIdx].title;
+        modalDesc.textContent = GALLERY_ITEMS[currentIdx].desc;
+        buildDock();
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    modalClose.addEventListener('click', function() {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+    });
+
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    });
+
+    // Keyboard nav
+    document.addEventListener('keydown', function(e) {
+        if (!modal.classList.contains('open')) return;
+        if (e.key === 'Escape') { modal.classList.remove('open'); document.body.style.overflow = ''; }
+        if (e.key === 'ArrowRight') openModal(null, null, null, (currentIdx + 1) % GALLERY_ITEMS.length);
+        if (e.key === 'ArrowLeft') openModal(null, null, null, (currentIdx - 1 + GALLERY_ITEMS.length) % GALLERY_ITEMS.length);
+    });
+
+    // Wire bento items
+    document.querySelectorAll('[data-gallery-img]').forEach(function(el) {
+        el.addEventListener('click', function() {
+            const src   = el.dataset.galleryImg;
+            const title = el.dataset.galleryTitle;
+            const desc  = el.dataset.galleryDesc;
+            openModal(src, title, desc);
+        });
+    });
+    </script>
     <script>
         AOS.init({
             duration: 800,
