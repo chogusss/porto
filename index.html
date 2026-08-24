@@ -3,7 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
     <title>AGUS.H | Portfolio</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,6 +23,7 @@
     <style>
         * {
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -26,6 +31,9 @@
             background-color: #fdf4e3;
             color: #000;
             overflow-x: hidden;
+            /* iOS safe area support */
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
         }
 
         h1,
@@ -101,6 +109,13 @@
             border: 4px solid #000;
             box-shadow: 6px 6px 0px 0px #ff5722;
             transition: all 0.1s ease;
+            /* min touch target */
+            min-height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         .neo-btn:hover {
@@ -108,6 +123,14 @@
             color: #000;
             box-shadow: 10px 10px 0px 0px #000;
             animation: jitter 0.3s infinite;
+        }
+
+        /* active state for touch devices */
+        .neo-btn:active {
+            background-color: #ff5722;
+            color: #000;
+            box-shadow: 3px 3px 0px 0px #000;
+            transform: translate(3px, 3px);
         }
 
         .marquee-wrapper {
@@ -198,6 +221,14 @@
             background: white;
         }
 
+        /* ── MOBILE GLOBAL ──────────────────────────────────── */
+        @media (max-width: 480px) {
+            .neo-border  { border-width: 3px; }
+            .neo-shadow  { box-shadow: 5px 5px 0px 0px #000; }
+            .neo-shadow:hover { box-shadow: 7px 7px 0px 0px #000; transform: translate(-2px,-2px); }
+            .neo-btn     { box-shadow: 4px 4px 0px 0px #ff5722; }
+        }
+
         @media (min-width: 768px) {
             .marquee-item {
                 font-size: 3rem;
@@ -213,7 +244,7 @@
         .corridor-wrap {
             position: relative;
             width: 100%;
-            height: 340px;
+            height: 260px;
             overflow: hidden;
             container-type: inline-size;
             perspective: 30cqw;
@@ -223,6 +254,9 @@
             border-right: none;
             background: #000;
         }
+
+        @media (min-width: 640px)  { .corridor-wrap { height: 310px; } }
+        @media (min-width: 1024px) { .corridor-wrap { height: 360px; } }
 
         .corridor-stage {
             position: absolute;
@@ -236,13 +270,22 @@
             backface-visibility: hidden;
             will-change: transform;
             border-radius: 0.3cqw;
-            width: 18cqw;
-            height: 25cqw;
-            margin-left: -9cqw;
-            margin-top: -12.5cqw;
+            width: 22cqw;
+            height: 30cqw;
+            margin-left: -11cqw;
+            margin-top: -15cqw;
             left: 50%;
             top: 55%;
             cursor: pointer;
+            /* enlarge touch area */
+            touch-action: manipulation;
+        }
+
+        @media (min-width: 640px) {
+            .corridor-card {
+                width: 18cqw; height: 25cqw;
+                margin-left: -9cqw; margin-top: -12.5cqw;
+            }
         }
 
         .corridor-card img {
@@ -256,21 +299,22 @@
             position: absolute;
             inset: 0;
             background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.2s;
+            /* always show on touch */
+            opacity: 1;
             display: flex;
             align-items: flex-end;
-            padding: 8px;
+            padding: 6px;
         }
 
-        .corridor-card:hover .card-overlay {
-            opacity: 1;
+        @media (hover: hover) {
+            .corridor-card .card-overlay { opacity: 0; transition: opacity 0.2s; }
+            .corridor-card:hover .card-overlay { opacity: 1; }
         }
 
         .corridor-card .card-overlay span {
             color: #ccff00;
             font-family: 'Archivo Black', sans-serif;
-            font-size: 10px;
+            font-size: 9px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
@@ -298,15 +342,33 @@
         /* ── BENTO GALLERY ──────────────────────────────────── */
         .bento-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-auto-rows: 80px;
-            gap: 12px;
+            grid-template-columns: 1fr 1fr;
+            grid-auto-rows: 90px;
+            gap: 8px;
         }
 
-        @media (max-width: 767px) {
+        /* Mobile: 2-col, all span 1 wide, stacked */
+        @media (max-width: 479px) {
+            .bento-grid { grid-auto-rows: 75px; gap: 6px; }
+            .b-span-2 { grid-column: span 2; }
+            .b-span-1 { grid-column: span 1; }
+            .b-row-4  { grid-row: span 3; }
+            .b-row-2  { grid-row: span 2; }
+        }
+
+        @media (min-width: 480px) and (max-width: 767px) {
+            .bento-grid { grid-auto-rows: 80px; gap: 10px; }
+            .b-span-2 { grid-column: span 2; }
+            .b-span-1 { grid-column: span 1; }
+            .b-row-4  { grid-row: span 3; }
+            .b-row-2  { grid-row: span 2; }
+        }
+
+        @media (min-width: 768px) {
             .bento-grid {
-                grid-template-columns: repeat(2, 1fr);
-                grid-auto-rows: 70px;
+                grid-template-columns: repeat(4, 1fr);
+                grid-auto-rows: 80px;
+                gap: 12px;
             }
             .b-span-2 { grid-column: span 2; }
             .b-span-1 { grid-column: span 1; }
@@ -315,6 +377,7 @@
             .b-row-4  { grid-row: span 4; }
         }
 
+        /* Default (applied on all sizes, overridden by breakpoints above) */
         .b-span-2 { grid-column: span 2; }
         .b-span-1 { grid-column: span 1; }
         .b-row-3  { grid-row: span 3; }
@@ -324,15 +387,22 @@
         .bento-item {
             position: relative;
             overflow: hidden;
-            border: 4px solid #000;
+            border: 3px solid #000;
             cursor: pointer;
             transition: transform 0.15s ease, box-shadow 0.15s ease;
-            box-shadow: 6px 6px 0 0 #000;
+            box-shadow: 4px 4px 0 0 #000;
+            touch-action: manipulation;
         }
 
-        .bento-item:hover {
-            transform: translate(-3px, -3px);
-            box-shadow: 9px 9px 0 0 #000;
+        @media (min-width: 768px) {
+            .bento-item {
+                border-width: 4px;
+                box-shadow: 6px 6px 0 0 #000;
+            }
+            .bento-item:hover {
+                transform: translate(-3px, -3px);
+                box-shadow: 9px 9px 0 0 #000;
+            }
         }
 
         .bento-item img {
@@ -343,25 +413,26 @@
             transition: transform 0.3s ease;
         }
 
-        .bento-item:hover img {
-            transform: scale(1.05);
+        @media (hover: hover) {
+            .bento-item:hover img { transform: scale(1.05); }
         }
 
+        /* On touch: caption always visible */
         .bento-item .bento-caption {
             position: absolute;
             bottom: 0; left: 0; right: 0;
             background: #000;
             color: #ccff00;
             font-family: 'Archivo Black', sans-serif;
-            font-size: 11px;
+            font-size: 10px;
             text-transform: uppercase;
-            padding: 6px 10px;
-            transform: translateY(100%);
-            transition: transform 0.2s ease;
+            padding: 5px 8px;
+            transform: translateY(0);
         }
 
-        .bento-item:hover .bento-caption {
-            transform: translateY(0);
+        @media (hover: hover) {
+            .bento-item .bento-caption { transform: translateY(100%); transition: transform 0.2s ease; }
+            .bento-item:hover .bento-caption { transform: translateY(0); }
         }
 
         .bento-item .bento-tag {
@@ -383,12 +454,19 @@
             position: fixed;
             inset: 0;
             z-index: 1000;
-            background: rgba(0,0,0,0.92);
+            background: rgba(0,0,0,0.95);
             align-items: center;
             justify-content: center;
             flex-direction: column;
-            gap: 16px;
-            padding: 24px;
+            gap: 12px;
+            padding: 16px;
+            /* iOS safe area */
+            padding-top: max(16px, env(safe-area-inset-top));
+            padding-bottom: max(16px, env(safe-area-inset-bottom));
+            padding-left: max(16px, env(safe-area-inset-left));
+            padding-right: max(16px, env(safe-area-inset-right));
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         #gallery-modal.open {
@@ -405,38 +483,61 @@
             position: relative;
             max-width: 900px;
             width: 100%;
-            border: 4px solid #ccff00;
-            box-shadow: 12px 12px 0 0 #ccff00;
+            border: 3px solid #ccff00;
+            box-shadow: 6px 6px 0 0 #ccff00;
+        }
+
+        @media (min-width: 768px) {
+            #gallery-modal .modal-img-wrap {
+                border-width: 4px;
+                box-shadow: 12px 12px 0 0 #ccff00;
+            }
         }
 
         #gallery-modal img {
             width: 100%;
-            max-height: 70vh;
+            max-height: 55vh;
             object-fit: contain;
             display: block;
             background: #111;
+        }
+
+        @media (min-width: 768px) {
+            #gallery-modal img { max-height: 65vh; }
         }
 
         #gallery-modal .modal-info {
             max-width: 900px;
             width: 100%;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        @media (min-width: 480px) {
+            #gallery-modal .modal-info {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
         }
 
         #gallery-modal .modal-title {
             font-family: 'Archivo Black', sans-serif;
             color: #ccff00;
-            font-size: 1.3rem;
+            font-size: 1rem;
             text-transform: uppercase;
         }
 
+        @media (min-width: 640px) {
+            #gallery-modal .modal-title { font-size: 1.3rem; }
+        }
+
         #gallery-modal .modal-desc {
-            color: #fff;
+            color: #ccc;
             font-weight: 600;
-            font-size: 0.9rem;
-            margin-top: 4px;
+            font-size: 0.8rem;
+            margin-top: 2px;
         }
 
         #gallery-modal .modal-close {
@@ -444,41 +545,82 @@
             color: #000;
             border: 3px solid #ccff00;
             font-family: 'Archivo Black', sans-serif;
-            font-size: 1rem;
-            padding: 8px 16px;
+            font-size: 0.9rem;
+            padding: 10px 20px;
             cursor: pointer;
             text-transform: uppercase;
-            box-shadow: 4px 4px 0 0 #ccff00;
+            box-shadow: 3px 3px 0 0 #ccff00;
             transition: all 0.1s;
+            min-height: 44px;
+            align-self: flex-start;
+            touch-action: manipulation;
         }
 
+        #gallery-modal .modal-close:active,
         #gallery-modal .modal-close:hover {
             background: #ccff00;
-            box-shadow: 6px 6px 0 0 #fff;
+            box-shadow: 5px 5px 0 0 #fff;
+        }
+
+        /* Nav arrows for swipe hint */
+        #gallery-modal .modal-nav {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        #gallery-modal .modal-nav button {
+            background: #000;
+            color: #ccff00;
+            border: 3px solid #ccff00;
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 1.2rem;
+            width: 48px;
+            height: 48px;
+            cursor: pointer;
+            touch-action: manipulation;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #gallery-modal .modal-nav button:active {
+            background: #ccff00;
+            color: #000;
         }
 
         /* Thumbnail dock in modal */
         #gallery-modal .modal-dock {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
             justify-content: center;
             max-width: 900px;
         }
 
         #gallery-modal .dock-thumb {
-            width: 56px;
-            height: 40px;
+            width: 48px;
+            height: 36px;
             border: 3px solid #444;
             cursor: pointer;
             object-fit: cover;
-            transition: border-color 0.15s, transform 0.15s;
+            touch-action: manipulation;
         }
 
-        #gallery-modal .dock-thumb:hover,
+        @media (min-width: 480px) {
+            #gallery-modal .dock-thumb { width: 56px; height: 40px; }
+        }
+
+        #gallery-modal .dock-thumb:active,
         #gallery-modal .dock-thumb.active {
             border-color: #ccff00;
-            transform: translateY(-4px);
+        }
+
+        @media (hover: hover) {
+            #gallery-modal .dock-thumb:hover {
+                border-color: #ccff00;
+                transform: translateY(-4px);
+            }
         }
     </style>
 </head>
@@ -554,51 +696,51 @@
 
     <!-- Hero Section -->
     <section
-        class="container mx-auto px-6 py-16 md:py-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative overflow-hidden">
-        <div class="relative z-10 flex flex-col items-start gap-6" data-aos="fade-right">
-            <div class="flex items-center gap-4">
+        class="container mx-auto px-4 sm:px-6 py-10 sm:py-16 md:py-24 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center relative overflow-hidden">
+        <div class="relative z-10 flex flex-col items-start gap-4 sm:gap-6" data-aos="fade-right">
+            <div class="flex items-center gap-3 flex-wrap">
                 <div
-                    class="inline-block bg-[#00e5ff] text-black font-bold px-3 py-1 neo-border shadow-[4px_4px_0_0_#000] transform -rotate-2">
+                    class="inline-block bg-[#00e5ff] text-black font-bold px-3 py-1 neo-border shadow-[4px_4px_0_0_#000] transform -rotate-2 text-sm sm:text-base">
                     PORTFOLIO 2026
                 </div>
                 <span
                     class="availability-badge flex md:hidden items-center gap-2 bg-green-400 neo-border px-3 py-1 font-bold text-sm">
-                    <span class="w-3 h-3 bg-green-700 rounded-full"></span>
+                    <span class="w-2 h-2 sm:w-3 sm:h-3 bg-green-700 rounded-full"></span>
                     TERSEDIA
                 </span>
             </div>
-            <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-8xl leading-[0.9] tracking-tighter break-words">
+            <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-8xl leading-[0.9] tracking-tighter break-words w-full">
                 AGUS <br>
-                <span class="text-[#ff5722] underline decoration-8 underline-offset-8">HIDAYATULLOH.</span>
+                <span class="text-[#ff5722] underline decoration-4 sm:decoration-8 underline-offset-4 sm:underline-offset-8">HIDAYATULLOH.</span>
             </h1>
-            <p class="font-display text-xl sm:text-2xl md:text-3xl bg-black text-white px-4 py-2 mt-2">
+            <p class="font-display text-lg sm:text-xl md:text-3xl bg-black text-white px-3 sm:px-4 py-2">
                 WEB DEVELOPER.
             </p>
-            <p class="text-lg font-semibold max-w-md mt-4 border-l-4 border-black pl-4">
+            <p class="text-base sm:text-lg font-semibold max-w-md border-l-4 border-black pl-4">
                 Passionate about creating beautiful, functional, and responsive websites and web applications.
             </p>
-            <div class="flex flex-wrap gap-4 mt-6">
-                <a href="#proyek" class="neo-btn font-display text-2xl px-8 py-4 inline-block uppercase">
+            <div class="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 w-full sm:w-auto">
+                <a href="#proyek" class="neo-btn font-display text-lg sm:text-2xl px-6 sm:px-8 py-3 sm:py-4 uppercase text-center w-full sm:w-auto">
                     [ LIHAT PROYEK ]
                 </a>
                 <a href="#kontak"
-                    class="neo-border bg-white px-8 py-4 font-bold text-2xl shadow-[6px_6px_0_0_#000] hover:bg-[#ffe600] transition-colors">
+                    class="neo-border bg-white px-6 sm:px-8 py-3 sm:py-4 font-bold text-lg sm:text-2xl shadow-[4px_4px_0_0_#000] sm:shadow-[6px_6px_0_0_#000] hover:bg-[#ffe600] active:bg-[#ffe600] transition-colors text-center w-full sm:w-auto min-h-[48px] flex items-center justify-center touch-action-manipulation">
                     KONSULTASI GRATIS
                 </a>
             </div>
         </div>
 
-        <div class="relative flex justify-center items-center" data-aos="fade-left">
+        <div class="relative flex justify-center items-center mt-4 lg:mt-0" data-aos="fade-left">
             <div
-                class="absolute -top-10 -right-10 w-48 h-48 bg-[#ccff00] rounded-full neo-border shadow-[8px_8px_0_0_#000] z-0 animate-pulse">
+                class="absolute -top-8 -right-4 sm:-top-10 sm:-right-10 w-32 h-32 sm:w-48 sm:h-48 bg-[#ccff00] rounded-full neo-border shadow-[8px_8px_0_0_#000] z-0 animate-pulse">
             </div>
-            <div class="absolute bottom-10 left-0 text-6xl z-20 transform -rotate-45">↘</div>
+            <div class="absolute bottom-6 left-0 text-4xl sm:text-6xl z-20 transform -rotate-45">↘</div>
 
-            <div class="bg-white p-4 neo-border neo-shadow z-10 relative max-w-sm w-full">
+            <div class="bg-white p-3 sm:p-4 neo-border neo-shadow z-10 relative max-w-xs sm:max-w-sm w-full">
                 <img src="profile.jpg" alt="Agus Profile"
                     class="w-full h-auto cutout-img bg-[#ff5722] neo-border object-cover">
                 <div
-                    class="absolute -bottom-6 -right-6 bg-black text-white font-bold p-3 neo-border transform rotate-6 text-sm">
+                    class="absolute -bottom-4 sm:-bottom-6 -right-4 sm:-right-6 bg-black text-white font-bold p-2 sm:p-3 neo-border transform rotate-6 text-xs sm:text-sm">
                     100% RAW ENERGY
                 </div>
             </div>
@@ -775,8 +917,8 @@
             <div class="corridor-stage" id="corridorStage"></div>
             <!-- Overlay label -->
             <div class="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none select-none">
-                <p class="font-display text-white text-xl md:text-3xl" style="-webkit-text-stroke: 1px #ccff00; text-stroke: 1px #ccff00; letter-spacing: 0.05em;">HASIL KARYA</p>
-                <p class="text-[#ccff00] font-bold text-sm md:text-base tracking-widest mt-1">↙ KLIK GAMBAR UNTUK DETAIL ↘</p>
+                <p class="font-display text-white text-lg sm:text-xl md:text-3xl" style="-webkit-text-stroke: 1px #ccff00; letter-spacing: 0.05em;">HASIL KARYA</p>
+                <p class="text-[#ccff00] font-bold text-xs sm:text-sm md:text-base tracking-widest mt-1">↙ TAP GAMBAR UNTUK DETAIL ↘</p>
             </div>
         </div>
     </section>
@@ -848,6 +990,11 @@
                 <div class="modal-desc" id="modal-desc"></div>
             </div>
             <button class="modal-close" id="modal-close-btn" aria-label="Tutup">✕ TUTUP</button>
+        </div>
+        <!-- Prev / Next arrows -->
+        <div class="modal-nav">
+            <button id="modal-prev-btn" aria-label="Sebelumnya">←</button>
+            <button id="modal-next-btn" aria-label="Berikutnya">→</button>
         </div>
         <div class="modal-dock" id="modal-dock"></div>
     </div>
@@ -1144,6 +1291,8 @@
     const modalDesc = document.getElementById('modal-desc');
     const modalDock = document.getElementById('modal-dock');
     const modalClose = document.getElementById('modal-close-btn');
+    const modalPrev = document.getElementById('modal-prev-btn');
+    const modalNext = document.getElementById('modal-next-btn');
     let currentIdx = 0;
 
     function buildDock() {
@@ -1170,25 +1319,47 @@
         document.body.style.overflow = 'hidden';
     }
 
-    modalClose.addEventListener('click', function() {
+    function closeModal() {
         modal.classList.remove('open');
         document.body.style.overflow = '';
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modalPrev.addEventListener('click', function() {
+        openModal(null, null, null, (currentIdx - 1 + GALLERY_ITEMS.length) % GALLERY_ITEMS.length);
+    });
+    modalNext.addEventListener('click', function() {
+        openModal(null, null, null, (currentIdx + 1) % GALLERY_ITEMS.length);
     });
 
     modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            modal.classList.remove('open');
-            document.body.style.overflow = '';
-        }
+        if (e.target === modal) closeModal();
     });
 
     // Keyboard nav
     document.addEventListener('keydown', function(e) {
         if (!modal.classList.contains('open')) return;
-        if (e.key === 'Escape') { modal.classList.remove('open'); document.body.style.overflow = ''; }
+        if (e.key === 'Escape') closeModal();
         if (e.key === 'ArrowRight') openModal(null, null, null, (currentIdx + 1) % GALLERY_ITEMS.length);
-        if (e.key === 'ArrowLeft') openModal(null, null, null, (currentIdx - 1 + GALLERY_ITEMS.length) % GALLERY_ITEMS.length);
+        if (e.key === 'ArrowLeft')  openModal(null, null, null, (currentIdx - 1 + GALLERY_ITEMS.length) % GALLERY_ITEMS.length);
     });
+
+    // Touch swipe support (Android + iOS)
+    var touchStartX = 0;
+    var touchStartY = 0;
+    modal.addEventListener('touchstart', function(e) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    modal.addEventListener('touchend', function(e) {
+        if (!modal.classList.contains('open')) return;
+        var dx = e.changedTouches[0].clientX - touchStartX;
+        var dy = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+            if (dx < 0) openModal(null, null, null, (currentIdx + 1) % GALLERY_ITEMS.length);
+            else        openModal(null, null, null, (currentIdx - 1 + GALLERY_ITEMS.length) % GALLERY_ITEMS.length);
+        }
+    }, { passive: true });
 
     // Wire bento items
     document.querySelectorAll('[data-gallery-img]').forEach(function(el) {
