@@ -19,6 +19,9 @@
         rel="stylesheet">
     <!-- AOS Animation Library -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Three.js & GSAP for WebGL Liquid Glass Carousel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
     <style>
         * {
@@ -240,103 +243,144 @@
             }
         }
 
-        /* ── IMAGE STREAM CORRIDOR ──────────────────────────── */
-        .corridor-wrap {
+        /* ── CROWD CANVAS (hero) ───────────────────────────────── */
+        /* Styled inline on the wrapper div — no extra CSS needed */
+
+        /* hero section needs relative for z-index stacking */
+        .hero-section {
+            position: relative;
+            overflow: visible;
+        }
+        .lgc-wrap {
             position: relative;
             width: 100%;
-            height: 260px;
+            height: 320px;
             overflow: hidden;
-            container-type: inline-size;
-            perspective: 30cqw;
-            perspective-origin: 50% 55%;
-            border: 4px solid #000;
-            border-left: none;
-            border-right: none;
-            background: #000;
+            border-top: 4px solid #000;
+            border-bottom: 4px solid #000;
+            background: #fdf4e3;
+            outline: none;
         }
 
-        @media (min-width: 640px)  { .corridor-wrap { height: 310px; } }
-        @media (min-width: 1024px) { .corridor-wrap { height: 360px; } }
+        @media (min-width: 640px)  { .lgc-wrap { height: 400px; } }
+        @media (min-width: 1024px) { .lgc-wrap { height: 500px; } }
 
-        .corridor-stage {
-            position: absolute;
-            inset: 0;
-            transform-style: preserve-3d;
-        }
-
-        .corridor-card {
-            position: absolute;
-            overflow: hidden;
-            backface-visibility: hidden;
-            will-change: transform;
-            border-radius: 0.3cqw;
-            width: 22cqw;
-            height: 30cqw;
-            margin-left: -11cqw;
-            margin-top: -15cqw;
-            left: 50%;
-            top: 55%;
-            cursor: pointer;
-            /* enlarge touch area */
-            touch-action: manipulation;
-        }
-
-        @media (min-width: 640px) {
-            .corridor-card {
-                width: 18cqw; height: 25cqw;
-                margin-left: -9cqw; margin-top: -12.5cqw;
-            }
-        }
-
-        .corridor-card img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        /* canvas fills the wrapper, injected by Three.js */
+        .lgc-wrap canvas {
             display: block;
+            width: 100% !important;
+            height: 100% !important;
+            touch-action: none;
+            user-select: none;
         }
 
-        .corridor-card .card-overlay {
+        /* title overlay */
+        .lgc-title {
+            pointer-events: none;
+            position: absolute;
+            left: 50%;
+            top: 5%;
+            transform: translateX(-50%);
+            z-index: 10;
+            margin: 0;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: #000;
+            opacity: 0;
+            white-space: nowrap;
+        }
+
+        @media (min-width: 640px) { .lgc-title { font-size: 17px; } }
+
+        /* counter overlay */
+        .lgc-counter {
+            pointer-events: none;
+            position: absolute;
+            left: 50%;
+            bottom: 6%;
+            transform: translateX(-50%);
+            z-index: 10;
+            margin: 0;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -0.02em;
+            color: #000;
+            opacity: 0;
+        }
+
+        @media (min-width: 640px) { .lgc-counter { font-size: 15px; } }
+
+        /* "View" cursor label */
+        .lgc-cursor {
+            pointer-events: none;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 20;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: #000;
+            mix-blend-mode: exclusion;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Close button */
+        .lgc-close {
+            position: absolute;
+            right: 4%;
+            top: 5%;
+            z-index: 20;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: #000;
+            mix-blend-mode: exclusion;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px 8px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .lgc-close.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* WebGL fallback */
+        .lgc-fallback {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 60%);
-            /* always show on touch */
-            opacity: 1;
             display: flex;
-            align-items: flex-end;
-            padding: 6px;
-        }
-
-        @media (hover: hover) {
-            .corridor-card .card-overlay { opacity: 0; transition: opacity 0.2s; }
-            .corridor-card:hover .card-overlay { opacity: 1; }
-        }
-
-        .corridor-card .card-overlay span {
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 12px;
+            background: #000;
             color: #ccff00;
             font-family: 'Archivo Black', sans-serif;
-            font-size: 9px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            font-size: 1rem;
+            text-align: center;
+            padding: 24px;
         }
 
-        @keyframes corridor-right {
-            0%   { transform: translate3d(-11cqw, 0, -25.4cqw) rotateY(-6deg); }
-            25%  { transform: translate3d(8cqw,  0, -16cqw)  rotateY(-12deg); }
-            50%  { transform: translate3d(26cqw, 0, -4cqw)   rotateY(-20deg); }
-            75%  { transform: translate3d(38cqw, 0, 8cqw)    rotateY(-25deg); }
-            100% { transform: translate3d(50cqw, 0, 26cqw)   rotateY(-28deg); }
-        }
-
-        @keyframes corridor-left {
-            0%   { transform: translate3d(11cqw,  0, -25.4cqw) rotateY(6deg); }
-            25%  { transform: translate3d(-8cqw,  0, -16cqw)  rotateY(12deg); }
-            50%  { transform: translate3d(-26cqw, 0, -4cqw)   rotateY(20deg); }
-            75%  { transform: translate3d(-38cqw, 0, 8cqw)    rotateY(25deg); }
-            100% { transform: translate3d(-50cqw, 0, 26cqw)   rotateY(28deg); }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .corridor-card { animation-play-state: paused !important; }
+        /* sr-only utility */
+        .sr-only {
+            position: absolute;
+            width: 1px; height: 1px;
+            padding: 0; margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
         }
 
         /* ── BENTO GALLERY ──────────────────────────────────── */
@@ -695,8 +739,7 @@
     </div>
 
     <!-- Hero Section -->
-    <section
-        class="container mx-auto px-4 sm:px-6 py-10 sm:py-16 md:py-24 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center relative overflow-hidden">
+    <section class="hero-section container mx-auto px-4 sm:px-6 py-10 sm:py-16 md:py-24 grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center relative overflow-hidden">
         <div class="relative z-10 flex flex-col items-start gap-4 sm:gap-6" data-aos="fade-right">
             <div class="flex items-center gap-3 flex-wrap">
                 <div
@@ -746,6 +789,14 @@
             </div>
         </div>
     </section>
+
+    <!-- Crowd Canvas — walking characters below hero -->
+    <div id="crowd-wrap" style="position:relative;width:100%;height:260px;overflow:hidden;margin-top:-130px;pointer-events:none;">
+        <!-- canvas fills the full 260px box -->
+        <canvas id="crowd-canvas" style="display:block;width:100%;height:260px;" aria-hidden="true"></canvas>
+        <!-- top fade so characters appear from below -->
+        <div style="position:absolute;top:0;left:0;right:0;height:80px;background:linear-gradient(to bottom,#fdf4e3,transparent);pointer-events:none;"></div>
+    </div>
 
     <!-- Stats Section -->
     <section class="bg-black py-16 border-y-8 border-[#ccff00]">
@@ -910,16 +961,40 @@
         </div>
     </section>
 
-    <!-- Image Stream Corridor (Visual Work Gallery) -->
+    <!-- Liquid Glass Carousel (Visual Work Gallery) -->
     <section class="border-b-8 border-black" data-aos="fade-up">
-        <!-- Corridor hero -->
-        <div class="corridor-wrap" id="corridorWrap" aria-label="Project image stream">
-            <div class="corridor-stage" id="corridorStage"></div>
-            <!-- Overlay label -->
-            <div class="absolute inset-0 flex flex-col items-center justify-center z-10 pointer-events-none select-none">
-                <p class="font-display text-white text-lg sm:text-xl md:text-3xl" style="-webkit-text-stroke: 1px #ccff00; letter-spacing: 0.05em;">HASIL KARYA</p>
-                <p class="text-[#ccff00] font-bold text-xs sm:text-sm md:text-base tracking-widest mt-1">↙ TAP GAMBAR UNTUK DETAIL ↘</p>
+        <div
+            id="lgc-root"
+            class="lgc-wrap"
+            tabindex="0"
+            role="region"
+            aria-roledescription="carousel"
+            aria-labelledby="lgc-label"
+        >
+            <!-- SR labels -->
+            <p id="lgc-label" class="sr-only">Liquid glass project carousel</p>
+            <p id="lgc-live"  class="sr-only" aria-live="polite"></p>
+
+            <!-- Three.js canvas mounts here -->
+            <div id="lgc-mount" style="position:absolute;inset:0;"></div>
+
+            <!-- WebGL not supported fallback -->
+            <div id="lgc-fallback" class="lgc-fallback" style="display:none;">
+                <span style="font-size:2rem;">⚠️</span>
+                <p>Carousel ini membutuhkan WebGL yang tidak tersedia di browser ini.</p>
             </div>
+
+            <!-- Title overlay -->
+            <p id="lgc-title" class="lgc-title"></p>
+
+            <!-- Counter overlay -->
+            <p id="lgc-counter" class="lgc-counter">01/08</p>
+
+            <!-- Cursor "View" label -->
+            <div id="lgc-cursor" class="lgc-cursor">View</div>
+
+            <!-- Close button (shown when a card is focused) -->
+            <button id="lgc-close" class="lgc-close" type="button" aria-label="Tutup karya yang difokuskan">Close</button>
         </div>
     </section>
 
@@ -1232,49 +1307,952 @@
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-    // ── IMAGE STREAM CORRIDOR ──────────────────────────────────────
-    (function() {
-        const IMAGES = [
-            { src: 'ppt_academic.jpg',    title: 'PPT Academic System' },
-            { src: 'helpdesk_preview.jpg',title: 'Laravel Helpdesk' },
-            { src: 'agency_preview.jpg',  title: 'Digital Agency' },
-            { src: 'ppt_skripsi.jpg',     title: 'PPT Skripsi Sidang' },
-        ];
+    // ── LIQUID GLASS CAROUSEL (ported from React component) ───────
+    (function () {
+      'use strict';
 
-        const CARDS = 9;
-        const SPEED = 18; // seconds per loop
-        const stage = document.getElementById('corridorStage');
-        if (!stage) return;
+      /* ── items ─────────────────────────────────────────────────── */
+      var PORTRAIT = 3 / 4;
+      var ITEMS = [
+        { title: 'Academic System',         src: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=900&h=1200&q=85&auto=format&fit=crop', aspect: PORTRAIT },
+        { title: 'Laravel Helpdesk',        src: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=900&h=1200&q=85&auto=format&fit=crop', aspect: PORTRAIT },
+        { title: 'Digital Agency',          src: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&h=1200&q=85&auto=format&fit=crop', aspect: PORTRAIT },
+        { title: 'PPT Skripsi',             src: 'https://images.unsplash.com/photo-1512486130939-2c4f79935e4f?w=900&h=1200&q=85&auto=format&fit=crop', aspect: PORTRAIT },
+        { title: 'Database Optimisation',   src: 'https://images.unsplash.com/photo-1489875347897-49f64b51c1f8?w=900&h=1200&q=85&auto=format&fit=crop', aspect: PORTRAIT },
+        { title: 'UI/UX Design',            src: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=900&h=1200&q=85&auto=format&fit=crop', aspect: PORTRAIT },
+        { title: 'Server Maintenance',      src: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&h=1200&q=85&auto=format&fit=crop', aspect: PORTRAIT },
+        { title: 'PPT Academic System',     src: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=900&h=1200&q=85&auto=format&fit=crop', aspect: PORTRAIT },
+      ];
 
-        const sides = ['corridor-right', 'corridor-left'];
-        sides.forEach(function(animName) {
-            for (let i = 0; i < CARDS; i++) {
-                const img = IMAGES[i % IMAGES.length];
-                const card = document.createElement('div');
-                card.className = 'corridor-card';
-                card.style.animation = animName + ' ' + SPEED + 's linear infinite';
-                card.style.animationDelay = '-' + (i * SPEED / CARDS).toFixed(2) + 's';
+      /* ── lens constants (ported 1-to-1 from React source) ────── */
+      var LENS = {
+        sizeX:0.565, sizeY:1, posX:0.5, posY:0.5,
+        rotation:65, spin:0, zoom:0, dispersion:11, blur:0,
+        glow:4.2, whiteGlow:0.24, novaSize:12, blueRing:6,
+        ringRadius:0.49, ringWidth:0.014,
+        shimmer:true, shimmerFreq:12, shimmerSpeed:3.5, shimmerDepth:0.12,
+        rimStart:0.578, rimTangential:0.6, rimInward:0, rimFreq1:2, rimFreq2:1,
+        blueColor:'#009dff', rimLine:1.4, rimLinePos:0.488, rimLineWidth:0.003,
+        vignette:0, vignetteSize:0.3, samples:16,
+      };
+      var FOCUS = {
+        cardDuration:0.7, focusDuration:0.9,
+        cardEase:'power4.out', focusEase:'power3.out',
+        stagger:0.06, dropDist:1.4, centerScale:1.18, lensFade:0.85,
+      };
+      var ENTRY = {
+        delay:0.5, startH:80, riseDuration:1.0, stagger:0.07,
+        riseEase:'power3.out', fromBelow:0.9,
+        growDelay:0.25, growDuration:2.15, growEase:'expo.inOut', growStagger:0.085,
+        lensBloom:1.4, lensBloomEase:'power2.inOut',
+      };
+      var LENS_FX_KEYS = ['uDispersion','uBlueRing','uRimLine','uVignette','uZoom','uRimTangential','uRimInward'];
+      var REPEATS = 4;
+      var CLICK_SLOP = 6;
+      var TOUCH_CLICK_SLOP = 12;
+      var FLICK_IDLE_MS = 90;
+      var SNAP_IDLE_MS = 120;
+      var FRICTION = 0.865;
+      var WHEEL_MULT = 1.4;
+      var DRAG_MULT = 1.6;
+      var TOUCH_DRAG = 1;
+      var SHRINK_MAX = 60;
+      var SHRINK_ATTACK = 0.25;
+      var SHRINK_DECAY  = 0.06;
 
-                const imgEl = document.createElement('img');
-                imgEl.src = img.src;
-                imgEl.alt = img.title;
-                imgEl.loading = 'lazy';
+      /* ── GLSL shaders (ported 1-to-1) ─────────────────────────── */
+      var VERT = [
+        'varying vec2 vUv;',
+        'void main(){ vUv = uv; gl_Position = vec4(position.xy, 0.0, 1.0); }',
+      ].join('\n');
 
-                const overlay = document.createElement('div');
-                overlay.className = 'card-overlay';
-                overlay.innerHTML = '<span>' + img.title + '</span>';
+      var FRAG = [
+        '#define PI 3.14159265',
+        'precision highp float;',
+        'varying vec2 vUv;',
+        'uniform sampler2D uTex;',
+        'uniform vec2 uRes;',
+        'uniform vec2 uCenter;',
+        'uniform float uSizeX;',
+        'uniform float uSizeY;',
+        'uniform float uAspect;',
+        'uniform float uZoom;',
+        'uniform float uDispersion;',
+        'uniform float uBlur;',
+        'uniform float uGlow;',
+        'uniform float uWhiteGlow;',
+        'uniform float uNovaSize;',
+        'uniform float uBlueRing;',
+        'uniform float uRingRadius;',
+        'uniform float uRingWidth;',
+        'uniform float uShimmer;',
+        'uniform float uShimmerFreq;',
+        'uniform float uShimmerSpeed;',
+        'uniform float uShimmerDepth;',
+        'uniform float uTime;',
+        'uniform float uRimStart;',
+        'uniform float uRimTangential;',
+        'uniform float uRimInward;',
+        'uniform float uRimFreq1;',
+        'uniform float uRimFreq2;',
+        'uniform vec3 uBlueColor;',
+        'uniform float uRimLine;',
+        'uniform float uRimLinePos;',
+        'uniform float uRimLineWidth;',
+        'uniform float uVignette;',
+        'uniform float uVignetteSize;',
+        'uniform float uShape;',
+        'uniform float uSquareRound;',
+        'uniform float uRotation;',
+        'uniform int uSamples;',
+        'const int MAX_SAMPLES = 16;',
+        'float sdRoundBox(vec2 p,vec2 b,float r){',
+        '  vec2 q=abs(p)-b+r;',
+        '  return min(max(q.x,q.y),0.0)+length(max(q,0.0))-r;',
+        '}',
+        'vec3 discLens(vec2 center,float aspectCorrect,out float outA){',
+        '  vec2 p=(vUv-center);',
+        '  p.x*=aspectCorrect;',
+        '  float ca=cos(uRotation),sa=sin(uRotation);',
+        '  p=mat2(ca,-sa,sa,ca)*p;',
+        '  vec2 halfSize=vec2(uSizeX,uSizeY);',
+        '  float dist=length(p/halfSize);',
+        '  outA=0.0;',
+        '  float maskND;',
+        '  if(uShape>0.5){',
+        '    float corner=min(uSizeX,uSizeY)*clamp(uSquareRound,0.0,1.0);',
+        '    float sd=sdRoundBox(p,halfSize,corner);',
+        '    maskND=1.0+sd/min(uSizeX,uSizeY);',
+        '  } else { maskND=dist; }',
+        '  if(maskND>1.0) return vec3(0.0);',
+        '  float shapeND=clamp(maskND,0.0,1.0);',
+        '  float nd=clamp(dist,0.0,1.0);',
+        '  vec2 offset=vUv-center;',
+        '  vec2 radialDir=normalize(offset+1e-6);',
+        '  vec2 tangentDir=vec2(-radialDir.y,radialDir.x);',
+        '  float angle=atan(p.y,p.x);',
+        '  float pull=uZoom*0.30*(nd*nd);',
+        '  float rimStrength=smoothstep(uRimStart,1.0,nd);',
+        '  float fluidWave=sin(angle*uRimFreq1)*0.55+sin(angle*uRimFreq2)*0.25;',
+        '  float rScreen=(uSizeX+uSizeY)*0.5;',
+        '  vec2 rimOff=tangentDir*fluidWave*rimStrength*rScreen*uRimTangential;',
+        '  vec2 rimPull=-radialDir*rimStrength*rScreen*uRimInward;',
+        '  vec2 baseUV=center+offset*(1.0-pull)+rimOff+rimPull;',
+        '  float rimMask=smoothstep(0.55,1.0,nd);',
+        '  vec2 dispDir=offset*uDispersion*0.004*rimMask;',
+        '  int N=uSamples;',
+        '  if(N<2) N=2;',
+        '  if(N>MAX_SAMPLES) N=MAX_SAMPLES;',
+        '  vec3 col=vec3(0.0);',
+        '  vec3 caW=vec3(0.0);',
+        '  for(int i=0;i<MAX_SAMPLES;i++){',
+        '    if(i>=N) break;',
+        '    float t=float(i)/float(N-1);',
+        '    vec2 sUV=baseUV+dispDir*(t-0.5);',
+        '    vec3 s=texture2D(uTex,sUV).rgb;',
+        '    vec3 w=vec3(',
+        '      exp(-pow((t-0.00)/0.38,2.0)),',
+        '      exp(-pow((t-0.50)/0.38,2.0)),',
+        '      exp(-pow((t-1.00)/0.38,2.0)));',
+        '    col+=s*w; caW+=w;',
+        '  }',
+        '  col/=max(caW,vec3(0.001));',
+        '  float blurFade=1.0-smoothstep(0.72,0.98,nd);',
+        '  if(uBlur>0.01&&blurFade>0.01){',
+        '    vec2 blurRad=vec2(uBlur)/uRes*blurFade;',
+        '    vec3 bcol=vec3(0.0); float btw=0.0;',
+        '    for(float a=0.0;a<PI*2.0;a+=PI*2.0/6.0){',
+        '      for(float rr=0.4;rr<=1.001;rr+=0.3){',
+        '        vec2 o=vec2(cos(a),sin(a))*blurRad*rr;',
+        '        float w=1.0-rr*0.38;',
+        '        bcol+=texture2D(uTex,baseUV+o).rgb*w; btw+=w;',
+        '      }',
+        '    }',
+        '    col=mix(bcol/btw,col,rimMask);',
+        '  }',
+        '  col*=mix(0.91,1.0,smoothstep(0.0,0.38,shapeND));',
+        '  float r2=shapeND*shapeND*0.25;',
+        '  float gs=max(uNovaSize*uGlow*0.003,0.004);',
+        '  float nova=exp(-r2/gs)+exp(-r2/(gs*7.0))*0.18;',
+        '  nova*=uWhiteGlow*(uGlow/17.0)*1.15;',
+        '  col+=vec3(nova);',
+        '  float dC=shapeND*0.5;',
+        '  float tR=clamp(uRingRadius,0.1,0.49);',
+        '  float rW=max(uRingWidth,0.003);',
+        '  float ring=exp(-pow((dC-tR)/rW,2.0));',
+        '  ring*=uBlueRing*(uGlow/17.0)*1.8;',
+        '  if(uShimmer>0.5) ring*=sin(angle*uShimmerFreq+uTime*uShimmerSpeed)*uShimmerDepth+(1.0-uShimmerDepth);',
+        '  float ringAura=exp(-pow((dC-tR)/(rW*6.0),2.0))*0.28*uBlueRing*(uGlow/17.0);',
+        '  col+=uBlueColor*(ring+ringAura);',
+        '  col+=vec3(exp(-pow((dC-uRimLinePos)/max(uRimLineWidth,0.0001),2.0))*uRimLine);',
+        '  outA=smoothstep(1.0,0.93,maskND);',
+        '  return col;',
+        '}',
+        'void main(){',
+        '  vec3 base=texture2D(uTex,vUv).rgb;',
+        '  vec3 outc=base;',
+        '  float a=0.0;',
+        '  vec3 c=discLens(uCenter,uAspect,a);',
+        '  outc=mix(outc,c,a);',
+        '  if(uVignette>0.001){',
+        '    vec2 vc=vUv-0.5; vc.x*=uAspect;',
+        '    float d=length(vc)/max(uVignetteSize,0.0001);',
+        '    float vig=1.0-uVignette*smoothstep(0.5,1.0,d);',
+        '    outc*=clamp(vig,0.0,1.0);',
+        '  }',
+        '  gl_FragColor=vec4(outc,1.0);',
+        '}',
+      ].join('\n');
 
-                card.appendChild(imgEl);
-                card.appendChild(overlay);
+      /* ── helpers ────────────────────────────────────────────────── */
+      function prefersReduced() {
+        return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      }
+      function hexToNum(bg) {
+        var v = bg.trim();
+        if (v[0] === '#' && (v.length === 7 || v.length === 4)) {
+          var h = v.length === 4
+            ? '#' + v[1]+v[1] + v[2]+v[2] + v[3]+v[3]
+            : v;
+          var p = parseInt(h.slice(1), 16);
+          return isFinite(p) ? p : 0xfdf4e3;
+        }
+        return 0xfdf4e3;
+      }
+      function pad2(n) { return String(n).padStart(2, '0'); }
 
-                // Click opens lightbox
-                card.addEventListener('click', function() {
-                    openModal(img.src, img.title, '');
-                });
+      /* ── DOM refs ────────────────────────────────────────────────── */
+      var root    = document.getElementById('lgc-root');
+      var mount   = document.getElementById('lgc-mount');
+      var titleEl = document.getElementById('lgc-title');
+      var ctrEl   = document.getElementById('lgc-counter');
+      var cursorEl= document.getElementById('lgc-cursor');
+      var closeBtn= document.getElementById('lgc-close');
+      var liveEl  = document.getElementById('lgc-live');
+      var fallback= document.getElementById('lgc-fallback');
+      if (!root || !mount) return;
 
-                stage.appendChild(card);
-            }
+      /* ── Three.js renderer ─────────────────────────────────────── */
+      var renderer;
+      try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false }); }
+      catch(e) { fallback && (fallback.style.display = 'flex'); return; }
+
+      var BG = '#fdf4e3';
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var W = Math.max(1, mount.clientWidth);
+      var H = Math.max(1, mount.clientHeight);
+      renderer.setPixelRatio(dpr);
+      renderer.setSize(W, H);
+      renderer.setClearColor(hexToNum(BG), 1);
+      renderer.domElement.setAttribute('aria-hidden', 'true');
+      mount.appendChild(renderer.domElement);
+
+      var scene  = new THREE.Scene();
+      var camera = new THREE.OrthographicCamera(-W/2, W/2, H/2, -H/2, -100, 100);
+      camera.position.z = 10;
+
+      /* ── texture loading ─────────────────────────────────────────── */
+      var loader = new THREE.TextureLoader();
+      loader.crossOrigin = 'anonymous';
+
+      var reduced = prefersReduced();
+      var GAP = 12;
+      var panelHFor = function() { return Math.max(120, Math.min(380, Math.round(H * 0.72))); };
+      var PANEL_H = panelHFor();
+
+      var sources = ITEMS.map(function(item) {
+        var s = { tex: null, aspect: item.aspect || PORTRAIT, locked: item.aspect != null };
+        loader.load(item.src, function(tex) {
+          tex.minFilter = THREE.LinearFilter;
+          tex.magFilter = THREE.LinearFilter;
+          tex.generateMipmaps = false;
+          s.tex = tex;
+          recomputeTotal();
+          if (!userInteracted) { scroll = centerForIndex(0); target = scroll; }
+        }, undefined, function() {
+          s.aspect = s.aspect || PORTRAIT;
         });
+        return s;
+      });
+
+      function slotWidth(i) { return sources[i].aspect * PANEL_H + GAP; }
+      var offsets = [];
+      var totalWidth = 0;
+      function recomputeTotal() {
+        offsets = [];
+        var acc = 0;
+        for (var i = 0; i < sources.length; i++) { offsets.push(acc); acc += slotWidth(i); }
+        totalWidth = acc;
+      }
+      recomputeTotal();
+
+      function centerForIndex(idx) {
+        var N = sources.length;
+        var loop = Math.floor(idx / N);
+        var s = ((idx % N) + N) % N;
+        return offsets[s] + slotWidth(s) / 2 - GAP / 2 + loop * totalWidth;
+      }
+      function nearestIndex(val) {
+        if (!totalWidth) return 0;
+        var N = sources.length, best = 0, bestDist = Infinity;
+        for (var i = 0; i < N; i++) {
+          var c = offsets[i] + slotWidth(i) / 2 - GAP / 2;
+          var k = Math.round((val - c) / totalWidth);
+          var dist = Math.abs(c + k * totalWidth - val);
+          if (dist < bestDist) { bestDist = dist; best = i + k * N; }
+        }
+        return best;
+      }
+      function centerIndex(val) {
+        if (!totalWidth) return 0;
+        var bestI = 0, bestDist = Infinity;
+        for (var i = 0; i < sources.length; i++) {
+          var c = offsets[i] + slotWidth(i) / 2 - GAP / 2;
+          var k = Math.round((val - c) / totalWidth);
+          var dist = Math.abs(c + k * totalWidth - val);
+          if (dist < bestDist) { bestDist = dist; bestI = i; }
+        }
+        return bestI;
+      }
+
+      /* ── pool ──────────────────────────────────────────────────── */
+      var pool = [];
+      for (var r = 0; r < REPEATS; r++) {
+        for (var ii = 0; ii < sources.length; ii++) {
+          var mat  = new THREE.MeshBasicMaterial({ color: 0xdddddd, transparent: true });
+          var mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), mat);
+          mesh.visible = false;
+          scene.add(mesh);
+          pool.push({ mesh: mesh, mat: mat, srcIndex: ii, bound: false });
+        }
+      }
+
+      /* ── scroll state ──────────────────────────────────────────── */
+      var scroll = centerForIndex(0), target = scroll;
+      var userInteracted = false, velocity = 0, prevScroll = 0, scrollEnergy = 0;
+      var pendingFocus = null, lastInput = performance.now(), snapped = false;
+      var lastCenter = -1;
+
+      /* ── render target + lens shader ───────────────────────────── */
+      var rt = new THREE.WebGLRenderTarget(W * dpr, H * dpr);
+      var lensScene = new THREE.Scene();
+      var lensCam   = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+      var lensU = {
+        uTex:           { value: rt.texture },
+        uRes:           { value: new THREE.Vector2(W * dpr, H * dpr) },
+        uCenter:        { value: new THREE.Vector2(0.5, 0.5) },
+        uSizeX:         { value: LENS.sizeX },
+        uSizeY:         { value: LENS.sizeY },
+        uShape:         { value: 0 },
+        uSquareRound:   { value: 0 },
+        uRotation:      { value: 0 },
+        uAspect:        { value: W / H },
+        uZoom:          { value: LENS.zoom },
+        uDispersion:    { value: LENS.dispersion },
+        uBlur:          { value: LENS.blur },
+        uGlow:          { value: LENS.glow },
+        uWhiteGlow:     { value: LENS.whiteGlow },
+        uNovaSize:      { value: LENS.novaSize },
+        uBlueRing:      { value: LENS.blueRing },
+        uRingRadius:    { value: LENS.ringRadius },
+        uRingWidth:     { value: LENS.ringWidth },
+        uShimmer:       { value: (reduced || !LENS.shimmer) ? 0 : 1 },
+        uShimmerFreq:   { value: LENS.shimmerFreq },
+        uShimmerSpeed:  { value: LENS.shimmerSpeed },
+        uShimmerDepth:  { value: LENS.shimmerDepth },
+        uTime:          { value: 0 },
+        uRimStart:      { value: LENS.rimStart },
+        uRimTangential: { value: LENS.rimTangential },
+        uRimInward:     { value: LENS.rimInward },
+        uRimFreq1:      { value: LENS.rimFreq1 },
+        uRimFreq2:      { value: LENS.rimFreq2 },
+        uBlueColor:     { value: new THREE.Color(LENS.blueColor) },
+        uRimLine:       { value: LENS.rimLine },
+        uRimLinePos:    { value: LENS.rimLinePos },
+        uRimLineWidth:  { value: LENS.rimLineWidth },
+        uVignette:      { value: LENS.vignette },
+        uVignetteSize:  { value: LENS.vignetteSize },
+        uSamples:       { value: LENS.samples },
+      };
+      var lensMat  = new THREE.ShaderMaterial({ uniforms: lensU, vertexShader: VERT, fragmentShader: FRAG });
+      var lensQuad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), lensMat);
+      lensScene.add(lensQuad);
+
+      /* cache full lens-fx values for focus dimming */
+      var lensFxFull = {};
+      LENS_FX_KEYS.forEach(function(k) { lensFxFull[k] = lensU[k].value; });
+
+      /* ── focus state ─────────────────────────────────────────── */
+      var focusState = { active: false, srcIndex: -1, poolIdx: -1, lensFx: 1, anim: null };
+      var drop = new Array(REPEATS * sources.length).fill(0);
+      var focusScale = 1;
+      var lastCenterX = new Array(REPEATS * sources.length);
+      var entryOn = !reduced;
+      var pEntry  = new Array(REPEATS * sources.length).fill(entryOn ? 0 : 1);
+      var entryActive = entryOn, entrySettled = false;
+      var growArr = new Array(REPEATS * sources.length).fill(entryOn ? 0 : 1);
+      var entryAnim = null;
+      if (entryOn) focusState.lensFx = 0;
+
+      /* ── panel rects for hit-testing ─────────────────────────── */
+      var panelRects = [], centeredPanel = null;
+
+      /* ── layout ──────────────────────────────────────────────── */
+      function layout() {
+        panelRects = []; centeredPanel = null;
+        var centeredDist = Infinity;
+        var half = W / 2, buffer = PANEL_H;
+        pool.forEach(function(p, poolIdx) {
+          var rep = Math.floor(poolIdx / sources.length);
+          var i   = p.srcIndex;
+          var src = sources[i];
+          var slotCentre = offsets[i] + slotWidth(i) / 2 - GAP / 2;
+          var x = slotCentre - scroll;
+          x = ((x % totalWidth) + totalWidth) % totalWidth;
+          x += (rep - Math.floor(REPEATS / 2)) * totalWidth;
+          if (x > half + totalWidth) x -= totalWidth * REPEATS;
+          var cx = x;
+          var inEntry = entryActive || entrySettled;
+          if (!inEntry && (cx < -half - buffer || cx > half + buffer)) {
+            p.mesh.visible = false; lastCenterX[poolIdx] = undefined; return;
+          }
+          lastCenterX[poolIdx] = cx;
+          var shrink = 1 - 0.25 * scrollEnergy;
+          var h   = PANEL_H * shrink;
+          var wPx = src.aspect * PANEL_H * shrink;
+          if (src.tex && !p.bound) {
+            p.mat.map = src.tex; p.mat.color.set(0xffffff); p.mat.needsUpdate = true; p.bound = true;
+          }
+          var y = 0;
+          var isFocused = focusState.active && focusState.poolIdx === poolIdx;
+          var d = drop[poolIdx] || 0;
+          var drawW = wPx, drawH = h;
+          if (isFocused) { drawW = wPx * focusScale; drawH = h * focusScale; }
+          else if (d > 0) { y = -d * H * FOCUS.dropDist; }
+          p.mesh.visible = true;
+          var fX = cx, fY = y, fW = drawW, fH = drawH;
+          if (entryActive || entrySettled) {
+            var pe = pEntry[poolIdx] || 0;
+            var g  = growArr[poolIdx] || 0;
+            var curH = ENTRY.startH + (drawH - ENTRY.startH) * g;
+            fH = curH; fW = curH * src.aspect;
+            var cSrc = centerIndex(scroll);
+            var di = i - cSrc;
+            var N  = sources.length;
+            var midRep = Math.floor(REPEATS / 2);
+            if (di > N/2) di -= N; if (di < -N/2) di += N;
+            if (rep !== midRep) { p.mesh.visible = false; lastCenterX[poolIdx] = undefined; return; }
+            var slotH = function(s) {
+              var gg = growArr[midRep * N + s] || 0;
+              return ENTRY.startH + (PANEL_H - ENTRY.startH) * gg;
+            };
+            var off = 0;
+            if (di > 0) {
+              for (var k = 0; k < di; k++) {
+                var sa = (((cSrc+k)%N)+N)%N, sb = (((cSrc+k+1)%N)+N)%N;
+                off += (sources[sa].aspect*slotH(sa) + sources[sb].aspect*slotH(sb))/2 + GAP;
+              }
+            } else if (di < 0) {
+              for (var k = 0; k < -di; k++) {
+                var sa = (((cSrc-k)%N)+N)%N, sb = (((cSrc-k-1)%N)+N)%N;
+                off -= (sources[sa].aspect*slotH(sa) + sources[sb].aspect*slotH(sb))/2 + GAP;
+              }
+            }
+            fX = off;
+            if (fX < -half-buffer || fX > half+buffer) {
+              p.mesh.visible = false; lastCenterX[poolIdx] = undefined; return;
+            }
+            var below = -H * ENTRY.fromBelow;
+            fY = below + (y - below) * pe;
+          }
+          p.mesh.position.set(fX, fY, 0);
+          p.mesh.scale.set(fW, fH, 1);
+          var sx = cx + W/2, sy = H/2 - y;
+          panelRects.push({ left:sx-drawW/2, right:sx+drawW/2, top:sy-drawH/2, bottom:sy+drawH/2, poolIdx:poolIdx, srcIndex:i, centerX:cx });
+          if (Math.abs(cx) < centeredDist) { centeredDist = Math.abs(cx); centeredPanel = { srcIndex:i, centerX:cx, wPx:wPx, h:h, poolIdx:poolIdx }; }
+        });
+      }
+
+      function panelAt(px, py) {
+        for (var i = 0; i < panelRects.length; i++) {
+          var r = panelRects[i];
+          if (px>=r.left && px<=r.right && py>=r.top && py<=r.bottom) return r;
+        }
+        return null;
+      }
+      function localPt(e) {
+        var rect = renderer.domElement.getBoundingClientRect();
+        return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      }
+
+      /* ── cursor "View" label follow ─────────────────────────── */
+      var moveX = cursorEl ? gsap.quickTo(cursorEl, 'x', { duration:0.5, ease:'power3.out' }) : null;
+      var moveY = cursorEl ? gsap.quickTo(cursorEl, 'y', { duration:0.5, ease:'power3.out' }) : null;
+      if (cursorEl) gsap.set(cursorEl, { xPercent:20, yPercent:30, scale:0, autoAlpha:0 });
+
+      var overPanel = false, hoverPanel = false;
+      function setHover(on) { hoverPanel = on; setView(on); }
+      function setView(on) {
+        if (entryActive || entrySettled) on = false;
+        if (dragging) on = false;
+        if (on === overPanel) { updateCursor(); return; }
+        overPanel = on; updateCursor();
+        if (!cursorEl) return;
+        gsap.killTweensOf(cursorEl, 'scale,autoAlpha');
+        gsap.to(cursorEl, { scale: on?1:0, autoAlpha: on?1:0, duration: on?0.35:0.25, ease: on?'power3.out':'power3.in' });
+      }
+      function updateCursor() {
+        var el = renderer.domElement;
+        if (focusState.active||entryActive||entrySettled) { el.style.cursor=''; return; }
+        if (dragging) { el.style.cursor='grabbing'; return; }
+        el.style.cursor = hoverPanel ? 'grab' : '';
+      }
+
+      /* ── input state ────────────────────────────────────────── */
+      var el = renderer.domElement;
+      var dragging = false, dragPid = null, dragLastX = 0;
+      var dragDist = 0, dragVel = 0, dragMoveT = 0;
+      var suppressClick = false, dragPointerType = 'mouse';
+      var lastPx = NaN, lastPy = NaN, pointerInside = false, lastPType = 'mouse';
+
+      function inputLocked() { return focusState.active || entryActive || entrySettled; }
+
+      el.addEventListener('wheel', function(e) {
+        e.preventDefault();
+        if (inputLocked()) return;
+        userInteracted = true; pendingFocus = null;
+        target += (e.deltaY || e.deltaX) * WHEEL_MULT;
+        lastInput = performance.now(); snapped = false;
+      }, { passive: false });
+
+      el.addEventListener('pointerdown', function(e) {
+        suppressClick = false;
+        if (inputLocked() || dragging) return;
+        if (e.button !== 0 && e.pointerType === 'mouse') return;
+        dragging = true; dragPid = e.pointerId; dragPointerType = e.pointerType||'mouse';
+        try { el.setPointerCapture(e.pointerId); } catch(ex) {}
+        var p = localPt(e); dragLastX = p.x; lastPx = p.x; lastPy = p.y;
+        dragDist = 0; dragVel = 0; dragMoveT = performance.now();
+        setView(false); velocity = 0; pendingFocus = null;
+        userInteracted = true; snapped = false; lastInput = dragMoveT;
+      });
+
+      el.addEventListener('pointermove', function(e) {
+        var p = localPt(e);
+        if (dragging && e.pointerId === dragPid) {
+          var sens = dragPointerType === 'mouse' ? DRAG_MULT : TOUCH_DRAG;
+          var dx = p.x - dragLastX;
+          dragLastX = p.x; dragDist += Math.abs(dx);
+          target -= dx * sens;
+          dragVel = dragVel * 0.6 + (-dx * sens) * 0.4;
+          dragMoveT = performance.now(); lastInput = dragMoveT; snapped = false;
+        }
+        lastPx = p.x; lastPy = p.y; lastPType = e.pointerType||'mouse'; pointerInside = true;
+        if (e.pointerType !== 'mouse') return;
+        if (moveX) moveX(p.x); if (moveY) moveY(p.y);
+        if (focusState.active) { setHover(false); return; }
+        setHover(panelAt(p.x, p.y) !== null);
+      });
+
+      function onUp(e) {
+        if (!dragging) return;
+        if (e && dragPid !== null && e.pointerId !== dragPid) return;
+        dragging = false;
+        if (dragPid !== null) { try { el.releasePointerCapture(dragPid); } catch(ex) {} dragPid = null; }
+        velocity = (performance.now() - dragMoveT > FLICK_IDLE_MS) ? 0 : dragVel;
+        dragVel = 0; lastInput = performance.now(); snapped = false;
+        suppressClick = dragDist > (dragPointerType==='mouse' ? CLICK_SLOP : TOUCH_CLICK_SLOP);
+        if (dragPointerType === 'mouse') setHover(panelAt(lastPx, lastPy) !== null);
+        else updateCursor();
+      }
+      el.addEventListener('pointerup',     onUp);
+      el.addEventListener('pointercancel', onUp);
+      el.addEventListener('pointerenter',  function(e) { pointerInside=true; lastPType=e.pointerType||'mouse'; });
+      el.addEventListener('pointerleave',  function()  { pointerInside=false; setHover(false); });
+
+      el.addEventListener('click', function(e) {
+        if (suppressClick) { suppressClick=false; return; }
+        if (inputLocked()) return;
+        var p = localPt(e), hit = panelAt(p.x, p.y);
+        if (!hit) return;
+        if (centeredPanel && hit.poolIdx === centeredPanel.poolIdx) { pendingFocus=null; openFocus(); return; }
+        userInteracted=true; velocity=0;
+        target = centerForIndex(nearestIndex(scroll + hit.centerX));
+        snapped=true; pendingFocus={ srcIndex: hit.srcIndex }; setView(false);
+      });
+
+      /* keyboard nav on root element */
+      root.addEventListener('keydown', function(e) {
+        if (e.key==='ArrowRight')  { e.preventDefault(); step(1); }
+        if (e.key==='ArrowLeft')   { e.preventDefault(); step(-1); }
+        if (e.key==='Escape')      { e.preventDefault(); closeFocus(); }
+      });
+
+      function step(dir) {
+        if (inputLocked()) return;
+        userInteracted=true; velocity=0; pendingFocus=null;
+        target = centerForIndex(nearestIndex(scroll) + dir);
+        snapped=true; lastInput=performance.now();
+      }
+
+      /* ── focus open / close ──────────────────────────────────── */
+      function openFocus() {
+        if (focusState.active || !centeredPanel) return;
+        if (!sources[centeredPanel.srcIndex] || !sources[centeredPanel.srcIndex].tex) return;
+        focusState.active  = true;
+        focusState.srcIndex= centeredPanel.srcIndex;
+        var fp = centeredPanel.poolIdx;
+        focusState.poolIdx = fp;
+        target = centerForIndex(nearestIndex(scroll));
+        var fx = lastCenterX[fp] || 0;
+        var others = pool.map(function(_,idx){ return { idx:idx, x:lastCenterX[idx] }; })
+          .filter(function(o){ return o.idx!==fp && o.x!==undefined; })
+          .map(function(o){ return { idx:o.idx, dist:Math.abs((o.x||0)-fx) }; })
+          .sort(function(a,b){ return a.dist-b.dist; });
+        var rank=0, prevD=-1;
+        var ranked = others.map(function(o){
+          if (prevD>=0 && o.dist-prevD>1) rank++;
+          prevD=o.dist; return { idx:o.idx, rank:rank };
+        });
+        LENS_FX_KEYS.forEach(function(k){ lensFxFull[k]=lensU[k].value; });
+        if (focusState.anim) focusState.anim.kill();
+        var sp = { v: focusScale };
+        var tl = gsap.timeline();
+        tl.to(focusState, { lensFx:0, duration:FOCUS.lensFade, ease:'power3.out' }, 0);
+        tl.to(sp, { v:FOCUS.centerScale, duration:FOCUS.focusDuration, ease:FOCUS.focusEase,
+          onUpdate:function(){ focusScale=sp.v; } }, 0);
+        ranked.forEach(function(o){
+          tl.to(drop, { [o.idx]:1, duration:FOCUS.cardDuration, ease:FOCUS.cardEase }, o.rank*FOCUS.stagger);
+        });
+        focusState.anim = tl;
+        setView(false);
+        closeBtn && closeBtn.classList.add('visible');
+        updateOverlays(focusState.srcIndex, true);
+      }
+
+      function closeFocus() {
+        if (!focusState.active) return;
+        if (focusState.anim) focusState.anim.kill();
+        var fx = lastCenterX[focusState.poolIdx] || 0;
+        var others = pool.map(function(_,idx){ return { idx:idx, x:lastCenterX[idx] }; })
+          .filter(function(o){ return o.x!==undefined && (drop[o.idx]||0)>0; })
+          .map(function(o){ return { idx:o.idx, dist:Math.abs((o.x||0)-fx) }; })
+          .sort(function(a,b){ return b.dist-a.dist; });
+        var rank=0, prevD=-1;
+        var ranked = others.map(function(o){
+          if (prevD>=0 && prevD-o.dist>1) rank++;
+          prevD=o.dist; return { idx:o.idx, rank:rank };
+        });
+        var sp = { v: focusScale };
+        var tl = gsap.timeline({ onComplete:function(){
+          focusState.active=false; focusState.srcIndex=-1; updateCursor();
+          closeBtn && closeBtn.classList.remove('visible');
+        }});
+        tl.to(focusState, { lensFx:1, duration:FOCUS.lensFade*0.8, ease:'power3.inOut' }, 0);
+        tl.to(sp, { v:1, duration:FOCUS.focusDuration*0.85, ease:FOCUS.focusEase,
+          onUpdate:function(){ focusScale=sp.v; } }, 0);
+        ranked.forEach(function(o){
+          tl.to(drop, { [o.idx]:0, duration:FOCUS.cardDuration*0.85, ease:FOCUS.cardEase }, o.rank*FOCUS.stagger*0.7);
+        });
+        focusState.anim = tl;
+      }
+
+      closeBtn && closeBtn.addEventListener('click', closeFocus);
+
+      /* ── title / counter overlays ────────────────────────────── */
+      var revealPlayed = false;
+      var activeIdx = 0;
+
+      function updateOverlays(idx, focused) {
+        var item = ITEMS[idx] || ITEMS[0];
+        if (titleEl)  titleEl.textContent = item.title;
+        if (ctrEl)    ctrEl.textContent   = pad2(idx+1) + '/' + pad2(ITEMS.length);
+        if (liveEl)   liveEl.textContent  = item.title + ', ' + pad2(idx+1) + ' of ' + pad2(ITEMS.length) + (focused?' , difokuskan':'');
+      }
+      updateOverlays(0, false);
+
+      function revealOverlays() {
+        if (revealPlayed) return; revealPlayed = true;
+        if (titleEl)  gsap.fromTo(titleEl,  { autoAlpha:0 }, { autoAlpha:1, duration: reduced?0:1.6, ease:'power2.out' });
+        if (ctrEl)    gsap.fromTo(ctrEl,    { autoAlpha:0 }, { autoAlpha:1, duration: reduced?0:1.6, ease:'power2.out', delay: reduced?0:0.18 });
+      }
+      function hideCounter(on) {
+        if (!ctrEl) return;
+        gsap.to(ctrEl, { autoAlpha: on?0:1, duration: reduced?0:0.4, ease:'power3.out' });
+      }
+
+      /* ── entry animation ─────────────────────────────────────── */
+      function playEntry() {
+        if (!entryOn) { revealOverlays(); return; }
+        if (entryAnim) entryAnim.kill();
+        for (var k=0; k<pEntry.length; k++) pEntry[k]=0;
+        entryActive=true; entrySettled=false;
+        for (var k=0; k<growArr.length; k++) growArr[k]=0;
+        focusState.lensFx=0;
+        target=centerForIndex(nearestIndex(scroll)); scroll=target; velocity=0; snapped=true;
+        layout();
+        var visible=[];
+        for (var k=0; k<lastCenterX.length; k++) { if (lastCenterX[k]!==undefined) visible.push(k); }
+        var tl = gsap.timeline({ delay: ENTRY.delay });
+        var spread = ENTRY.stagger * Math.max(visible.length-1, 1);
+        var lastRiseEnd = 0;
+        visible.forEach(function(idx) {
+          var at = Math.random()*spread;
+          lastRiseEnd = Math.max(lastRiseEnd, at+ENTRY.riseDuration);
+          tl.to(pEntry, { [idx]:1, duration:ENTRY.riseDuration, ease:ENTRY.riseEase }, at);
+        });
+        tl.call(function(){ entryActive=false; entrySettled=true; }, [], lastRiseEnd);
+        var cSrcG = centerIndex(scroll), Ng=sources.length, midRepG=Math.floor(REPEATS/2);
+        var growList=[]; var maxRank=0;
+        for (var k=0; k<lastCenterX.length; k++) {
+          if (lastCenterX[k]===undefined) continue;
+          if (Math.floor(k/Ng)!==midRepG) continue;
+          var di=(k%Ng)-cSrcG;
+          if (di>Ng/2) di-=Ng; if (di<-Ng/2) di+=Ng;
+          var rv=Math.abs(di); maxRank=Math.max(maxRank,rv); growList.push({idx:k,rank:rv});
+        }
+        var growRanked=growList.map(function(v){ return {idx:v.idx,rank:maxRank-v.rank}; });
+        var growStart=lastRiseEnd+ENTRY.growDelay, growEnd=growStart;
+        tl.to(focusState, { lensFx:1, duration:ENTRY.lensBloom, ease:ENTRY.lensBloomEase }, growStart);
+        growRanked.forEach(function(o){
+          var at=growStart+o.rank*ENTRY.growStagger;
+          growEnd=Math.max(growEnd,at+ENTRY.growDuration);
+          tl.to(growArr, { [o.idx]:1, duration:ENTRY.growDuration, ease:ENTRY.growEase }, at);
+        });
+        tl.call(function(){
+          entrySettled=false;
+          for (var k=0;k<growArr.length;k++) growArr[k]=1;
+          revealOverlays(); updateCursor();
+        }, [], growEnd);
+        entryAnim=tl;
+      }
+
+      /* ── render loop ─────────────────────────────────────────── */
+      var raf=0, running=true, vis=true;
+      var EASE_N     = reduced?0.28:0.09;
+      var SNAP_EASE  = reduced?0.22:0.05;
+      var TOUCH_EASE = 0.22;
+
+      function tick() {
+        if (!running) return;
+        if (!vis || document.hidden) { raf=0; return; }
+        if (!dragging) {
+          target += velocity; velocity *= FRICTION;
+          if (Math.abs(velocity)<0.05) velocity=0;
+          if (!snapped && !focusState.active && performance.now()-lastInput>SNAP_IDLE_MS) {
+            target=centerForIndex(nearestIndex(scroll)); snapped=true;
+          }
+        }
+        var follow = (dragging && dragPointerType!=='mouse') ? TOUCH_EASE
+          : (snapped && !pendingFocus) ? SNAP_EASE : EASE_N;
+        scroll += (target-scroll)*follow;
+        var ci = centerIndex(scroll);
+        if (ci!==lastCenter) {
+          lastCenter=ci; activeIdx=ci; updateOverlays(ci, focusState.active);
+          if (focusState.active) hideCounter(true); else hideCounter(false);
+        }
+        var rawSpeed=scroll-prevScroll; prevScroll=scroll;
+        var norm=Math.min(1,Math.abs(rawSpeed)/Math.max(1,SHRINK_MAX));
+        var kk=norm>scrollEnergy?SHRINK_ATTACK:SHRINK_DECAY;
+        scrollEnergy+=(norm-scrollEnergy)*kk;
+        layout();
+        /* refresh hover */
+        if (pointerInside && lastPType==='mouse' && isFinite(lastPx) && !focusState.active)
+          setHover(panelAt(lastPx,lastPy)!==null);
+        /* pending focus snap */
+        if (pendingFocus && !focusState.active && Math.abs(target-scroll)<0.5) {
+          var pf=pendingFocus; pendingFocus=null;
+          if (centeredPanel && centeredPanel.srcIndex===pf.srcIndex) openFocus();
+        }
+        /* lens uniforms */
+        lensU.uCenter.value.set(LENS.posX, LENS.posY);
+        lensU.uAspect.value  = W/H;
+        lensU.uTime.value    = performance.now()*0.001;
+        var rad = function(a){ return a*Math.PI/180; };
+        lensU.uRotation.value = rad(LENS.rotation) + rad(LENS.spin)*(performance.now()*0.001);
+        var fx=focusState.lensFx;
+        LENS_FX_KEYS.forEach(function(k){ lensU[k].value=lensFxFull[k]*fx; });
+        /* two-pass render */
+        renderer.setRenderTarget(rt);
+        renderer.render(scene, camera);
+        renderer.setRenderTarget(null);
+        renderer.render(lensScene, lensCam);
+        raf=requestAnimationFrame(tick);
+      }
+      function startLoop(){ if(!running||raf) return; raf=requestAnimationFrame(tick); }
+      startLoop();
+      playEntry();
+
+      /* ── resize ──────────────────────────────────────────────── */
+      function onResize() {
+        W=Math.max(1,mount.clientWidth); H=Math.max(1,mount.clientHeight);
+        PANEL_H=panelHFor(); recomputeTotal();
+        renderer.setSize(W,H);
+        camera.left=-W/2; camera.right=W/2; camera.top=H/2; camera.bottom=-H/2;
+        camera.updateProjectionMatrix();
+        var ratio=Math.min(window.devicePixelRatio||1,2);
+        renderer.setPixelRatio(ratio);
+        rt.setSize(W*ratio,H*ratio);
+        lensU.uRes.value.set(W*ratio,H*ratio);
+        if (!userInteracted){ scroll=centerForIndex(0); target=scroll; }
+      }
+      var ro=new ResizeObserver(onResize); ro.observe(mount);
+
+      var io=new IntersectionObserver(function(entries){
+        var box=entries[0].boundingClientRect;
+        if (!box||(box.width===0&&box.height===0)) return;
+        vis=entries[0].isIntersecting; if(vis) startLoop();
+      }); io.observe(mount);
+
+      document.addEventListener('visibilitychange',function(){ if(!document.hidden) startLoop(); });
+
+    })();
+
+    // ── CROWD CANVAS (hero walking characters) ─────────────────────
+    (function () {
+      'use strict';
+
+      var SPRITE_SRC = 'https://cdn.21st.dev/assets/localized/abdb8990a7bef8c2f5af3e45f0a3c969c4b0603fba8be92e81347de4ea4e1ed7.png';
+      var ROWS = 15, COLS = 7;
+
+      var canvas = document.getElementById('crowd-canvas');
+      if (!canvas || typeof gsap === 'undefined') return;
+
+      var ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      /* ── helpers ───────────────────────────────────────────────── */
+      function randRange(min, max) { return min + Math.random() * (max - min); }
+      function randIndex(arr) { return (randRange(0, arr.length)) | 0; }
+      function removeAt(arr, i) { return arr.splice(i, 1)[0]; }
+      function removeItem(arr, item) { return removeAt(arr, arr.indexOf(item)); }
+      function removeRandom(arr) { return removeAt(arr, randIndex(arr)); }
+      function getRandom(arr) { return arr[randIndex(arr)]; }
+
+      /* ── stage ─────────────────────────────────────────────────── */
+      var stage = { width: 0, height: 0 };
+
+      /* ── peep factory ──────────────────────────────────────────── */
+      function createPeep(image, rect) {
+        var p = {
+          image: image,
+          rect: rect,
+          width: rect[2],
+          height: rect[3],
+          x: 0, y: 0, anchorY: 0, scaleX: 1,
+          walk: null,
+          render: function (ctx) {
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.scale(p.scaleX, 1);
+            ctx.drawImage(p.image, p.rect[0], p.rect[1], p.rect[2], p.rect[3], 0, 0, p.width, p.height);
+            ctx.restore();
+          }
+        };
+        return p;
+      }
+
+      /* ── walk tween ────────────────────────────────────────────── */
+      function normalWalk(peep, startX, startY, endX) {
+        var xDur = 10, yDur = 0.25;
+        var tl = gsap.timeline();
+        tl.timeScale(randRange(0.5, 1.5));
+        tl.to(peep, { duration: xDur, x: endX, ease: 'none' }, 0);
+        tl.to(peep, { duration: yDur, repeat: (xDur / yDur), yoyo: true, y: startY - 10 }, 0);
+        return tl;
+      }
+
+      /* ── reset peep position ───────────────────────────────────── */
+      function resetPeep(peep) {
+        var dir = Math.random() > 0.5 ? 1 : -1;
+        var ease = gsap.parseEase('power2.in');
+        // place characters in the bottom 60% of the canvas
+        var offsetY = 20 - 80 * ease(Math.random());
+        var startY = stage.height - peep.height + offsetY;
+        // clamp so characters are never above 40% height
+        startY = Math.max(stage.height * 0.4, startY);
+        var startX, endX;
+        if (dir === 1) { startX = -peep.width;               endX = stage.width + peep.width; peep.scaleX = 1; }
+        else           { startX = stage.width + peep.width;   endX = -peep.width;              peep.scaleX = -1; }
+        peep.x = startX; peep.y = startY; peep.anchorY = startY;
+        return { startX: startX, startY: startY, endX: endX };
+      }
+
+      /* ── crowd state ───────────────────────────────────────────── */
+      var allPeeps = [], availablePeeps = [], crowd = [];
+
+      function addPeepToCrowd() {
+        var peep = removeRandom(availablePeeps);
+        var pos  = resetPeep(peep);
+        var tl   = normalWalk(peep, pos.startX, pos.startY, pos.endX);
+        tl.eventCallback('onComplete', function () {
+          removeItem(crowd, peep);
+          availablePeeps.push(peep);
+          addPeepToCrowd();
+        });
+        peep.walk = tl;
+        crowd.push(peep);
+        crowd.sort(function (a, b) { return a.anchorY - b.anchorY; });
+        return peep;
+      }
+
+      function initCrowd() {
+        while (availablePeeps.length) {
+          addPeepToCrowd().walk.progress(Math.random());
+        }
+      }
+
+      /* ── render loop ───────────────────────────────────────────── */
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      function render() {
+        if (!canvas) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        ctx.scale(dpr, dpr);
+        crowd.forEach(function (p) { p.render(ctx); });
+        ctx.restore();
+      }
+
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        var wrap = document.getElementById('crowd-wrap');
+        stage.width  = wrap ? wrap.offsetWidth  : (canvas.offsetWidth  || 800);
+        stage.height = wrap ? wrap.offsetHeight : (canvas.offsetHeight || 260);
+        canvas.width  = stage.width  * dpr;
+        canvas.height = stage.height * dpr;
+        crowd.forEach(function (p) { if (p.walk) p.walk.kill(); });
+        crowd.length = 0;
+        availablePeeps.length = 0;
+        availablePeeps.push.apply(availablePeeps, allPeeps);
+        initCrowd();
+      }
+
+      /* ── init on sprite load ─────────────────────────────────── */
+      var img = new Image();
+      img.crossOrigin = 'anonymous';
+      img.onload = function () {
+        var rW = img.naturalWidth  / ROWS;
+        var rH = img.naturalHeight / COLS;
+        var total = ROWS * COLS;
+        for (var i = 0; i < total; i++) {
+          allPeeps.push(createPeep(img, [
+            (i % ROWS) * rW,
+            ((i / ROWS) | 0) * rH,
+            rW, rH
+          ]));
+        }
+        availablePeeps.push.apply(availablePeeps, allPeeps);
+        resize();
+        gsap.ticker.add(render);
+      };
+      img.src = SPRITE_SRC;
+
+      window.addEventListener('resize', function () {
+        resize();
+      });
+
     })();
 
     // ── GALLERY LIGHTBOX ───────────────────────────────────────────
