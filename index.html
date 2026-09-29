@@ -383,289 +383,230 @@
             border: 0;
         }
 
-        /* ── BENTO GALLERY ──────────────────────────────────── */
-        .bento-grid {
+        /* ── LAYOUT GRID GALLERY ─────────────────────────────── */
+        .lg-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            grid-auto-rows: 90px;
-            gap: 8px;
-        }
-
-        /* Mobile: 2-col, all span 1 wide, stacked */
-        @media (max-width: 479px) {
-            .bento-grid { grid-auto-rows: 75px; gap: 6px; }
-            .b-span-2 { grid-column: span 2; }
-            .b-span-1 { grid-column: span 1; }
-            .b-row-4  { grid-row: span 3; }
-            .b-row-2  { grid-row: span 2; }
-        }
-
-        @media (min-width: 480px) and (max-width: 767px) {
-            .bento-grid { grid-auto-rows: 80px; gap: 10px; }
-            .b-span-2 { grid-column: span 2; }
-            .b-span-1 { grid-column: span 1; }
-            .b-row-4  { grid-row: span 3; }
-            .b-row-2  { grid-row: span 2; }
+            grid-template-rows: 220px 220px;
+            gap: 12px;
+            position: relative;
         }
 
         @media (min-width: 768px) {
-            .bento-grid {
-                grid-template-columns: repeat(4, 1fr);
-                grid-auto-rows: 80px;
-                gap: 12px;
+            .lg-grid {
+                grid-template-columns: 2fr 1fr 1fr;
+                grid-template-rows: 280px 280px;
+                gap: 16px;
             }
-            .b-span-2 { grid-column: span 2; }
-            .b-span-1 { grid-column: span 1; }
-            .b-row-3  { grid-row: span 3; }
-            .b-row-2  { grid-row: span 2; }
-            .b-row-4  { grid-row: span 4; }
         }
 
-        /* Default (applied on all sizes, overridden by breakpoints above) */
-        .b-span-2 { grid-column: span 2; }
-        .b-span-1 { grid-column: span 1; }
-        .b-row-3  { grid-row: span 3; }
-        .b-row-2  { grid-row: span 2; }
-        .b-row-4  { grid-row: span 4; }
+        /* card 1: tall left spanning 2 rows on desktop, wide on mobile */
+        .lg-card:nth-child(1) { grid-column: span 2; }
+        @media (min-width: 768px) {
+            .lg-card:nth-child(1) { grid-column: 1; grid-row: span 2; }
+        }
 
-        .bento-item {
+        /* card 2: top-right */
+        .lg-card:nth-child(2) { grid-column: 1; }
+        @media (min-width: 768px) {
+            .lg-card:nth-child(2) { grid-column: 2; grid-row: 1; }
+        }
+
+        /* card 3: mid-right */
+        .lg-card:nth-child(3) { grid-column: 2; }
+        @media (min-width: 768px) {
+            .lg-card:nth-child(3) { grid-column: 3; grid-row: 1; }
+        }
+
+        /* card 4: bottom-right spanning 2 cols */
+        .lg-card:nth-child(4) { grid-column: span 2; }
+        @media (min-width: 768px) {
+            .lg-card:nth-child(4) { grid-column: 2 / span 2; grid-row: 2; }
+        }
+
+        /* base card style */
+        .lg-card {
             position: relative;
             overflow: hidden;
-            border: 3px solid #000;
+            border: 4px solid #000;
             cursor: pointer;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-            box-shadow: 4px 4px 0 0 #000;
-            touch-action: manipulation;
+            background: #111;
+            box-shadow: 6px 6px 0 0 #ccff00;
+            transition: box-shadow 0.15s ease, transform 0.15s ease;
         }
 
-        @media (min-width: 768px) {
-            .bento-item {
-                border-width: 4px;
-                box-shadow: 6px 6px 0 0 #000;
-            }
-            .bento-item:hover {
-                transform: translate(-3px, -3px);
-                box-shadow: 9px 9px 0 0 #000;
-            }
+        .lg-card:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 9px 9px 0 0 #ccff00;
         }
 
-        .bento-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .lg-card img {
+            width: 100%; height: 100%;
+            object-fit: cover; object-position: top;
             display: block;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s ease;
         }
 
-        @media (hover: hover) {
-            .bento-item:hover img { transform: scale(1.05); }
+        .lg-card:hover img { transform: scale(1.06); }
+
+        /* dark overlay always present, deepens on hover */
+        .lg-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.18) 55%, transparent 100%);
+            transition: opacity 0.3s ease;
         }
 
-        /* On touch: caption always visible */
-        .bento-item .bento-caption {
+        /* content slides up from bottom */
+        .lg-card-content {
             position: absolute;
             bottom: 0; left: 0; right: 0;
-            background: #000;
-            color: #ccff00;
-            font-family: 'Archivo Black', sans-serif;
-            font-size: 10px;
-            text-transform: uppercase;
-            padding: 5px 8px;
+            padding: 20px 18px 16px;
+            transform: translateY(30%);
+            opacity: 0;
+            transition: transform 0.35s cubic-bezier(.22,.68,0,1.2), opacity 0.3s ease;
+            z-index: 4;
+        }
+
+        .lg-card:hover .lg-card-content,
+        .lg-card.lg-active .lg-card-content {
             transform: translateY(0);
+            opacity: 1;
         }
 
-        @media (hover: hover) {
-            .bento-item .bento-caption { transform: translateY(100%); transition: transform 0.2s ease; }
-            .bento-item:hover .bento-caption { transform: translateY(0); }
-        }
-
-        .bento-item .bento-tag {
-            position: absolute;
-            top: 8px; left: 8px;
-            background: #ff5722;
-            color: #fff;
+        .lg-card-tag {
+            display: inline-block;
+            background: #ccff00;
+            color: #000;
             font-family: 'Archivo Black', sans-serif;
             font-size: 9px;
             text-transform: uppercase;
-            padding: 3px 7px;
+            letter-spacing: 0.1em;
+            padding: 3px 8px;
             border: 2px solid #000;
-            letter-spacing: 0.08em;
+            margin-bottom: 8px;
         }
 
-        /* ── LIGHTBOX MODAL ─────────────────────────────────── */
-        #gallery-modal {
+        .lg-card-title {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(14px, 2.5vw, 22px);
+            color: #fff;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin: 0 0 6px;
+        }
+
+        .lg-card-desc {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(11px, 1.5vw, 13px);
+            color: #ddd;
+            font-weight: 500;
+            margin: 0;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* ── EXPANDED (selected) card — fixed centre overlay ─── */
+        #lg-expanded-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            z-index: 1000;
-            background: rgba(0,0,0,0.95);
+            z-index: 200;
+            background: rgba(0,0,0,0);
+            transition: background 0.3s ease;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
-            gap: 12px;
-            padding: 16px;
-            /* iOS safe area */
-            padding-top: max(16px, env(safe-area-inset-top));
-            padding-bottom: max(16px, env(safe-area-inset-bottom));
-            padding-left: max(16px, env(safe-area-inset-left));
-            padding-right: max(16px, env(safe-area-inset-right));
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
+            padding: 20px;
         }
 
-        #gallery-modal.open {
+        #lg-expanded-overlay.lg-open {
             display: flex;
-            animation: modal-in 0.2s ease;
+            background: rgba(0,0,0,0.55);
         }
 
-        @keyframes modal-in {
-            from { opacity: 0; transform: scale(0.97); }
-            to   { opacity: 1; transform: scale(1); }
-        }
-
-        #gallery-modal .modal-img-wrap {
+        #lg-expanded-box {
             position: relative;
-            max-width: 900px;
-            width: 100%;
-            border: 3px solid #ccff00;
-            box-shadow: 6px 6px 0 0 #ccff00;
-        }
-
-        @media (min-width: 768px) {
-            #gallery-modal .modal-img-wrap {
-                border-width: 4px;
-                box-shadow: 12px 12px 0 0 #ccff00;
-            }
-        }
-
-        #gallery-modal img {
-            width: 100%;
-            max-height: 55vh;
-            object-fit: contain;
-            display: block;
+            width: min(680px, 92vw);
+            max-height: 90vh;
+            overflow: hidden;
+            border: 4px solid #000;
+            box-shadow: 10px 10px 0 0 #ccff00;
+            transform: scale(0.88) translateY(40px);
+            opacity: 0;
+            transition: transform 0.35s cubic-bezier(.22,.68,0,1.2), opacity 0.3s ease;
             background: #111;
         }
 
-        @media (min-width: 768px) {
-            #gallery-modal img { max-height: 65vh; }
+        #lg-expanded-overlay.lg-open #lg-expanded-box {
+            transform: scale(1) translateY(0);
+            opacity: 1;
         }
 
-        #gallery-modal .modal-info {
-            max-width: 900px;
+        #lg-expanded-box img {
             width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+            height: 380px;
+            object-fit: cover;
+            object-position: top;
+            display: block;
         }
 
-        @media (min-width: 480px) {
-            #gallery-modal .modal-info {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-            }
+        @media (max-width: 480px) { #lg-expanded-box img { height: 220px; } }
+
+        #lg-expanded-body {
+            padding: 20px 22px 22px;
+            background: #000;
+            border-top: 4px solid #ccff00;
         }
 
-        #gallery-modal .modal-title {
-            font-family: 'Archivo Black', sans-serif;
-            color: #ccff00;
-            font-size: 1rem;
-            text-transform: uppercase;
-        }
-
-        @media (min-width: 640px) {
-            #gallery-modal .modal-title { font-size: 1.3rem; }
-        }
-
-        #gallery-modal .modal-desc {
-            color: #ccc;
-            font-weight: 600;
-            font-size: 0.8rem;
-            margin-top: 2px;
-        }
-
-        #gallery-modal .modal-close {
-            background: #ff5722;
-            color: #000;
-            border: 3px solid #ccff00;
-            font-family: 'Archivo Black', sans-serif;
-            font-size: 0.9rem;
-            padding: 10px 20px;
-            cursor: pointer;
-            text-transform: uppercase;
-            box-shadow: 3px 3px 0 0 #ccff00;
-            transition: all 0.1s;
-            min-height: 44px;
-            align-self: flex-start;
-            touch-action: manipulation;
-        }
-
-        #gallery-modal .modal-close:active,
-        #gallery-modal .modal-close:hover {
+        #lg-expanded-tag {
+            display: inline-block;
             background: #ccff00;
-            box-shadow: 5px 5px 0 0 #fff;
+            color: #000;
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 3px 10px;
+            border: 2px solid #000;
+            margin-bottom: 10px;
         }
 
-        /* Nav arrows for swipe hint */
-        #gallery-modal .modal-nav {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
+        #lg-expanded-title {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(18px, 4vw, 28px);
+            color: #ccff00;
+            text-transform: uppercase;
+            margin: 0 0 8px;
         }
 
-        #gallery-modal .modal-nav button {
+        #lg-expanded-desc {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            color: #ccc;
+            font-weight: 500;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        #lg-expanded-close {
+            position: absolute;
+            top: 10px; right: 12px;
             background: #000;
             color: #ccff00;
             border: 3px solid #ccff00;
             font-family: 'Archivo Black', sans-serif;
-            font-size: 1.2rem;
-            width: 48px;
-            height: 48px;
+            font-size: 13px;
+            padding: 6px 14px;
             cursor: pointer;
-            touch-action: manipulation;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            z-index: 10;
+            transition: background 0.15s;
         }
 
-        #gallery-modal .modal-nav button:active {
-            background: #ccff00;
-            color: #000;
-        }
+        #lg-expanded-close:hover { background: #ccff00; color: #000; }
 
-        /* Thumbnail dock in modal */
-        #gallery-modal .modal-dock {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            justify-content: center;
-            max-width: 900px;
-        }
-
-        #gallery-modal .dock-thumb {
-            width: 48px;
-            height: 36px;
-            border: 3px solid #444;
-            cursor: pointer;
-            object-fit: cover;
-            touch-action: manipulation;
-        }
-
-        @media (min-width: 480px) {
-            #gallery-modal .dock-thumb { width: 56px; height: 40px; }
-        }
-
-        #gallery-modal .dock-thumb:active,
-        #gallery-modal .dock-thumb.active {
-            border-color: #ccff00;
-        }
-
-        @media (hover: hover) {
-            #gallery-modal .dock-thumb:hover {
-                border-color: #ccff00;
-                transform: translateY(-4px);
-            }
-        }
     </style>
 </head>
 
@@ -998,7 +939,7 @@
         </div>
     </section>
 
-    <!-- Bento Gallery: Semua Hasil Proyek -->
+    <!-- Layout Grid Gallery -->
     <section class="bg-black border-b-8 border-[#ccff00] py-16" data-aos="fade-up">
         <div class="container mx-auto px-6">
             <div class="flex justify-between items-end mb-10 border-b-4 border-[#ccff00] pb-4">
@@ -1007,71 +948,82 @@
                 <span class="hidden md:block text-3xl font-bold text-[#ccff00]">⬛⬛⬛</span>
             </div>
 
-            <!-- Bento Grid -->
-            <div class="bento-grid">
-                <!-- 1: PPT Academic - tall left -->
-                <div class="bento-item b-span-1 b-row-4" style="background:#ffe600;"
-                    data-gallery-img="ppt_academic.jpg"
-                    data-gallery-title="PPT Academic System"
-                    data-gallery-desc="Presentasi neobrutalis untuk sistem akademik dengan data visualisasi bold.">
+            <!-- Layout Grid -->
+            <div class="lg-grid" id="lg-grid">
+
+                <!-- Card 1: PPT Academic — tall left (col-span-2 mobile, row-span-2 desktop) -->
+                <div class="lg-card"
+                     data-tag="PPT"
+                     data-title="PPT Academic System"
+                     data-desc="Presentasi neobrutalis untuk sistem akademik dengan data visualisasi bold dan layout yang kuat.">
                     <img src="ppt_academic.jpg" alt="PPT Academic System" loading="lazy">
-                    <span class="bento-tag">PPT</span>
-                    <div class="bento-caption">PPT Academic System</div>
+                    <div class="lg-card-overlay"></div>
+                    <div class="lg-card-content">
+                        <span class="lg-card-tag">PPT</span>
+                        <h3 class="lg-card-title">PPT Academic System</h3>
+                        <p class="lg-card-desc">Presentasi neobrutalis untuk sistem akademik dengan data visualisasi bold.</p>
+                    </div>
                 </div>
 
-                <!-- 2: Helpdesk Web - wide top -->
-                <div class="bento-item b-span-2 b-row-2" style="background:#00e5ff;"
-                    data-gallery-img="helpdesk_preview.jpg"
-                    data-gallery-title="Laravel Helpdesk System"
-                    data-gallery-desc="Dashboard helpdesk full-featured dengan manajemen tiket real-time.">
-                    <img src="helpdesk_preview.jpg" alt="Laravel Helpdesk" loading="lazy">
-                    <span class="bento-tag">LARAVEL</span>
-                    <div class="bento-caption">Laravel Helpdesk</div>
+                <!-- Card 2: Helpdesk — top right -->
+                <div class="lg-card"
+                     data-tag="LARAVEL"
+                     data-title="Laravel Helpdesk System"
+                     data-desc="Dashboard helpdesk full-featured dengan manajemen tiket, autentikasi, dan notifikasi real-time.">
+                    <img src="helpdesk_preview.jpg" alt="Laravel Helpdesk System" loading="lazy">
+                    <div class="lg-card-overlay"></div>
+                    <div class="lg-card-content">
+                        <span class="lg-card-tag">LARAVEL</span>
+                        <h3 class="lg-card-title">Laravel Helpdesk</h3>
+                        <p class="lg-card-desc">Dashboard helpdesk full-featured dengan manajemen tiket real-time.</p>
+                    </div>
                 </div>
 
-                <!-- 3: PPT Skripsi - tall right -->
-                <div class="bento-item b-span-1 b-row-4" style="background:#ff5722;"
-                    data-gallery-img="ppt_skripsi.jpg"
-                    data-gallery-title="PPT Metodologi Penelitian"
-                    data-gallery-desc="Slide presentasi sidang skripsi dengan flowchart penelitian yang jelas.">
-                    <img src="ppt_skripsi.jpg" alt="PPT Skripsi" loading="lazy">
-                    <span class="bento-tag" style="background:#ffe600; color:#000;">PPT</span>
-                    <div class="bento-caption">PPT Skripsi Sidang</div>
+                <!-- Card 3: PPT Skripsi — mid right -->
+                <div class="lg-card"
+                     data-tag="PPT"
+                     data-title="PPT Metodologi Penelitian"
+                     data-desc="Slide presentasi sidang skripsi dengan flowchart penelitian yang jelas dan desain profesional.">
+                    <img src="ppt_skripsi.jpg" alt="PPT Metodologi Penelitian" loading="lazy">
+                    <div class="lg-card-overlay"></div>
+                    <div class="lg-card-content">
+                        <span class="lg-card-tag">PPT</span>
+                        <h3 class="lg-card-title">PPT Skripsi Sidang</h3>
+                        <p class="lg-card-desc">Slide presentasi sidang skripsi dengan flowchart penelitian yang jelas.</p>
+                    </div>
                 </div>
 
-                <!-- 4: Digital Agency - wide bottom -->
-                <div class="bento-item b-span-2 b-row-2" style="background:#ccff00;"
-                    data-gallery-img="agency_preview.jpg"
-                    data-gallery-title="Digital Agency & Web Design"
-                    data-gallery-desc="Website agency modern dengan hero section full-screen dan CTA bold.">
-                    <img src="agency_preview.jpg" alt="Digital Agency" loading="lazy">
-                    <span class="bento-tag" style="background:#000;">WEB</span>
-                    <div class="bento-caption">Digital Agency Website</div>
+                <!-- Card 4: Digital Agency — wide bottom right -->
+                <div class="lg-card"
+                     data-tag="WEB"
+                     data-title="Digital Agency & Web Design"
+                     data-desc="Website agency digital modern dengan desain UI/UX yang menawan, layout responsif, dan animasi smooth.">
+                    <img src="agency_preview.jpg" alt="Digital Agency & Web Design" loading="lazy">
+                    <div class="lg-card-overlay"></div>
+                    <div class="lg-card-content">
+                        <span class="lg-card-tag">WEB</span>
+                        <h3 class="lg-card-title">Digital Agency Website</h3>
+                        <p class="lg-card-desc">Website agency modern dengan hero section full-screen dan CTA bold.</p>
+                    </div>
                 </div>
+
             </div>
 
-            <p class="text-center text-[#444] font-bold mt-8 text-sm tracking-widest">— DRAG & KLIK UNTUK PREVIEW PENUH —</p>
+            <p class="text-center text-[#555] font-bold mt-8 text-sm tracking-widest">— KLIK KARTU UNTUK DETAIL —</p>
         </div>
     </section>
 
-    <!-- Gallery Lightbox Modal -->
-    <div id="gallery-modal" role="dialog" aria-modal="true" aria-label="Image preview">
-        <div class="modal-img-wrap">
-            <img id="modal-main-img" src="" alt="">
-        </div>
-        <div class="modal-info">
-            <div>
-                <div class="modal-title" id="modal-title"></div>
-                <div class="modal-desc" id="modal-desc"></div>
+    <!-- Expanded card overlay (LayoutGrid style) -->
+    <div id="lg-expanded-overlay" role="dialog" aria-modal="true" aria-label="Detail proyek">
+        <div id="lg-expanded-box">
+            <button id="lg-expanded-close" aria-label="Tutup">✕ TUTUP</button>
+            <img id="lg-expanded-img" src="" alt="">
+            <div id="lg-expanded-body">
+                <span id="lg-expanded-tag"></span>
+                <h3 id="lg-expanded-title"></h3>
+                <p id="lg-expanded-desc"></p>
             </div>
-            <button class="modal-close" id="modal-close-btn" aria-label="Tutup">✕ TUTUP</button>
         </div>
-        <!-- Prev / Next arrows -->
-        <div class="modal-nav">
-            <button id="modal-prev-btn" aria-label="Sebelumnya">←</button>
-            <button id="modal-next-btn" aria-label="Berikutnya">→</button>
-        </div>
-        <div class="modal-dock" id="modal-dock"></div>
     </div>
 
     <!-- About Section -->
@@ -2255,99 +2207,63 @@
 
     })();
 
-    // ── GALLERY LIGHTBOX ───────────────────────────────────────────
-    const GALLERY_ITEMS = [
-        { src: 'ppt_academic.jpg',     title: 'PPT Academic System',          desc: 'Presentasi neobrutalis untuk sistem akademik dengan data visualisasi bold.' },
-        { src: 'helpdesk_preview.jpg', title: 'Laravel Helpdesk System',       desc: 'Dashboard helpdesk full-featured dengan manajemen tiket real-time.' },
-        { src: 'ppt_skripsi.jpg',      title: 'PPT Metodologi Penelitian',     desc: 'Slide presentasi sidang skripsi dengan flowchart penelitian yang jelas.' },
-        { src: 'agency_preview.jpg',   title: 'Digital Agency & Web Design',   desc: 'Website agency modern dengan hero section full-screen dan CTA bold.' },
-    ];
+    // ── LAYOUT GRID GALLERY ───────────────────────────────────────
+    (function () {
+        var overlay  = document.getElementById('lg-expanded-overlay');
+        var box      = document.getElementById('lg-expanded-box');
+        var closeBtn = document.getElementById('lg-expanded-close');
+        var expImg   = document.getElementById('lg-expanded-img');
+        var expTag   = document.getElementById('lg-expanded-tag');
+        var expTitle = document.getElementById('lg-expanded-title');
+        var expDesc  = document.getElementById('lg-expanded-desc');
+        if (!overlay) return;
 
-    const modal = document.getElementById('gallery-modal');
-    const modalImg = document.getElementById('modal-main-img');
-    const modalTitle = document.getElementById('modal-title');
-    const modalDesc = document.getElementById('modal-desc');
-    const modalDock = document.getElementById('modal-dock');
-    const modalClose = document.getElementById('modal-close-btn');
-    const modalPrev = document.getElementById('modal-prev-btn');
-    const modalNext = document.getElementById('modal-next-btn');
-    let currentIdx = 0;
-
-    function buildDock() {
-        modalDock.innerHTML = '';
-        GALLERY_ITEMS.forEach(function(item, idx) {
-            const thumb = document.createElement('img');
-            thumb.src = item.src;
-            thumb.alt = item.title;
-            thumb.className = 'dock-thumb' + (idx === currentIdx ? ' active' : '');
-            thumb.addEventListener('click', function() { openModal(item.src, item.title, item.desc, idx); });
-            modalDock.appendChild(thumb);
-        });
-    }
-
-    function openModal(src, title, desc, idx) {
-        currentIdx = (idx !== undefined) ? idx : GALLERY_ITEMS.findIndex(function(i){ return i.src === src; });
-        if (currentIdx < 0) currentIdx = 0;
-        modalImg.src = GALLERY_ITEMS[currentIdx].src;
-        modalImg.alt = GALLERY_ITEMS[currentIdx].title;
-        modalTitle.textContent = GALLERY_ITEMS[currentIdx].title;
-        modalDesc.textContent = GALLERY_ITEMS[currentIdx].desc;
-        buildDock();
-        modal.classList.add('open');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal() {
-        modal.classList.remove('open');
-        document.body.style.overflow = '';
-    }
-
-    modalClose.addEventListener('click', closeModal);
-    modalPrev.addEventListener('click', function() {
-        openModal(null, null, null, (currentIdx - 1 + GALLERY_ITEMS.length) % GALLERY_ITEMS.length);
-    });
-    modalNext.addEventListener('click', function() {
-        openModal(null, null, null, (currentIdx + 1) % GALLERY_ITEMS.length);
-    });
-
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) closeModal();
-    });
-
-    // Keyboard nav
-    document.addEventListener('keydown', function(e) {
-        if (!modal.classList.contains('open')) return;
-        if (e.key === 'Escape') closeModal();
-        if (e.key === 'ArrowRight') openModal(null, null, null, (currentIdx + 1) % GALLERY_ITEMS.length);
-        if (e.key === 'ArrowLeft')  openModal(null, null, null, (currentIdx - 1 + GALLERY_ITEMS.length) % GALLERY_ITEMS.length);
-    });
-
-    // Touch swipe support (Android + iOS)
-    var touchStartX = 0;
-    var touchStartY = 0;
-    modal.addEventListener('touchstart', function(e) {
-        touchStartX = e.touches[0].clientX;
-        touchStartY = e.touches[0].clientY;
-    }, { passive: true });
-    modal.addEventListener('touchend', function(e) {
-        if (!modal.classList.contains('open')) return;
-        var dx = e.changedTouches[0].clientX - touchStartX;
-        var dy = e.changedTouches[0].clientY - touchStartY;
-        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
-            if (dx < 0) openModal(null, null, null, (currentIdx + 1) % GALLERY_ITEMS.length);
-            else        openModal(null, null, null, (currentIdx - 1 + GALLERY_ITEMS.length) % GALLERY_ITEMS.length);
+        function openCard(card) {
+            expImg.src        = card.querySelector('img').src;
+            expImg.alt        = card.dataset.title || '';
+            expTag.textContent   = card.dataset.tag   || '';
+            expTitle.textContent = card.dataset.title  || '';
+            expDesc.textContent  = card.dataset.desc   || '';
+            overlay.style.display = 'flex';
+            // force reflow so transition fires
+            overlay.offsetHeight;
+            overlay.classList.add('lg-open');
+            document.body.style.overflow = 'hidden';
         }
-    }, { passive: true });
 
-    // Wire bento items
-    document.querySelectorAll('[data-gallery-img]').forEach(function(el) {
-        el.addEventListener('click', function() {
-            const src   = el.dataset.galleryImg;
-            const title = el.dataset.galleryTitle;
-            const desc  = el.dataset.galleryDesc;
-            openModal(src, title, desc);
+        function closeCard() {
+            overlay.classList.remove('lg-open');
+            document.body.style.overflow = '';
+            // hide after transition
+            setTimeout(function () {
+                if (!overlay.classList.contains('lg-open'))
+                    overlay.style.display = 'none';
+            }, 360);
+        }
+
+        // wire each card
+        document.querySelectorAll('.lg-card').forEach(function (card) {
+            card.addEventListener('click', function () { openCard(card); });
+            card.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCard(card); }
+            });
+            card.setAttribute('tabindex', '0');
+            card.setAttribute('role', 'button');
         });
-    });
+
+        // close button
+        closeBtn.addEventListener('click', closeCard);
+
+        // click outside box closes
+        overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) closeCard();
+        });
+
+        // Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && overlay.classList.contains('lg-open')) closeCard();
+        });
+    })();
     </script>
     <script>
         AOS.init({
