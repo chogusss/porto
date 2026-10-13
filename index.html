@@ -384,44 +384,49 @@
         }
 
         /* ── LAYOUT GRID GALLERY ─────────────────────────────── */
+
+        /* Filter tabs */
+        .lg-filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .lg-filter-btn {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 6px 14px;
+            border: 3px solid #ccff00;
+            color: #ccff00;
+            background: transparent;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+        }
+        .lg-filter-btn:hover,
+        .lg-filter-btn.active {
+            background: #ccff00;
+            color: #000;
+        }
+
         .lg-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 220px 220px;
+            grid-template-columns: repeat(2, 1fr);
             gap: 12px;
             position: relative;
         }
 
-        @media (min-width: 768px) {
-            .lg-grid {
-                grid-template-columns: 2fr 1fr 1fr;
-                grid-template-rows: 280px 280px;
-                gap: 16px;
-            }
+        @media (min-width: 640px) {
+            .lg-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
+        }
+        @media (min-width: 1024px) {
+            .lg-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
         }
 
-        /* card 1: tall left spanning 2 rows on desktop, wide on mobile */
-        .lg-card:nth-child(1) { grid-column: span 2; }
-        @media (min-width: 768px) {
-            .lg-card:nth-child(1) { grid-column: 1; grid-row: span 2; }
-        }
-
-        /* card 2: top-right */
-        .lg-card:nth-child(2) { grid-column: 1; }
-        @media (min-width: 768px) {
-            .lg-card:nth-child(2) { grid-column: 2; grid-row: 1; }
-        }
-
-        /* card 3: mid-right */
-        .lg-card:nth-child(3) { grid-column: 2; }
-        @media (min-width: 768px) {
-            .lg-card:nth-child(3) { grid-column: 3; grid-row: 1; }
-        }
-
-        /* card 4: bottom-right spanning 2 cols */
-        .lg-card:nth-child(4) { grid-column: span 2; }
-        @media (min-width: 768px) {
-            .lg-card:nth-child(4) { grid-column: 2 / span 2; grid-row: 2; }
+        /* Masonry-like: first card of each category row gets a tall span */
+        .lg-card.lg-tall {
+            grid-row: span 2;
         }
 
         /* base card style */
@@ -433,7 +438,15 @@
             background: #111;
             box-shadow: 6px 6px 0 0 #ccff00;
             transition: box-shadow 0.15s ease, transform 0.15s ease;
+            height: 200px;
         }
+
+        @media (min-width: 640px) { .lg-card { height: 220px; } }
+        @media (min-width: 1024px) { .lg-card { height: 240px; } }
+
+        .lg-card.lg-tall { height: 412px; }
+        @media (min-width: 640px) { .lg-card.lg-tall { height: 454px; } }
+        @media (min-width: 1024px) { .lg-card.lg-tall { height: 496px; } }
 
         .lg-card:hover {
             transform: translate(-3px, -3px);
@@ -548,12 +561,12 @@
         #lg-expanded-box img {
             width: 100%;
             height: 380px;
-            object-fit: cover;
-            object-position: top;
+            object-fit: contain;
+            object-position: center;
             display: block;
         }
 
-        @media (max-width: 480px) { #lg-expanded-box img { height: 220px; } }
+        @media (max-width: 480px) { #lg-expanded-box img { height: 260px; } }
 
         #lg-expanded-body {
             padding: 20px 22px 22px;
@@ -606,6 +619,30 @@
         }
 
         #lg-expanded-close:hover { background: #ccff00; color: #000; }
+
+        /* count badge on gallery cards */
+        .lg-count-badge {
+            position: absolute;
+            top: 12px; left: 12px;
+            background: #000;
+            color: #ccff00;
+            font-family: 'Archivo Black', sans-serif;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            padding: 4px 10px;
+            border: 2px solid #ccff00;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        /* slide prev/next hover */
+        #lg-slide-prev:hover, #lg-slide-next:hover {
+            background: rgba(0,0,0,0.75) !important;
+        }
+
+        @media (max-width: 480px) {
+            #lg-slide-prev, #lg-slide-next { width: 36px !important; font-size: 18px !important; }
+        }
 
     </style>
 </head>
@@ -951,53 +988,32 @@
             <!-- Layout Grid -->
             <div class="lg-grid" id="lg-grid">
 
-                <!-- Card 1: PPT Academic — tall left (col-span-2 mobile, row-span-2 desktop) -->
-                <div class="lg-card"
-                     data-tag="PPT"
-                     data-title="PPT Academic System"
-                     data-desc="Presentasi neobrutalis untuk sistem akademik dengan data visualisasi bold dan layout yang kuat.">
-                    <img src="ppt_academic.jpg" alt="PPT Academic System" loading="lazy">
-                    <div class="lg-card-overlay"></div>
-                    <div class="lg-card-content">
-                        <span class="lg-card-tag">PPT</span>
-                        <h3 class="lg-card-title">PPT Academic System</h3>
-                        <p class="lg-card-desc">Presentasi neobrutalis untuk sistem akademik dengan data visualisasi bold.</p>
-                    </div>
-                </div>
+                <!-- ── WEB PROJECTS ─────────────────────────────── -->
 
-                <!-- Card 2: Helpdesk — top right -->
-                <div class="lg-card"
-                     data-tag="LARAVEL"
-                     data-title="Laravel Helpdesk System"
-                     data-desc="Dashboard helpdesk full-featured dengan manajemen tiket, autentikasi, dan notifikasi real-time.">
-                    <img src="helpdesk_preview.jpg" alt="Laravel Helpdesk System" loading="lazy">
-                    <div class="lg-card-overlay"></div>
-                    <div class="lg-card-content">
-                        <span class="lg-card-tag">LARAVEL</span>
-                        <h3 class="lg-card-title">Laravel Helpdesk</h3>
-                        <p class="lg-card-desc">Dashboard helpdesk full-featured dengan manajemen tiket real-time.</p>
-                    </div>
-                </div>
-
-                <!-- Card 3: PPT Skripsi — mid right -->
-                <div class="lg-card"
-                     data-tag="PPT"
-                     data-title="PPT Metodologi Penelitian"
-                     data-desc="Slide presentasi sidang skripsi dengan flowchart penelitian yang jelas dan desain profesional.">
-                    <img src="ppt_skripsi.jpg" alt="PPT Metodologi Penelitian" loading="lazy">
-                    <div class="lg-card-overlay"></div>
-                    <div class="lg-card-content">
-                        <span class="lg-card-tag">PPT</span>
-                        <h3 class="lg-card-title">PPT Skripsi Sidang</h3>
-                        <p class="lg-card-desc">Slide presentasi sidang skripsi dengan flowchart penelitian yang jelas.</p>
-                    </div>
-                </div>
-
-                <!-- Card 4: Digital Agency — wide bottom right -->
-                <div class="lg-card"
+                <!-- Academic System — gallery card dengan 5 foto, klik buka slideshow -->
+                <div class="lg-card lg-tall lg-gallery-card"
+                     data-gallery="academic"
                      data-tag="WEB"
-                     data-title="Digital Agency & Web Design"
-                     data-desc="Website agency digital modern dengan desain UI/UX yang menawan, layout responsif, dan animasi smooth.">
+                     data-title="Academic System"
+                     data-desc="Aplikasi web berbasis PHP + MySQL untuk mengelola data akademis, operasi kelas, dan laporan perkembangan pembelajaran terpusat."
+                     data-images='[
+                       "images/academic 1.png",
+                       "images/academic 2.png",
+                       "images/academic 3.png",
+                       "images/academic 4.png",
+                       "images/academic 5.png"
+                     ]'>
+                    <img src="images/academic 1.png" alt="Academic System" loading="lazy">
+                    <div class="lg-card-overlay"></div>
+                    <div class="lg-card-content">
+                        <span class="lg-card-tag">WEB</span>
+                        <h3 class="lg-card-title">Academic System</h3>
+                        <p class="lg-card-desc">5 foto · klik untuk lihat semua</p>
+                    </div>
+                    <div class="lg-count-badge">5 FOTO</div>
+                </div>
+
+                <div class="lg-card" data-tag="WEB" data-title="Digital Agency & Web Design" data-desc="Website agency digital modern dengan desain UI/UX yang menawan, layout responsif, dan animasi smooth.">
                     <img src="agency_preview.jpg" alt="Digital Agency & Web Design" loading="lazy">
                     <div class="lg-card-overlay"></div>
                     <div class="lg-card-content">
@@ -1007,20 +1023,108 @@
                     </div>
                 </div>
 
+                <!-- ── HEWAN — 1 kartu kategori, klik buka slideshow ── -->
+                <div class="lg-card lg-gallery-card"
+                     data-gallery="hewan"
+                     data-tag="WEB"
+                     data-title="Pet Shop Website"
+                     data-desc="Website toko hewan peliharaan dengan katalog produk, fitur pencarian, dan tampilan modern yang responsif."
+                     data-images='[
+                       "images/hewan_Screenshot 2026-07-12 043905.png",
+                       "images/hewan_Screenshot 2026-07-12 043957.png",
+                       "images/hewan_Screenshot 2026-07-12 044044.png",
+                       "images/hewan_Screenshot 2026-07-12 044116.png",
+                       "images/hewan_Screenshot 2026-07-12 044202.png",
+                       "images/hewan_Screenshot 2026-07-12 044237.png",
+                       "images/hewan_Screenshot 2026-07-12 044306.png",
+                       "images/hewan_Screenshot 2026-07-12 044336.png"
+                     ]'>
+                    <img src="images/hewan_Screenshot 2026-07-12 043905.png" alt="Pet Shop Website" loading="lazy">
+                    <div class="lg-card-overlay"></div>
+                    <div class="lg-card-content">
+                        <span class="lg-card-tag">WEB</span>
+                        <h3 class="lg-card-title">Pet Shop Website</h3>
+                        <p class="lg-card-desc">8 halaman · klik untuk lihat semua</p>
+                    </div>
+                    <div class="lg-count-badge">8 FOTO</div>
+                </div>
+
+                <!-- ── HUNIAN — 1 kartu kategori, klik buka slideshow ── -->
+                <div class="lg-card lg-gallery-card"
+                     data-gallery="hunian"
+                     data-tag="WEB"
+                     data-title="Property & Housing Website"
+                     data-desc="Website properti dan hunian modern dengan listing lengkap, fitur filter pencarian, dan galeri foto berkualitas tinggi."
+                     data-images='[
+                       "images/hunian_Screenshot 2026-07-12 044811.png",
+                       "images/hunian_Screenshot 2026-07-12 044957.png",
+                       "images/hunian_Screenshot 2026-07-12 045129.png",
+                       "images/hunian_Screenshot 2026-07-12 045155.png",
+                       "images/hunian_Screenshot 2026-07-12 045218.png",
+                       "images/hunian_Screenshot 2026-07-12 045243.png",
+                       "images/hunian_vfyf.png"
+                     ]'>
+                    <img src="images/hunian_Screenshot 2026-07-12 044811.png" alt="Property & Housing Website" loading="lazy">
+                    <div class="lg-card-overlay"></div>
+                    <div class="lg-card-content">
+                        <span class="lg-card-tag">WEB</span>
+                        <h3 class="lg-card-title">Property Website</h3>
+                        <p class="lg-card-desc">7 halaman · klik untuk lihat semua</p>
+                    </div>
+                    <div class="lg-count-badge">7 FOTO</div>
+                </div>
+
+                <!-- ── KOPI — 1 kartu kategori, klik buka slideshow ── -->
+                <div class="lg-card lg-gallery-card"
+                     data-gallery="kopi"
+                     data-tag="WEB"
+                     data-title="Coffee Shop Website"
+                     data-desc="Website kafe dan kedai kopi modern dengan menu digital, tampilan estetis, dan fitur pemesanan online yang menarik."
+                     data-images='[
+                       "images/kopi_Screenshot 2026-07-12 045543.png",
+                       "images/kopi_Screenshot 2026-07-12 045945.png",
+                       "images/kopi_Screenshot 2026-07-12 050004.png",
+                       "images/kopi_Screenshot 2026-07-12 050026.png",
+                       "images/kopi_Screenshot 2026-07-12 050054.png",
+                       "images/kopi_Screenshot 2026-07-12 050129.png",
+                       "images/kopi_Screenshot 2026-07-12 050152.png"
+                     ]'>
+                    <img src="images/kopi_Screenshot 2026-07-12 045543.png" alt="Coffee Shop Website" loading="lazy">
+                    <div class="lg-card-overlay"></div>
+                    <div class="lg-card-content">
+                        <span class="lg-card-tag">WEB</span>
+                        <h3 class="lg-card-title">Coffee Shop Website</h3>
+                        <p class="lg-card-desc">7 halaman · klik untuk lihat semua</p>
+                    </div>
+                    <div class="lg-count-badge">7 FOTO</div>
+                </div>
+
             </div>
 
-            <p class="text-center text-[#555] font-bold mt-8 text-sm tracking-widest">— KLIK KARTU UNTUK DETAIL —</p>
+            <p class="text-center text-[#555] font-bold mt-8 text-sm tracking-widest">— KLIK KARTU UNTUK MELIHAT PREVIEW WEBSITE —</p>
         </div>
     </section>
 
-    <!-- Expanded card overlay (LayoutGrid style) -->
-    <div id="lg-expanded-overlay" role="dialog" aria-modal="true" aria-label="Detail proyek">
+    <!-- Slideshow Modal (untuk kartu galeri kategori) -->
+    <div id="lg-expanded-overlay" role="dialog" aria-modal="true" aria-label="Galeri foto">
         <div id="lg-expanded-box">
             <button id="lg-expanded-close" aria-label="Tutup">✕ TUTUP</button>
-            <img id="lg-expanded-img" src="" alt="">
+
+            <!-- Slideshow image area -->
+            <div id="lg-slide-wrap" style="position:relative;overflow:hidden;background:#000;">
+                <img id="lg-expanded-img" src="" alt="" style="width:100%;height:380px;object-fit:contain;object-position:center;display:block;transition:opacity 0.25s ease;">
+                <!-- Prev / Next arrows -->
+                <button id="lg-slide-prev" aria-label="Foto sebelumnya"
+                    style="position:absolute;left:0;top:0;bottom:0;width:48px;background:rgba(0,0,0,0.45);color:#ccff00;font-family:'Archivo Black',sans-serif;font-size:22px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.15s;">‹</button>
+                <button id="lg-slide-next" aria-label="Foto berikutnya"
+                    style="position:absolute;right:0;top:0;bottom:0;width:48px;background:rgba(0,0,0,0.45);color:#ccff00;font-family:'Archivo Black',sans-serif;font-size:22px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.15s;">›</button>
+            </div>
+
             <div id="lg-expanded-body">
                 <span id="lg-expanded-tag"></span>
                 <h3 id="lg-expanded-title"></h3>
+                <!-- counter: 1 / 8 -->
+                <p id="lg-slide-counter" style="font-family:'Space Grotesk',sans-serif;font-size:13px;color:#888;font-weight:600;margin:6px 0 0;"></p>
                 <p id="lg-expanded-desc"></p>
             </div>
         </div>
@@ -2209,24 +2313,54 @@
 
     // ── LAYOUT GRID GALLERY ───────────────────────────────────────
     (function () {
-        var overlay  = document.getElementById('lg-expanded-overlay');
-        var box      = document.getElementById('lg-expanded-box');
-        var closeBtn = document.getElementById('lg-expanded-close');
-        var expImg   = document.getElementById('lg-expanded-img');
-        var expTag   = document.getElementById('lg-expanded-tag');
-        var expTitle = document.getElementById('lg-expanded-title');
-        var expDesc  = document.getElementById('lg-expanded-desc');
+        var overlay   = document.getElementById('lg-expanded-overlay');
+        var box       = document.getElementById('lg-expanded-box');
+        var closeBtn  = document.getElementById('lg-expanded-close');
+        var expImg    = document.getElementById('lg-expanded-img');
+        var expTag    = document.getElementById('lg-expanded-tag');
+        var expTitle  = document.getElementById('lg-expanded-title');
+        var expDesc   = document.getElementById('lg-expanded-desc');
+        var prevBtn   = document.getElementById('lg-slide-prev');
+        var nextBtn   = document.getElementById('lg-slide-next');
+        var counter   = document.getElementById('lg-slide-counter');
         if (!overlay) return;
 
+        // slideshow state
+        var slideImages = [];
+        var slideIndex  = 0;
+
+        function showSlide(idx) {
+            slideIndex = (idx + slideImages.length) % slideImages.length;
+            expImg.style.opacity = '0';
+            setTimeout(function () {
+                expImg.src = slideImages[slideIndex];
+                expImg.alt = expTitle.textContent + ' ' + (slideIndex + 1);
+                expImg.style.opacity = '1';
+            }, 150);
+            if (counter) counter.textContent = (slideIndex + 1) + ' / ' + slideImages.length;
+            // show/hide arrows if only 1 image
+            var showArrows = slideImages.length > 1;
+            if (prevBtn) prevBtn.style.display = showArrows ? '' : 'none';
+            if (nextBtn) nextBtn.style.display = showArrows ? '' : 'none';
+        }
+
         function openCard(card) {
-            expImg.src        = card.querySelector('img').src;
-            expImg.alt        = card.dataset.title || '';
             expTag.textContent   = card.dataset.tag   || '';
-            expTitle.textContent = card.dataset.title  || '';
-            expDesc.textContent  = card.dataset.desc   || '';
+            expTitle.textContent = card.dataset.title || '';
+            expDesc.textContent  = card.dataset.desc  || '';
+
+            // check if this is a gallery card with multiple images
+            var imagesAttr = card.dataset.images;
+            if (imagesAttr) {
+                try { slideImages = JSON.parse(imagesAttr); } catch(e) { slideImages = []; }
+            } else {
+                var singleSrc = card.querySelector('img') ? card.querySelector('img').src : '';
+                slideImages = singleSrc ? [singleSrc] : [];
+            }
+
+            showSlide(0);
             overlay.style.display = 'flex';
-            // force reflow so transition fires
-            overlay.offsetHeight;
+            overlay.offsetHeight; // force reflow
             overlay.classList.add('lg-open');
             document.body.style.overflow = 'hidden';
         }
@@ -2234,14 +2368,13 @@
         function closeCard() {
             overlay.classList.remove('lg-open');
             document.body.style.overflow = '';
-            // hide after transition
             setTimeout(function () {
                 if (!overlay.classList.contains('lg-open'))
                     overlay.style.display = 'none';
             }, 360);
         }
 
-        // wire each card
+        // wire cards
         document.querySelectorAll('.lg-card').forEach(function (card) {
             card.addEventListener('click', function () { openCard(card); });
             card.addEventListener('keydown', function (e) {
@@ -2251,18 +2384,50 @@
             card.setAttribute('role', 'button');
         });
 
-        // close button
-        closeBtn.addEventListener('click', closeCard);
+        // prev / next
+        if (prevBtn) prevBtn.addEventListener('click', function (e) { e.stopPropagation(); showSlide(slideIndex - 1); });
+        if (nextBtn) nextBtn.addEventListener('click', function (e) { e.stopPropagation(); showSlide(slideIndex + 1); });
 
-        // click outside box closes
+        // close
+        closeBtn.addEventListener('click', closeCard);
         overlay.addEventListener('click', function (e) {
             if (e.target === overlay) closeCard();
         });
 
-        // Escape key
+        // keyboard nav
         document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && overlay.classList.contains('lg-open')) closeCard();
+            if (!overlay.classList.contains('lg-open')) return;
+            if (e.key === 'Escape')      closeCard();
+            if (e.key === 'ArrowLeft')   showSlide(slideIndex - 1);
+            if (e.key === 'ArrowRight')  showSlide(slideIndex + 1);
         });
+
+        // touch swipe
+        var touchStartX = 0;
+        if (expImg) {
+            expImg.addEventListener('touchstart', function (e) {
+                touchStartX = e.changedTouches[0].clientX;
+            }, { passive: true });
+            expImg.addEventListener('touchend', function (e) {
+                var dx = e.changedTouches[0].clientX - touchStartX;
+                if (Math.abs(dx) > 40) showSlide(dx < 0 ? slideIndex + 1 : slideIndex - 1);
+            }, { passive: true });
+        }
+
+        // ── Filter tabs (untuk kartu WEB/PPT) ──────────────────────
+        var filterBar = document.getElementById('lg-filters');
+        if (filterBar) {
+            filterBar.addEventListener('click', function (e) {
+                var btn = e.target.closest('.lg-filter-btn');
+                if (!btn) return;
+                filterBar.querySelectorAll('.lg-filter-btn').forEach(function (b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                var filter = btn.dataset.filter;
+                document.querySelectorAll('.lg-card').forEach(function (card) {
+                    card.style.display = (filter === 'all' || card.dataset.tag === filter) ? '' : 'none';
+                });
+            });
+        }
     })();
     </script>
     <script>
