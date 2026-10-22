@@ -1,161 +1,156 @@
-# Portfolio Website - Fitur Dokumentasi
+# Dokumentasi Fitur AGUS.DEV
 
-Dokumentasi lengkap untuk website portofolio Agus Hidayatulloh.
+Dokumen ini menjelaskan kemampuan yang benar-benar tersedia pada redesign portfolio. Situs ditujukan untuk dua alur utama: recruiter yang ingin memindai profil dengan cepat dan pengunjung yang ingin menelusuri pengalaman serta proyek secara lebih mendalam.
 
----
+## Arah visual
 
-## 🚀 Fitur Utama
+Desain mempertahankan neo-brutalism dengan pendekatan yang lebih premium dan terkontrol:
 
-Website ini memiliki berbagai fitur modern dan interaktif yang dirancang untuk pengalaman pengguna yang luar biasa.
+- tipografi display berukuran besar dengan hierarki yang jelas;
+- border tegas dan hard shadow sebagai bahasa visual utama;
+- palet hitam, putih, dan acid green dengan warna aksen yang dibatasi;
+- kartu modular, label monospace, dan elemen bergaya terminal;
+- layout responsif untuk desktop, tablet, dan mobile;
+- tema `dark`, `light`, dan `system` melalui pemilih tema.
 
----
+## Struktur konten
 
-## 📱 Responsive Design
+### Hero
 
-- **Mobile-first approach**: Dirancang untuk perangkat mobile terlebih dahulu.
-- **Grid layout responsif**: Menggunakan Tailwind CSS untuk menyesuaikan layout di berbagai ukuran layar.
-- **Responsive images**: Gambar menyesuaikan ukuran layar.
-- **Navigasi mobile**: Menu hamburger untuk perangkat mobile.
+- Posisi utama sebagai Web Developer dan Backend Enthusiast.
+- Ringkasan stack: PHP, Laravel, MySQL, JavaScript, REST API, Linux, dan Git.
+- Status ketersediaan untuk internship serta posisi junior.
+- CTA ke proyek, CV, GitHub, dan kontak.
+- Foto profil dengan lokasi dan ringkasan kompetensi, tanpa angka statistik yang tidak terverifikasi.
 
----
+### Recruiter mode
 
-## 🎨 Efek & Animasi
+Tombol Recruiter mode menampilkan quick profile yang memprioritaskan stack utama, fokus pengalaman, lokasi, availability, serta akses langsung ke CV, email, dan LinkedIn.
 
-### 1. Hero Section
-- **Gradien latar belakang dinamis
--**Partikel mengambang**: 30 partikel animasi dengan ukuran dan durasi acak
--**Efek profil 3D**: Profil berputar dan meningkatkan ukuran saat dihover
--**Elemen mengambang**: Elemen lokasi dan nomor telepon bergerak secara bergantian
+### About, pendidikan, dan pengalaman
 
-### 2. Efek Navbar
--**Glass effect**: Latar belakang transparan dengan blur
--**Hover underline**: Garis bawah animasi pada tautan navbar
--**Animasi scroll**: Navbar tetap fixed di bagian atas saat scroll
+- Ringkasan fokus backend development, REST API, database, Linux deployment, dan problem solving.
+- Informasi pendidikan S1 Teknik Informatika.
+- Timeline pengalaman di NetCrft.id dan BrainBox Learning.
+- Deskripsi tanggung jawab menggunakan informasi konkret, tanpa klaim jumlah proyek atau persentase keberhasilan.
 
-### 3. Kartu 3D
--**Efek tilt**: Kartu berputar sesuai gerakan kursor
--**Hover lift**: Kartu terangkat dan menampilkan bayangan saat dihover
--**Perubahan gambar**: Gambar proyek membesar saat dihover
--**Transisi smooth**: Semua perubahan animasi menggunakan cubic-bezier untuk nuansa
+### Tech stack
 
-### 4. Tombol
--**Gradien tombol**: Latar belakang gradien oranye
--**Efek 3D tombol: Berputar dan membesar saat dihover
--**Bayangan dinamis**: Bayangan berubah saat dihover dan aktif
+Kemampuan dikelompokkan menjadi Backend, Database, Frontend, Tools, dan Server. Setiap teknologi memiliki tooltip singkat untuk memberi konteks, bukan sekadar menampilkan daftar logo.
 
----
+### Featured projects
 
-## 🗂️ Bagian-bagian Website
+Tiga proyek utama memperoleh ruang khusus:
 
-### 1. Navbar
--**Brand logo dengan ikon kode
--**Navigasi: Home, About, Skills, Portfolio, Contact
--**Menu mobile (responsif
--**Tombol kontak dengan gradien
+1. BrainBox Learning — sistem akademik berbasis PHP, MySQL, JavaScript, REST API, Linux, dan Apache.
+2. Laravel Helpdesk System — aplikasi pengelolaan tiket, status, pengguna, role, dan dashboard admin. Source code ditandai tidak publik.
+3. NetCrft Digital Agency — website agency responsif berbasis HTML, CSS, dan JavaScript.
 
-### 2. Hero Section
--**Sambutan personal
--**Nama dengan gradient
--**Profesi (Web Developer)
--**Deskripsi singkat
--**Informasi kontak: Lokasi dan nomor telepon
--**Foto profil dengan glow
--**Tombol CTA: View Portfolio dan Contact Me
+Setiap proyek menampilkan kontribusi atau fokus teknis yang relevan. Tautan live hanya ditampilkan jika memang tersedia. Tombol case study membuka dialog berisi detail proyek dan media terkait.
 
-###3. Stats Section
--**5 statistik penting**:
-  -3+ Tahun Pengalaman
-  -20+ Proyek Selesai
-  -50+ Klien Puas
-  -10+ Teknologi
-  -100% Kepuasan
+### Project archive
 
-### 4. About Section
--**Deskripsi latar belakang
--**Informasi pendidikan
--**Pengalaman kerja
--**Keterampilan utama
--**Kartu dengan efek 3D
+- Pencarian proyek berdasarkan nama dan metadata.
+- Filter All, PHP, Laravel, JavaScript, MySQL, Frontend, dan Backend.
+- Galeri screenshot untuk Pet Shop, Coffee Shop, dan Property Website.
+- Empty state ketika pencarian atau filter tidak menghasilkan proyek.
+- Item tanpa demo publik dijelaskan sebagai arsip yang detailnya dapat diminta, bukan diberi tautan palsu.
 
-### 5. Skills Section
--**3 kategori keterampilan**:
-  -1. Web Development
-  -2. UI/UX Design
-  -3. Database & Infra
--**Tampilkan ikon skill dengan Devicons
--**Kartu 3D untuk setiap kategori
+### GitHub
 
-###6. Portfolio Section
--**3 proyek unggulan**:
-  1. Academic System (PHP + MySQL)
-  2. Laravel Helpdesk System
-  3. Digital Agency & Web Design (link: https://netcrft.freedev.app/?i=1)
--**Setiap proyek memiliki gambar, deskripsi, dan tautan ke proyek
+- Tautan langsung ke profil `@AgusHidayahtulloh333`.
+- Repository publik dimuat dari GitHub ketika API tersedia.
+- Grafik kontribusi dimuat dari layanan visualisasi publik.
+- Loading state dan fallback mempertahankan akses ke profil jika request eksternal gagal atau dibatasi.
 
-###7. Contact Section
--**4 kontak penting**:
-  -Email
-  -WhatsApp
-  -LinkedIn
-  -GitHub
--**Kartu dengan ikon dan tautan yang dapat diklik
+### Development process
 
-###8. Footer
--**Brand/logo
--**Hak cipta
--**Tautan sosial
+Bagian How I Build merangkum alur Understand, Design, Build, Test, Deploy, dan Improve tanpa mengklaim metodologi atau sertifikasi yang tidak disebutkan.
 
-###9. Back to Top
--**Tombol kembali ke atas dengan ikon
--**Muncul saat scroll lebih dari 500px
--**Efek fade in/fade out
+### CV dan kontak
 
----
+- CV ATS yang nyata dapat diunduh sebagai PDF.
+- Creative CV diberi status “in preparation” dan tidak memiliki tombol unduh palsu.
+- Portfolio dapat dicetak melalui print view.
+- Kontak melalui email, WhatsApp, LinkedIn, dan GitHub.
+- Tombol Copy email menggunakan Clipboard API dengan feedback berbentuk toast.
 
-## 🛠️ Teknologi yang Digunakan
+## Interaksi
 
--**HTML5**: Struktur dasar website
--**Tailwind CSS**: Framework CSS untuk styling
--**Phosphor Icons**: Ikon-ikon
--**Google Fonts**: Font Poppins
--**Vanilla JavaScript**: Logika interaktif
--**Devicons**: Ikon teknologi
+### Navigasi
 
----
+- Header responsif dan menu mobile.
+- Mobile bottom navigation untuk akses cepat ke bagian utama.
+- Active section mengikuti posisi scroll.
+- Scroll progress memberi indikasi posisi baca.
+- Skip link membawa pengguna keyboard langsung ke konten utama.
 
-## 📋 Fitur JavaScript
+### Command palette
 
-1. **Mobile Menu Toggle**: Menampilkan/menyembunyikan menu mobile
-2. **Smooth Scroll**: Scroll antar bagian dengan smooth
-3. **Back to Top Button**: Tombol kembali ke bagian atas
-4. **Floating Particles**: Membuat partikel mengambang di hero section
-5. **Tilt Effect on Cards**: Kartu berputar sesuai gerakan kursor
-6. **Fade In Animation**: Fade in saat pertama load
-7. **Close Mobile Menu on Link Click**: Tutup menu mobile saat tautan diklik
+Command palette menyediakan navigasi cepat ke Home, About, Experience, Projects, Contact, CV, dan GitHub. Daftar command dapat dicari dan dioperasikan melalui keyboard, termasuk tombol Escape untuk menutup.
 
----
+### Terminal portfolio
 
-## 🎯 Cara Kerja Fitur
+Terminal menerima command `help`, `about`, `skills`, `projects`, `experience`, `contact`, `github`, dan `clear`. Fitur ini menjadi cara alternatif untuk menjelajahi konten; seluruh informasi penting tetap tersedia melalui navigasi biasa.
 
-### Animasi Partikel
-1. Membuat partikel secara dinamis
-2. Menetapkan ukuran, posisi, dan durasi animasi secara acak
-3. Menggunakan CSS keyframes untuk animasi floating
+### Proyek dan media
 
-### Efek Tilt Kartu
-1. Mendapatkan koordinat kursor di atas kartu
-2. Hitung rotasi berdasarkan posisi kursor terhadap tengah kartu
-3. Terapkan transformasi CSS sesuai perhitungan
+- Search dan filter arsip diperbarui tanpa reload halaman.
+- Case study menggunakan elemen dialog.
+- Galeri screenshot ditampilkan sebagai rangkaian gambar di dalam dialog yang dapat digulir dan ditutup melalui tombol atau keyboard.
+- Hover preview hanya menjadi enhancement visual dan tidak menggantikan konten teks atau tautan utama.
 
----
+### Detail visual
 
-## 📱 Preview Fitur Keren
+Loading intro, reveal on scroll, spotlight card, parallax ringan, magnetic button, custom cursor, dan easter egg developer mode memperkaya presentasi. Semua efek dekoratif harus dinonaktifkan atau disederhanakan ketika pengguna memilih reduced motion atau perangkat tidak mendukung interaksinya.
 
-✅ Efek 3D yang menarik
-✅ Navigasi responsif
-✅ Animasi smooth
-✅ Tautan kontak yang dapat diakses
-✅ Desain modern dan bersih
-✅ Ikon yang mudah dibaca
-✅ Gradien yang menarik
-✅ Layout yang seimbang
+## Aksesibilitas
+
+- Bahasa dokumen dideklarasikan sebagai Bahasa Indonesia.
+- Struktur memakai `header`, `nav`, `main`, `section`, `article`, `footer`, heading berurutan, dan landmark yang jelas.
+- Gambar konten memiliki teks alternatif; dekorasi disembunyikan dari assistive technology.
+- Skip link, label form, nama tombol, live region, dan status toast membantu pengguna screen reader.
+- State menu, recruiter mode, dan filter dipaparkan melalui atribut ARIA yang sesuai.
+- Dialog dapat ditutup, mengelola fokus, dan mendukung tombol Escape.
+- Target interaksi dan focus-visible state dibuat jelas untuk keyboard dan layar sentuh.
+- `prefers-reduced-motion` dihormati; konten tidak bergantung pada animasi agar dapat dibaca.
+- Konten utama tetap tersedia saat JavaScript dinonaktifkan; loading intro disembunyikan melalui fallback `noscript`.
+
+## Performa dan ketahanan
+
+- Arsitektur statis menggunakan HTML, CSS, dan vanilla JavaScript tanpa framework runtime atau proses build.
+- `script.js` dimuat dengan `defer` agar tidak memblokir parsing HTML.
+- Foto hero diprioritaskan dan dipreload; gambar proyek non-kritis memakai `loading="lazy"` dan `decoding="async"`.
+- Atribut `width` dan `height` pada gambar membantu mencegah cumulative layout shift.
+- Efek visual menggunakan progressive enhancement dan tidak menjadi syarat untuk mengakses isi portfolio.
+- Request GitHub dan grafik kontribusi mempunyai fallback; kegagalan layanan pihak ketiga tidak memblokir halaman.
+- Vercel mengirim header keamanan dasar dan cache aset melalui `vercel.json`.
+
+## SEO dan discovery
+
+- Title dan meta description yang spesifik.
+- Canonical URL.
+- Open Graph dan Twitter Card.
+- JSON-LD untuk `Person` dan `WebSite`.
+- `robots.txt` dan `sitemap.xml`.
+- Favicon SVG dan web app manifest.
+
+Jika domain berubah, semua URL absolut pada metadata dan file discovery harus diperbarui bersama-sama.
+
+## Batasan yang disengaja
+
+- Situs ini adalah portfolio statis, bukan aplikasi dengan backend atau database internal.
+- Tidak ada form kontak yang menyimpan data; komunikasi diarahkan ke kanal kontak nyata.
+- Data GitHub membutuhkan koneksi internet dan tunduk pada ketersediaan serta rate limit layanan publik.
+- Tidak ada statistik klien, persentase sukses, testimoni, harga layanan, atau klaim lain yang tidak dapat diverifikasi.
+- File screenshot hanya menjadi bukti visual; status source privat dan ketersediaan live demo ditulis secara eksplisit.
+
+## Struktur implementasi
+
+- `index.html`: konten, semantic markup, metadata, dialog, dan fallback.
+- `styles.css`: token desain, tema, responsivitas, animasi, state aksesibel, dan print styles.
+- `script.js`: state UI dan progressive enhancement dengan vanilla JavaScript.
+- `images/` serta file JPG di root: media proyek.
+- `vercel.json`: konfigurasi hosting statis.
+
+Cara menjalankan dan melakukan deployment tersedia di [README.md](README.md).
