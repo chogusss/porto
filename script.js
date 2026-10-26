@@ -751,7 +751,10 @@
             number: '03',
             category: 'Digital Agency Website',
             title: 'NetCrft Digital Agency',
-            gallery: ['agency_preview.jpg'],
+            gallery: ['agency_preview.png'],
+            galleryFit: 'contain',
+            galleryTheme: 'paper',
+            galleryAlt: ['Tampilan hero NetCrft.id dengan headline Kami Bangun Website yang Menghasilkan'],
             details: [
                 { title: 'Project overview', text: 'Website agency digital yang memperkenalkan layanan dan karya melalui layout responsif dengan identitas visual neo-brutalist.' },
                 { title: 'Problem', text: 'Informasi layanan perlu disampaikan dengan hierarchy yang cepat dipahami tanpa mengorbankan karakter visual brand.' },
@@ -858,9 +861,10 @@
             (project.gallery || []).forEach((source, index) => {
                 const figure = createElement('figure', 'case-gallery__item');
                 if (project.galleryFit === 'contain') figure.classList.add('case-gallery__item--contain');
+                if (project.galleryTheme === 'paper') figure.classList.add('case-gallery__item--paper');
                 const image = createElement('img');
                 image.src = source;
-                image.alt = `${project.title} screenshot ${index + 1}`;
+                image.alt = project.galleryAlt?.[index] || `${project.title} screenshot ${index + 1}`;
                 image.loading = index === 0 ? 'eager' : 'lazy';
                 image.decoding = 'async';
                 figure.appendChild(image);
@@ -1441,6 +1445,7 @@
                 image.src = project.dataset.preview;
                 image.alt = '';
                 preview.classList.toggle('hover-preview--contain', project.dataset.previewFit === 'contain');
+                preview.classList.toggle('hover-preview--paper', project.dataset.previewTheme === 'paper');
                 preview.classList.add('is-visible', 'show');
             });
             project.addEventListener('pointermove', (event) => {

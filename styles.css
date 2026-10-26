@@ -541,6 +541,8 @@ html.is-loaded.no-reveal .reveal {
     object-fit: contain;
 }
 
+.hover-preview--paper img { background: #fbfaf3; }
+
 .hover-preview.is-visible {
     opacity: 1;
     transform: scale(1);
@@ -1554,6 +1556,8 @@ body.recruiter-mode .recruiter-summary {
 
 .project-feature__media--contain:hover img { transform: none; }
 
+.project-feature__media--paper img { background: #fbfaf3; }
+
 .project-number {
     position: absolute;
     top: 1rem;
@@ -2149,6 +2153,7 @@ dialog::backdrop {
 .case-gallery__item:first-child:nth-last-child(odd) { grid-column: 1 / -1; }
 .case-gallery__item img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: top; }
 .case-gallery__item--contain img { background: #071735; object-fit: contain; }
+.case-gallery__item--paper img { background: #fbfaf3; }
 
 .case-modal__content {
     display: grid;
