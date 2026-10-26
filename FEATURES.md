@@ -53,6 +53,7 @@ Setiap proyek menampilkan kontribusi atau fokus teknis yang relevan. Tautan live
 - Pencarian proyek berdasarkan nama dan metadata.
 - Filter All, PHP, Laravel, JavaScript, MySQL, Frontend, dan Backend.
 - Galeri screenshot untuk Pet Shop, Coffee Shop, dan Property Website.
+- Thumbnail Point of Sale asli untuk Cashier Web App dan visual UI representatif untuk Complaint Management App.
 - Empty state ketika pencarian atau filter tidak menghasilkan proyek.
 - Item tanpa demo publik dijelaskan sebagai arsip yang detailnya dapat diminta, bukan diberi tautan palsu.
 
