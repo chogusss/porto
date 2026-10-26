@@ -730,7 +730,8 @@
             number: '02',
             category: 'Ticket Management System',
             title: 'Laravel Helpdesk System',
-            gallery: ['helpdesk_preview.jpg'],
+            gallery: ['helpdesk_preview.png'],
+            galleryFit: 'contain',
             details: [
                 { title: 'Project overview', text: 'Aplikasi helpdesk berbasis Laravel untuk mencatat, mengelola, dan memantau alur penyelesaian tiket.' },
                 { title: 'Problem', text: 'Permintaan bantuan membutuhkan status, kepemilikan, dan akses yang jelas agar tidak tercecer selama proses penanganan.' },
@@ -741,7 +742,9 @@
                 { title: 'Challenges', text: 'Menyusun hak akses dan perubahan status tiket agar tetap konsisten untuk setiap peran pengguna.' },
                 { title: 'Result', text: 'Project ini menunjukkan implementasi alur helpdesk end-to-end menggunakan Laravel dan MySQL.' }
             ],
-            actions: [],
+            actions: [
+                { label: 'Live website', href: 'https://sonic-geode-1dixrpr-chogus.vercel.app/', external: true }
+            ],
             note: 'Source code is not publicly available.'
         },
         netcrft: {
@@ -854,6 +857,7 @@
             gallery.replaceChildren();
             (project.gallery || []).forEach((source, index) => {
                 const figure = createElement('figure', 'case-gallery__item');
+                if (project.galleryFit === 'contain') figure.classList.add('case-gallery__item--contain');
                 const image = createElement('img');
                 image.src = source;
                 image.alt = `${project.title} screenshot ${index + 1}`;
@@ -1436,6 +1440,7 @@
                 if (!pointerEffectsAllowed()) return;
                 image.src = project.dataset.preview;
                 image.alt = '';
+                preview.classList.toggle('hover-preview--contain', project.dataset.previewFit === 'contain');
                 preview.classList.add('is-visible', 'show');
             });
             project.addEventListener('pointermove', (event) => {

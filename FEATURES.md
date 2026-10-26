@@ -43,7 +43,7 @@ Kemampuan dikelompokkan menjadi Backend, Database, Frontend, Tools, dan Server. 
 Tiga proyek utama memperoleh ruang khusus:
 
 1. BrainBox Learning — sistem akademik berbasis PHP, MySQL, JavaScript, REST API, Linux, dan Apache.
-2. Laravel Helpdesk System — aplikasi pengelolaan tiket, status, pengguna, role, dan dashboard admin. Source code ditandai tidak publik.
+2. Laravel Helpdesk System — aplikasi pengelolaan tiket, status, pengguna, role, dan dashboard admin. Live project tersedia, sedangkan source code ditandai tidak publik.
 3. NetCrft Digital Agency — website agency responsif berbasis HTML, CSS, dan JavaScript.
 
 Setiap proyek menampilkan kontribusi atau fokus teknis yang relevan. Tautan live hanya ditampilkan jika memang tersedia. Tombol case study membuka dialog berisi detail proyek dan media terkait.
